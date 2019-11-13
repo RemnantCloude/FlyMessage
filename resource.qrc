@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="logo">images/logo.jpg</file>
+        <file alias="bg">images/background.jpg</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file alias="fontawesome_solid">fonts/Font Awesome 5 Free-Solid-900.otf</file>
+        <file alias="fontawesome_brand">fonts/Font Awesome 5 Brands-Regular-400.otf</file>
+        <file alias="fontawesome_regular">fonts/Font Awesome 5 Free-Regular-400.otf</file>
+    </qresource>
+</RCC>
