@@ -1,5 +1,5 @@
 #include "title_bar.h"
-#include "main_window.h"
+#include "FlyMessage.h"
 
 #include <QPushButton>
 #include <QLabel>
@@ -13,13 +13,13 @@
 
 TitleBar::TitleBar(QWidget *parent) : QWidget(parent)
 {
-    thisparent = (MainWindow*)parentWidget();// 获得父窗口的指针
+    thisparent = (FlyMessage*)parentWidget();// 获得父窗口的指针
 
     initComponents();// 初始化组件
     initSignalAndSlot();// 初始化信号与槽
 
-    setThisLayout();
-    setThisStyle();
+    setThisLayout();// 布局设置
+    setThisStyle();// 样式设置
 }
 
 TitleBar::~TitleBar()
@@ -32,19 +32,16 @@ void TitleBar::initComponents()
     icon_Lab    = new QLabel(this);
     title_Lab   = new QLabel(this);
     skin_Btn    = new QPushButton(this);
-    // setting_Btn = new QPushButton(this);
     min_Btn     = new QPushButton(this);
     max_Btn     = new QPushButton(this);
     close_Btn   = new QPushButton(this);
-    // mode_Btn    = new QPushButton(this);
 }
 
 void TitleBar::initSignalAndSlot()
 {
     connect(skin_Btn, SIGNAL(clicked(bool)), SLOT(onSkin(bool)));
-    // connect(setting_Btn, SIGNAL(clicked(bool)), SLOT(onSetting(bool)));
 }
-
+// TODO:重新设置布局
 void TitleBar::setThisLayout()
 {
     setFixedHeight(50);
@@ -55,9 +52,7 @@ void TitleBar::setThisLayout()
     close_Btn->setGeometry  (width () - 1*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     max_Btn->setGeometry    (width () - 2*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     min_Btn->setGeometry    (width () - 3*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
-    // setting_Btn->setGeometry(width () - 4*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     skin_Btn->setGeometry   (width () - 4*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
-    // mode_Btn->setGeometry   (width () - 7*BTN_WIDTH, 0, 2*BTN_WIDTH, BTN_HEIGHT);
 }
 
 void TitleBar::setThisStyle()
@@ -66,9 +61,7 @@ void TitleBar::setThisStyle()
     close_Btn->setFlat(true);
     min_Btn->setFlat(true);
     max_Btn->setFlat(true);
-    // setting_Btn->setFlat(true);
     skin_Btn->setFlat(true);
-    // mode_Btn->setFlat(true);
 
     // TODO:学习QSS
     setStyleSheet(  "QPushButton{font-size: 12pt; border-style: none; color: black;}"
@@ -98,15 +91,9 @@ void TitleBar::setThisStyle()
     max_Btn->setFont(font);
     max_Btn->setText(QChar(0xf2d0));
 
-    // setting_Btn->setToolTip(tr("设置"));
-    // setting_Btn->setFont(font);
-    // setting_Btn->setText(QChar(0xf0ad));  
-
     skin_Btn->setToolTip(tr("皮肤"));
     skin_Btn->setFont(font);
     skin_Btn->setText(QChar(0xf553));
-
-    // mode_Btn->setText(tr("模式切换"));// TODO:需要换成其它图片      
 
     QPixmap pixmap(":/images/logo");// TODO:需要换成其它大logo
     icon_Lab->setPixmap(pixmap);
@@ -120,7 +107,7 @@ void TitleBar::mousePressEvent(QMouseEvent *event)
     this->thisparent->mousePos = event->globalPos(); // 获得鼠标位置
     this->thisparent->dPos = thisparent->mousePos - thisparent->windowPos; // 移动后部件所在的位置
 }
-
+// 暂时先不管这个函数
 void TitleBar::mouseMoveEvent(QMouseEvent *event)
 {
     this->thisparent->move(event->globalPos() - this->thisparent->dPos);
@@ -131,7 +118,7 @@ void TitleBar::mouseMoveEvent(QMouseEvent *event)
     //     setWindowState( Qt::WindowNoState );
     // }
 
-    //TODO:靠边时会最大化
+    //TODO:实现靠边时会最大化
 }
 
 void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
@@ -153,11 +140,6 @@ void TitleBar::resizeEvent(QResizeEvent *event)
 //         pal.setBrush(QPalette::Window,QBrush(background.scaled(event->size(), Qt::IgnoreAspectRatio,Qt::SmoothTransformation)));
 //         setPalette(pal);
 //     }
-}
-
-void TitleBar::onSetting(bool)
-{
-
 }
 
 void TitleBar::onSkin(bool)

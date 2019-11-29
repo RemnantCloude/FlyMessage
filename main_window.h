@@ -2,48 +2,43 @@
 #define MAIN_WINDOW_H
 
 #include <QWidget>
-
-#include "title_bar.h"
-#include "news_bar.h"
-#include "news_article.h"
+#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QPushButton>
 
 class MainWindow : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    bool hasBackgroundImage;
+    QTextEdit *news1_Tex;
+    QTextEdit *news2_Tex;
+    QTextEdit *news3_Tex;
+    QTextEdit *news4_Tex;
+    QTextEdit *news5_Tex;
 
-    TitleBar* titlebar;
-    NewsBar* newsbar;
-    NewsArticle* newsarticle;//TODO:
-    QWidget* centerWidget;
-    
-    QImage background; // 背景图片
+    QPushButton *bookmarks1_Btn;
+    QPushButton *bookmarks2_Btn;
+    QPushButton *bookmarks3_Btn;
+    QPushButton *bookmarks4_Btn;
+    QPushButton *bookmarks5_Btn;
 
-    // 窗体移动事件的点
-    QPoint windowPos;
-    QPoint mousePos;
-    QPoint dPos;
+    QPushButton *refresh_Btn;
+    QPushButton *returnToTop_Btn;
+
+    void json(void);
+
+signals:
 
 public slots:
-    void onMin(bool);
-    void onMax(bool);
-    void onClose(bool);
-
-private:
 
 protected:
-    void initLayout();
+    void initComponents();
     void initSignalAndSlot();
-
+    
     void setThisLayout();
     void setThisStyle();
-    void setBackgroundImage(QString filename); // 设置背景图片
-
 };
 
 #endif // MAIN_WINDOW_H

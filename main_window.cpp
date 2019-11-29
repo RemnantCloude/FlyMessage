@@ -1,31 +1,32 @@
 #include "main_window.h"
 
-#include <QWidget>
-#include <QString>
-#include <QStyle>
-#include <QGridLayout>
+#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QPushButton>
+#include <QFontDatabase>
 
 //TEST:
 #include <QDebug>
+#include <QCoreApplication>
+#include <QDir>
+#include <QWidget>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QFile>
 
-//TODO:
-#define BTN_WIDTH   (40)
-#define BTN_HEIGHT  (30)
+#define BTN_WIDTH   (600)
+#define BTN_HEIGHT  (100)
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
-    // 无边框化|添加任务栏右键菜单|添加最大化最小化按键
-    this->setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-
-    initLayout(); // 初始化窗体
+    initComponents();// 初始化组件
     initSignalAndSlot();// 初始化信号与槽
 
-    // 设置控件位置和风格样式
     setThisLayout();
     setThisStyle();
-
-    hasBackgroundImage = false; // 默认无背景图片
-//    setBackgroundImage(":/images/bg");
 }
 
 MainWindow::~MainWindow()
@@ -33,77 +34,69 @@ MainWindow::~MainWindow()
 
 }
 
-//TODO:
-void MainWindow::setBackgroundImage(QString filename)
+void MainWindow::initComponents()
 {
-    hasBackgroundImage = true;
 
-    background.load(filename);
-    setAutoFillBackground(true);
-    QPalette pal(palette());
-    pal.setBrush(QPalette::Window,
-                 QBrush(background.scaled(size(), Qt::IgnoreAspectRatio,
-                                     Qt::SmoothTransformation)));
-    setPalette(pal);
-}
-
-void MainWindow::initLayout()
-{
-    this->resize (1024, 720); // TODO:默认大小需可记忆
-
-    titlebar = new TitleBar(this);
-    newsbar = new NewsBar(this);
-    newsarticle = new NewsArticle(this);
-    centerWidget = new QWidget(this);
-
-    // 设置布局器
-    QGridLayout *GLay = new QGridLayout(this);
-    GLay->addWidget(titlebar, 0, 0, 1, 5);
-    GLay->addWidget(newsbar, 1, 0, 1, 1);
-    GLay->addWidget(newsarticle, 1, 1, 1, 4);
-    this->setLayout(GLay);
 }
 
 void MainWindow::initSignalAndSlot()
 {
-    connect(titlebar->min_Btn, SIGNAL(clicked(bool)), SLOT(onMin(bool)));
-    connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
-    connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
-    connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
-}
 
-void MainWindow::setThisStyle()
-{
-    
 }
 
 void MainWindow::setThisLayout()
 {
-    // TODO:
-    titlebar->setGeometry(0, 0, BTN_HEIGHT + 10, BTN_WIDTH);
+
 }
 
-void MainWindow::onMin(bool)
+void MainWindow::setThisStyle()
 {
-    if( windowState() != Qt::WindowMinimized )
-    {
-        setWindowState( Qt::WindowMinimized );
-    }
+
 }
 
-void MainWindow::onMax(bool)
+void MainWindow::json()//TODO:
 {
-    if( windowState() != Qt::WindowMaximized )// 最大化
-    {
-        setWindowState( Qt::WindowMaximized );
-    }
-    else// 还原成原窗口大小
-    {
-        setWindowState( Qt::WindowNoState );
-    }
-}
+    // 读取文件内容
+    QFile file("./json_test.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text); // 只读文件
+    QString value = file.readAll();
+    file.close();
 
-void MainWindow::onClose(bool)
-{
-    emit close();
+    // TODO:错误提示
+    QJsonParseError parseJsonErr;
+    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
+
+    if(!(parseJsonErr.error == QJsonParseError::NoError))
+    {
+        qDebug()<<tr("解析json文件错误！");
+        return;
+    }
+
+    QJsonObject jsonObject = document.object();
+    qDebug()<<"jsonObject[name]="<<jsonObject["name"].toString();
+
+    if(jsonObject.contains(QStringLiteral("secondName")))
+    {
+        QJsonValue jsonValueList = jsonObject.value(QStringLiteral("secondName"));
+        QJsonObject item = jsonValueList.toObject();
+        qDebug()<<"item[thirdName]="<<item["thirdName"].toString();
+    }
+
+    if(jsonObject.contains(QStringLiteral("recoveryPrimaryNode")))
+    {
+        QJsonValue arrayValue = jsonObject.value(QStringLiteral("recoveryPrimaryNode"));
+        if(arrayValue.isArray())
+        {
+            QJsonArray array = arrayValue.toArray();
+            for(int i=0;i<array.size();i++)
+            {
+                QJsonValue iconArray = array.at(i);
+                QJsonObject icon = iconArray.toObject();
+                QString id = icon["id"].toString();
+                QString iconTxt = icon["iconTxt"].toString();
+                QString iconName = icon["iconName"].toString();
+                qDebug()<<"id="<<id<<"iconTxt="<<iconTxt<<"iconName="<<iconName;
+            }
+        }
+    }
 }

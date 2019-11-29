@@ -1,10 +1,11 @@
-#include "main_window.h"
 #include <QApplication>
+
+#include "FlyMessage.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    FlyMessage w;
     w.show();
 
     return a.exec();

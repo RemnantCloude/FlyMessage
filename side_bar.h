@@ -1,15 +1,15 @@
-#ifndef NEWS_BAR_H
-#define NEWS_BAR_H
+#ifndef SIDE_BAR_H
+#define SIDE_BAR_H
 
 #include <QWidget>
 #include <QtWidgets/QPushButton>
 
-class NewsBar : public QWidget
+class SideBar : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NewsBar(QWidget *parent = nullptr);
-    ~NewsBar();
+    explicit SideBar(QWidget *parent = nullptr);
+    ~SideBar();
 
     QPushButton *settings_Btn;
     QPushButton *bookmarks_Btn;
@@ -17,10 +17,7 @@ public:
 signals:
 
 public slots:
-    void openSettings(bool);
-    void openBookmarks(bool);
 
-private:
 protected:
     void initComponents();
     void initSignalAndSlot();
@@ -29,4 +26,4 @@ protected:
     void setThisStyle();
 };
 
-#endif // NEWS_BAR_H
+#endif // SIDE_BAR_H
