@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
     setThisStyle();
 
     hasBackgroundImage = false; // 默认无背景图片
-    setBackgroundImage(":/images/bg");
+//    setBackgroundImage(":/images/bg");
 }
 
 MainWindow::~MainWindow()
@@ -49,7 +49,7 @@ void MainWindow::setBackgroundImage(QString filename)
 
 void MainWindow::initLayout()
 {
-    this->resize (800, 600); // TODO:默认大小需可记忆
+    this->resize (1024, 720); // TODO:默认大小需可记忆
 
     titlebar = new TitleBar(this);
     newsbar = new NewsBar(this);

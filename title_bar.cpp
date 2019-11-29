@@ -32,17 +32,17 @@ void TitleBar::initComponents()
     icon_Lab    = new QLabel(this);
     title_Lab   = new QLabel(this);
     skin_Btn    = new QPushButton(this);
-    setting_Btn = new QPushButton(this);
+    // setting_Btn = new QPushButton(this);
     min_Btn     = new QPushButton(this);
     max_Btn     = new QPushButton(this);
     close_Btn   = new QPushButton(this);
-    mode_Btn    = new QPushButton(this);
+    // mode_Btn    = new QPushButton(this);
 }
 
 void TitleBar::initSignalAndSlot()
 {
     connect(skin_Btn, SIGNAL(clicked(bool)), SLOT(onSkin(bool)));
-    connect(setting_Btn, SIGNAL(clicked(bool)), SLOT(onSetting(bool)));
+    // connect(setting_Btn, SIGNAL(clicked(bool)), SLOT(onSetting(bool)));
 }
 
 void TitleBar::setThisLayout()
@@ -55,9 +55,9 @@ void TitleBar::setThisLayout()
     close_Btn->setGeometry  (width () - 1*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     max_Btn->setGeometry    (width () - 2*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     min_Btn->setGeometry    (width () - 3*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
-    setting_Btn->setGeometry(width () - 4*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
-    skin_Btn->setGeometry   (width () - 5*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
-    mode_Btn->setGeometry   (width () - 7*BTN_WIDTH, 0, 2*BTN_WIDTH, BTN_HEIGHT);
+    // setting_Btn->setGeometry(width () - 4*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
+    skin_Btn->setGeometry   (width () - 4*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
+    // mode_Btn->setGeometry   (width () - 7*BTN_WIDTH, 0, 2*BTN_WIDTH, BTN_HEIGHT);
 }
 
 void TitleBar::setThisStyle()
@@ -66,18 +66,18 @@ void TitleBar::setThisStyle()
     close_Btn->setFlat(true);
     min_Btn->setFlat(true);
     max_Btn->setFlat(true);
-    setting_Btn->setFlat(true);
+    // setting_Btn->setFlat(true);
     skin_Btn->setFlat(true);
-    mode_Btn->setFlat(true);
+    // mode_Btn->setFlat(true);
 
     // TODO:学习QSS
-    setStyleSheet(  "QPushButton{font-size: 12pt; border-style: none; color: white;}"
+    setStyleSheet(  "QPushButton{font-size: 12pt; border-style: none; color: black;}"
                     "QPushButton:hover{background-color:gray;}"
                     "QPushButton:pressed{background-color:lightgray; color: blue;}");
     close_Btn->setStyleSheet("QPushButton{border-style: none/*;border-top-right-radius:5px*/}"
-                            "QPushButton:hover{background-color:red; color: white;}"
+                            "QPushButton:hover{background-color:red; color: black;}"
                             "QPushButton:pressed{background-color:rgba(85, 170, 255,200); border-style: inset; }");
-    title_Lab->setStyleSheet("QLabel{font-size: 12pt; color: white;}");
+    title_Lab->setStyleSheet("QLabel{font-size: 12pt; color: black;}");
 
     // 添加字体文件
     int fontId = QFontDatabase::addApplicationFont(":/fonts/fontawesome_solid");
@@ -98,20 +98,20 @@ void TitleBar::setThisStyle()
     max_Btn->setFont(font);
     max_Btn->setText(QChar(0xf2d0));
 
-    setting_Btn->setToolTip(tr("设置"));
-    setting_Btn->setFont(font);
-    setting_Btn->setText(QChar(0xf0ad));  
+    // setting_Btn->setToolTip(tr("设置"));
+    // setting_Btn->setFont(font);
+    // setting_Btn->setText(QChar(0xf0ad));  
 
     skin_Btn->setToolTip(tr("皮肤"));
     skin_Btn->setFont(font);
     skin_Btn->setText(QChar(0xf553));
 
-    mode_Btn->setText(tr("模式切换"));// TODO:需要换成好康的图片      
+    // mode_Btn->setText(tr("模式切换"));// TODO:需要换成其它图片      
 
-    QPixmap pixmap(":/images/logo");// TODO:需要换成好康的大logo
+    QPixmap pixmap(":/images/logo");// TODO:需要换成其它大logo
     icon_Lab->setPixmap(pixmap);
 
-    title_Lab->setText(tr("Fast Message"));
+    title_Lab->setText(tr("飞讯"));
 }
 
 void TitleBar::mousePressEvent(QMouseEvent *event)

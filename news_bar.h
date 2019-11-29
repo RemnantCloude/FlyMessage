@@ -11,18 +11,16 @@ public:
     explicit NewsBar(QWidget *parent = nullptr);
     ~NewsBar();
 
-    QPushButton* source1_Btn;
-    QPushButton* source2_Btn;
-    QPushButton* source3_Btn;
-    QPushButton* source4_Btn;
-    QPushButton* source5_Btn;
+    QPushButton *settings_Btn;
+    QPushButton *bookmarks_Btn;
 
 signals:
 
 public slots:
+    void openSettings(bool);
+    void openBookmarks(bool);
 
 private:
-
 protected:
     void initComponents();
     void initSignalAndSlot();

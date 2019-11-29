@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QtWidgets/QTextEdit>
+#include <QtWidgets/QPushButton>
 
 class NewsArticle : public QWidget
 {
@@ -17,13 +18,22 @@ public:
     QTextEdit *news4_Tex;
     QTextEdit *news5_Tex;
 
+    QPushButton *bookmarks1_Btn;
+    QPushButton *bookmarks2_Btn;
+    QPushButton *bookmarks3_Btn;
+    QPushButton *bookmarks4_Btn;
+    QPushButton *bookmarks5_Btn;
+
+    QPushButton *refresh_Btn;
+    QPushButton *returnToTop_Btn;
+
     void json(void);
 
 signals:
 
 public slots:
 
-private:
+protected:
     void initComponents();
     void initSignalAndSlot();
     

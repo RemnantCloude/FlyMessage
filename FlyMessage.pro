@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = FastMessage
+TARGET = FlyMessage
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -29,13 +29,25 @@ SOURCES += \
         main_window.cpp \
     news_bar.cpp \
     news_article.cpp \
-    title_bar.cpp
+    title_bar.cpp \
+    settings_window.cpp \
+    bookmarks_window.cpp \
+    keyword_window.cpp \
+    refresh_window.cpp \
+    source_window.cpp \
+    inform_window.cpp
 
 HEADERS += \
         main_window.h \
     news_bar.h \
     news_article.h \
-    title_bar.h
+    title_bar.h \
+    settings_window.h \
+    bookmarks_window.h \
+    keyword_window.h \
+    refresh_window.h \
+    source_window.h \
+    inform_window.h
 
 RESOURCES += \
     resource.qrc
