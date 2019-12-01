@@ -53,7 +53,7 @@ void FlyMessage::initLayout()
     this->resize (1024, 720); // TODO:默认大小需可记忆
 
     titlebar = new TitleBar(this);
-    sidebar = new SideBar(this);
+    sidebar = new FM_SideBar(this);
     mainwindow = new MainWindow(this);
     centerWidget = new QWidget(this);
     scrollarea = new QScrollArea(this);
@@ -63,7 +63,15 @@ void FlyMessage::initLayout()
     QGridLayout *GLay = new QGridLayout(this);
     GLay->addWidget(titlebar, 0, 0, 1, 5);
     GLay->addWidget(sidebar, 1, 0, 1, 1);
-    GLay->addWidget(scrollarea, 1, 1, 1, 4);
+    GLay->addWidget(mainwindow, 1, 1, 1, 4);
+    
+    QVector<FM_SideItemData> items;
+    
+    items.append(FM_SideItemData("嘎嘎",nullptr));
+    items.append(FM_SideItemData("咕咕",nullptr));
+    items.append(FM_SideItemData("喵喵",nullptr));
+    sidebar->setSideBarList(items);
+    
     this->setLayout(GLay);
 }
 

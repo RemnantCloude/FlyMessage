@@ -31,6 +31,7 @@ SOURCES += \
         title_bar.cpp \
         side_bar.cpp \
     news.cpp
+    fm_sidebar.cpp
 
 
 HEADERS += \
@@ -39,6 +40,7 @@ HEADERS += \
         title_bar.h \
         side_bar.h \
     news.h
+    fm_sidebar.h
 
 RESOURCES += \
     resource.qrc
@@ -47,4 +49,7 @@ RESOURCES += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+FORMS += \
+    fm_sidebar.ui
 
