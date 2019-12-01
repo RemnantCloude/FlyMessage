@@ -26,28 +26,18 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
+        FlyMessage.cpp \
         main_window.cpp \
-    news_bar.cpp \
-    news_article.cpp \
-    title_bar.cpp \
-    settings_window.cpp \
-    bookmarks_window.cpp \
-    keyword_window.cpp \
-    refresh_window.cpp \
-    source_window.cpp \
-    inform_window.cpp
+        title_bar.cpp \
+        side_bar.cpp \
+
 
 HEADERS += \
         main_window.h \
-    news_bar.h \
-    news_article.h \
-    title_bar.h \
-    settings_window.h \
-    bookmarks_window.h \
-    keyword_window.h \
-    refresh_window.h \
-    source_window.h \
-    inform_window.h
+        FlyMessage.h \
+        main_window.h \
+        title_bar.h \
+        side_bar.h \
 
 RESOURCES += \
     resource.qrc

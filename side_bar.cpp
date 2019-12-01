@@ -41,5 +41,5 @@ void SideBar::setThisLayout()
 void SideBar::setThisStyle()
 {
     settings_Btn->setText(tr("设置"));
-    bookmarks_Btn->setText(tr("收藏夹"));
+    bookmarks_Btn->setText(tr("收藏"));
 }

@@ -57,46 +57,46 @@ void MainWindow::setThisStyle()
 void MainWindow::json()//TODO:
 {
     // 读取文件内容
-    QFile file("./json_test.json");
-    file.open(QIODevice::ReadOnly | QIODevice::Text); // 只读文件
-    QString value = file.readAll();
-    file.close();
+//    QFile file("./json_test.json");
+//    file.open(QIODevice::ReadOnly | QIODevice::Text); // 只读文件
+//    QString value = file.readAll();
+//    file.close();
 
-    // TODO:错误提示
-    QJsonParseError parseJsonErr;
-    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
+//    // TODO:错误提示
+//    QJsonParseError parseJsonErr;
+//    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
 
-    if(!(parseJsonErr.error == QJsonParseError::NoError))
-    {
-        qDebug()<<tr("解析json文件错误！");
-        return;
-    }
+//    if(!(parseJsonErr.error == QJsonParseError::NoError))
+//    {
+//        qDebug()<<tr("解析json文件错误！");
+//        return;
+//    }
 
-    QJsonObject jsonObject = document.object();
-    qDebug()<<"jsonObject[name]="<<jsonObject["name"].toString();
+//    QJsonObject jsonObject = document.object();
+//    qDebug()<<"jsonObject[name]="<<jsonObject["name"].toString();
 
-    if(jsonObject.contains(QStringLiteral("secondName")))
-    {
-        QJsonValue jsonValueList = jsonObject.value(QStringLiteral("secondName"));
-        QJsonObject item = jsonValueList.toObject();
-        qDebug()<<"item[thirdName]="<<item["thirdName"].toString();
-    }
+//    if(jsonObject.contains(QStringLiteral("secondName")))
+//    {
+//        QJsonValue jsonValueList = jsonObject.value(QStringLiteral("secondName"));
+//        QJsonObject item = jsonValueList.toObject();
+//        qDebug()<<"item[thirdName]="<<item["thirdName"].toString();
+//    }
 
-    if(jsonObject.contains(QStringLiteral("recoveryPrimaryNode")))
-    {
-        QJsonValue arrayValue = jsonObject.value(QStringLiteral("recoveryPrimaryNode"));
-        if(arrayValue.isArray())
-        {
-            QJsonArray array = arrayValue.toArray();
-            for(int i=0;i<array.size();i++)
-            {
-                QJsonValue iconArray = array.at(i);
-                QJsonObject icon = iconArray.toObject();
-                QString id = icon["id"].toString();
-                QString iconTxt = icon["iconTxt"].toString();
-                QString iconName = icon["iconName"].toString();
-                qDebug()<<"id="<<id<<"iconTxt="<<iconTxt<<"iconName="<<iconName;
-            }
-        }
-    }
+//    if(jsonObject.contains(QStringLiteral("recoveryPrimaryNode")))
+//    {
+//        QJsonValue arrayValue = jsonObject.value(QStringLiteral("recoveryPrimaryNode"));
+//        if(arrayValue.isArray())
+//        {
+//            QJsonArray array = arrayValue.toArray();
+//            for(int i=0;i<array.size();i++)
+//            {
+//                QJsonValue iconArray = array.at(i);
+//                QJsonObject icon = iconArray.toObject();
+//                QString id = icon["id"].toString();
+//                QString iconTxt = icon["iconTxt"].toString();
+//                QString iconName = icon["iconName"].toString();
+//                qDebug()<<"id="<<id<<"iconTxt="<<iconTxt<<"iconName="<<iconName;
+//            }
+//        }
+//    }
 }

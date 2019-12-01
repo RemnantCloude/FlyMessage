@@ -4,8 +4,8 @@
 #include <QWidget>
 
 #include "title_bar.h"
-#include "news_bar.h"
-#include "news_article.h"
+#include "side_bar.h"
+#include "main_window.h"
 
 class FlyMessage : public QWidget
 {
@@ -18,8 +18,8 @@ public:
     bool hasBackgroundImage;
 
     TitleBar* titlebar;
-    SideBar* SideBar;
-    MainWindow* MainWindow;//TODO:
+    SideBar* sidebar;
+    MainWindow* mainwindow;//TODO:
     QWidget* centerWidget;
     
     QImage background; // 背景图片

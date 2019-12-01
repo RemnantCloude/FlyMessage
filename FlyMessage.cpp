@@ -1,4 +1,4 @@
-#include "main_window.h"
+#include "FlyMessage.h"
 
 #include <QWidget>
 #include <QString>
@@ -52,15 +52,15 @@ void FlyMessage::initLayout()
     this->resize (1024, 720); // TODO:默认大小需可记忆
 
     titlebar = new TitleBar(this);
-    SideBar = new SideBar(this);
-    MainWindow = new MainWindow(this);
+    sidebar = new SideBar(this);
+    mainwindow = new MainWindow(this);
     centerWidget = new QWidget(this);
 
     // 设置布局器
     QGridLayout *GLay = new QGridLayout(this);
     GLay->addWidget(titlebar, 0, 0, 1, 5);
-    GLay->addWidget(SideBar, 1, 0, 1, 1);
-    GLay->addWidget(MainWindow, 1, 1, 1, 4);
+    GLay->addWidget(sidebar, 1, 0, 1, 1);
+    GLay->addWidget(mainwindow, 1, 1, 1, 4);
     this->setLayout(GLay);
 }
 
