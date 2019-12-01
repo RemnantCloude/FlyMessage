@@ -8,4 +8,5 @@
         <file alias="fontawesome_brand">fonts/Font Awesome 5 Brands-Regular-400.otf</file>
         <file alias="fontawesome_regular">fonts/Font Awesome 5 Free-Regular-400.otf</file>
     </qresource>
+    <qresource prefix="/qss"/>
 </RCC>
