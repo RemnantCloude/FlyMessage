@@ -63,8 +63,8 @@ void FlyMessage::initLayout()
     QGridLayout *GLay = new QGridLayout(this);
     GLay->addWidget(titlebar, 0, 0, 1, 5);
     GLay->addWidget(sidebar, 1, 0, 1, 1);
-    GLay->addWidget(mainwindow, 1, 1, 1, 4);
-    
+    GLay->addWidget(scrollarea, 1, 1, 1, 4);
+
     QVector<FM_SideItemData> items;
     
     items.append(FM_SideItemData("嘎嘎",nullptr));

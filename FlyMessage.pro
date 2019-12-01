@@ -29,8 +29,7 @@ SOURCES += \
         FlyMessage.cpp \
         main_window.cpp \
         title_bar.cpp \
-        side_bar.cpp \
-    news.cpp
+    news.cpp \
     fm_sidebar.cpp
 
 
@@ -38,8 +37,7 @@ HEADERS += \
         FlyMessage.h \
         main_window.h \
         title_bar.h \
-        side_bar.h \
-    news.h
+    news.h \
     fm_sidebar.h
 
 RESOURCES += \
