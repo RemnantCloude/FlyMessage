@@ -2,6 +2,7 @@
 #define FLY_MESSAGE_H
 
 #include <QWidget>
+#include <QScrollArea>
 
 #include "title_bar.h"
 #include "side_bar.h"
@@ -21,6 +22,7 @@ public:
     SideBar* sidebar;
     MainWindow* mainwindow;//TODO:
     QWidget* centerWidget;
+    QScrollArea *scrollarea;
     
     QImage background; // 背景图片
 

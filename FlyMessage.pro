@@ -30,14 +30,15 @@ SOURCES += \
         main_window.cpp \
         title_bar.cpp \
         side_bar.cpp \
+    news.cpp
 
 
 HEADERS += \
-        main_window.h \
         FlyMessage.h \
         main_window.h \
         title_bar.h \
         side_bar.h \
+    news.h
 
 RESOURCES += \
     resource.qrc

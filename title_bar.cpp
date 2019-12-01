@@ -29,17 +29,19 @@ TitleBar::~TitleBar()
 
 void TitleBar::initComponents()
 {
-    icon_Lab    = new QLabel(this);
-    title_Lab   = new QLabel(this);
-    skin_Btn    = new QPushButton(this);
-    min_Btn     = new QPushButton(this);
-    max_Btn     = new QPushButton(this);
-    close_Btn   = new QPushButton(this);
+    icon_Lab     = new QLabel(this);
+    title_Lab    = new QLabel(this);
+    skin_Btn     = new QPushButton(this);
+    min_Btn      = new QPushButton(this);
+    max_Btn      = new QPushButton(this);
+    close_Btn    = new QPushButton(this);
+    settings_Btn = new QPushButton(this);
 }
 
 void TitleBar::initSignalAndSlot()
 {
     connect(skin_Btn, SIGNAL(clicked(bool)), SLOT(onSkin(bool)));
+    connect(settings_Btn, SIGNAL(clicked(bool)), SLOT(onSettings(bool)));
 }
 // TODO:重新设置布局
 void TitleBar::setThisLayout()
@@ -52,7 +54,8 @@ void TitleBar::setThisLayout()
     close_Btn->setGeometry  (width () - 1*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     max_Btn->setGeometry    (width () - 2*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     min_Btn->setGeometry    (width () - 3*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
-    skin_Btn->setGeometry   (width () - 4*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
+    settings_Btn->setGeometry(width () - 4*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
+    skin_Btn->setGeometry   (width () - 5*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
 }
 
 void TitleBar::setThisStyle()
@@ -62,6 +65,7 @@ void TitleBar::setThisStyle()
     min_Btn->setFlat(true);
     max_Btn->setFlat(true);
     skin_Btn->setFlat(true);
+    settings_Btn->setFlat(true);
 
     // TODO:学习QSS
     setStyleSheet(  "QPushButton{font-size: 12pt; border-style: none; color: black;}"
@@ -79,26 +83,30 @@ void TitleBar::setThisStyle()
     QFont font;
     font.setFamily(fontFamilies.at(0));
 
-    close_Btn->setToolTip(tr("关闭"));
+    close_Btn->setToolTip("关闭");
     close_Btn->setFont(font);
     close_Btn->setText(QChar(0xf00d));
 
-    min_Btn->setToolTip(tr("最小化"));
+    min_Btn->setToolTip("最小化");
     min_Btn->setFont(font);
     min_Btn->setText(QChar(0xf2d1));
 
-    max_Btn->setToolTip(tr("最大化"));
+    max_Btn->setToolTip("最大化");
     max_Btn->setFont(font);
     max_Btn->setText(QChar(0xf2d0));
 
-    skin_Btn->setToolTip(tr("皮肤"));
+    settings_Btn->setToolTip("设置");
+    settings_Btn->setFont(font);
+    settings_Btn->setText(QChar(0xf0ad));
+
+    skin_Btn->setToolTip("皮肤");
     skin_Btn->setFont(font);
     skin_Btn->setText(QChar(0xf553));
 
     QPixmap pixmap(":/images/logo");// TODO:需要换成其它大logo
     icon_Lab->setPixmap(pixmap);
 
-    title_Lab->setText(tr("飞讯"));
+    title_Lab->setText("飞讯");
 }
 
 void TitleBar::mousePressEvent(QMouseEvent *event)
@@ -145,4 +153,9 @@ void TitleBar::resizeEvent(QResizeEvent *event)
 void TitleBar::onSkin(bool)
 {
 
+}
+
+void TitleBar::onSettings(bool)
+{
+    emit openSettings(1);
 }

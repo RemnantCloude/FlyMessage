@@ -28,8 +28,7 @@ void SideBar::initComponents()
 
 void SideBar::initSignalAndSlot()
 {
-    connect(settings_Btn, SIGNAL(clicked(bool)), SLOT(openSettings(bool)));
-    connect(bookmarks_Btn, SIGNAL(clicked(bool)), SLOT(openBookmarks(bool)));
+
 }
 
 void SideBar::setThisLayout()

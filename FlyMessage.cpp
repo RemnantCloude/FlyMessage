@@ -4,6 +4,7 @@
 #include <QString>
 #include <QStyle>
 #include <QGridLayout>
+#include <QScrollArea>
 
 //TEST:
 #include <QDebug>
@@ -55,12 +56,14 @@ void FlyMessage::initLayout()
     sidebar = new SideBar(this);
     mainwindow = new MainWindow(this);
     centerWidget = new QWidget(this);
+    scrollarea = new QScrollArea(this);
 
     // 设置布局器
+    scrollarea->setWidget(mainwindow);
     QGridLayout *GLay = new QGridLayout(this);
     GLay->addWidget(titlebar, 0, 0, 1, 5);
     GLay->addWidget(sidebar, 1, 0, 1, 1);
-    GLay->addWidget(mainwindow, 1, 1, 1, 4);
+    GLay->addWidget(scrollarea, 1, 1, 1, 4);
     this->setLayout(GLay);
 }
 
@@ -70,6 +73,7 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
+    connect(titlebar, SIGNAL(openSettings(bool)), mainwindow, SLOT(mode(bool)));
 }
 
 void FlyMessage::setThisStyle()

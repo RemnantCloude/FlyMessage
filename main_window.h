@@ -2,8 +2,8 @@
 #define MAIN_WINDOW_H
 
 #include <QWidget>
-#include <QtWidgets/QTextEdit>
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
+#include <QScrollArea>
 
 class MainWindow : public QWidget
 {
@@ -12,26 +12,17 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QTextEdit *news1_Tex;
-    QTextEdit *news2_Tex;
-    QTextEdit *news3_Tex;
-    QTextEdit *news4_Tex;
-    QTextEdit *news5_Tex;
+    QVBoxLayout *thislayout;
+    QScrollArea *s;
 
-    QPushButton *bookmarks1_Btn;
-    QPushButton *bookmarks2_Btn;
-    QPushButton *bookmarks3_Btn;
-    QPushButton *bookmarks4_Btn;
-    QPushButton *bookmarks5_Btn;
+    bool is_Settings; //设置界面
 
-    QPushButton *refresh_Btn;
-    QPushButton *returnToTop_Btn;
-
-    void json(void);
+    void getNews(void);
 
 signals:
 
 public slots:
+    void mode(bool);
 
 protected:
     void initComponents();
