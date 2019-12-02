@@ -37,7 +37,8 @@ public:
     void doNothing();
 private slots:
     void on_pushButton_clicked();
-    
+protected:
+    void paintEvent(QPaintEvent *event);
 private:
     Ui::FM_SideBar *ui;
     QVector<FM_SBButton*> items;

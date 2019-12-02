@@ -5,7 +5,7 @@
 #include <QStyle>
 #include <QGridLayout>
 #include <QScrollArea>
-
+#include <QResizeEvent>
 //TEST:
 #include <QDebug>
 
@@ -60,6 +60,9 @@ void FlyMessage::initLayout()
 
     // 设置布局器
     scrollarea->setWidget(mainwindow);
+    scrollarea->setStyleSheet("QScrollArea {background:white}");
+    scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    
     QGridLayout *GLay = new QGridLayout(this);
     GLay->addWidget(titlebar, 0, 0, 1, 5);
     GLay->addWidget(sidebar, 1, 0, 1, 1);
@@ -70,6 +73,7 @@ void FlyMessage::initLayout()
     items.append(FM_SideItemData("嘎嘎",nullptr));
     items.append(FM_SideItemData("咕咕",nullptr));
     items.append(FM_SideItemData("喵喵",nullptr));
+    items.append(FM_SideItemData("汪汪",nullptr));
     sidebar->setSideBarList(items);
     
     this->setLayout(GLay);
@@ -87,6 +91,13 @@ void FlyMessage::initSignalAndSlot()
 void FlyMessage::setThisStyle()
 {
     
+}
+
+void FlyMessage::resizeEvent(QResizeEvent* size)
+{ 
+    QSize qs = this->geometry().size();
+    qs.setWidth(qs.width()-247);
+    mainwindow->resize(qs);
 }
 
 void FlyMessage::setThisLayout()

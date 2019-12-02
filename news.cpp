@@ -3,6 +3,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QPalette>
+#include <QStyleOption>
+#include <QPainter>
 
 News::News(QWidget *parent, QString title, QString time, QString abstract) : QWidget(parent)
 {
@@ -36,9 +38,17 @@ void News::setThisLayout()
     thislayout->addWidget(title_Lab);
     thislayout->addWidget(time_Lab);
     thislayout->addWidget(abstract_Lab);
+    
+    
+    QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
+    this->setSizePolicy(sizePolicy);
+    
     this->setLayout(thislayout);
-    this->setMinimumSize(700, 50);
-    this->setMaximumSize(700, 200);
+    this->setMinimumSize(0, 50);
+    this->setMaximumSize(16777215, 200);
 }
 
 void News::setThisStyle(QString title, QString time, QString abstract)
@@ -54,3 +64,13 @@ void News::setThisStyle(QString title, QString time, QString abstract)
     setAutoFillBackground(true);
     setPalette(pal);
 }
+
+void News::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QStyleOption styleOpt;
+    styleOpt.init(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &styleOpt, &painter, this);
+}
+

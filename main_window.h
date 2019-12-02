@@ -30,6 +30,7 @@ protected:
     
     void setThisLayout();
     void setThisStyle();
+    void paintEvent(QPaintEvent *event);
 };
 
 #endif // MAIN_WINDOW_H
