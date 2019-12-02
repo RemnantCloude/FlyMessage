@@ -17,6 +17,9 @@
 #include <QJsonValue>
 #include <QFile>
 
+#include <QStyleOption>
+#include <QPainter>
+
 #define BTN_WIDTH   (600)
 #define BTN_HEIGHT  (100)
 
@@ -32,6 +35,13 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
         thislayout->addWidget(news);
     }
     this->setLayout(thislayout);
+    thislayout->setSpacing(0);
+    this->setStyleSheet("News {background: white}"
+                        "News:hover {border:1px solid blue; background: #d9fdff}"
+                        "MainWindow {background : white}");
+    QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+    this->setSizePolicy(sizePolicy);
+    this->setMinimumSize(QSize(500, 0));
 }
 
 MainWindow::~MainWindow()
@@ -89,4 +99,13 @@ void MainWindow::getNews()//TODO:
     {
         qDebug()<<"website"<<i<<"is:"<<website.at(i);
     }
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QStyleOption styleOpt;
+    styleOpt.init(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &styleOpt, &painter, this);
 }

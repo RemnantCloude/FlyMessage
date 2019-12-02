@@ -29,6 +29,7 @@ protected:
 
     void setThisLayout();
     void setThisStyle(QString title, QString time, QString abstract);
+    void paintEvent(QPaintEvent *event);
 };
 
 #endif // NEWS_H

@@ -2,6 +2,9 @@
 #include "ui_fm_sidebar.h"
 #include <QMessageBox>
 
+#include <QStyleOption>
+#include <QPainter>
+
 FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) :
     QPushButton (parent)
 {
@@ -21,6 +24,7 @@ FM_SideBar::FM_SideBar(QWidget *parent) :
 {
     ui->setupUi(this);
     setWidgetStyle();
+
 }
 
 FM_SideBar::~FM_SideBar()
@@ -68,4 +72,13 @@ void FM_SideBar::clearItems()
 void FM_SideBar::on_pushButton_clicked()
 {
     clearItems();
+}
+
+void FM_SideBar::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QStyleOption styleOpt;
+    styleOpt.init(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &styleOpt, &painter, this);
 }

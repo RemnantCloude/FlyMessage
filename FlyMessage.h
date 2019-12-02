@@ -45,7 +45,7 @@ protected:
     void setThisLayout();
     void setThisStyle();
     void setBackgroundImage(QString filename); // 设置背景图片
-
+    void resizeEvent(QResizeEvent* size);
 };
 
 #endif // FLY_MESSAGE_H
