@@ -85,7 +85,6 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
-    connect(titlebar, SIGNAL(openSettings(bool)), mainwindow, SLOT(mode(bool)));
 }
 
 void FlyMessage::setThisStyle()

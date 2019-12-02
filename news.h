@@ -10,11 +10,12 @@ class News : public QWidget
 {
     Q_OBJECT
 public:
-    explicit News(QWidget *parent, QString title, QString time, QString abstract);
+    explicit News(QWidget *parent, QString title, QString time, QString tpye, QString abstract);
     ~News();
 
     QLabel *title_Lab;
     QLabel *time_Lab;
+    QLabel *type_Lab;
     QLabel *abstract_Lab;
     QVBoxLayout *thislayout;
     QPalette pal;
@@ -28,7 +29,7 @@ protected:
     void initSignalAndSlot();
 
     void setThisLayout();
-    void setThisStyle(QString title, QString time, QString abstract);
+    void setThisStyle(QString title, QString time, QString tpye, QString abstract);
     void paintEvent(QPaintEvent *event);
 };
 

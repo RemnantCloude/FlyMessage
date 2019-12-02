@@ -14,22 +14,23 @@ public:
 
     QVBoxLayout *thislayout;
     QScrollArea *s;
+    QString website;
 
     bool is_Settings; //设置界面
-
-    void getNews(void);
-
+    
 signals:
 
 public slots:
-    void mode(bool);
+    void switchMode(QString web);
 
 protected:
-    void initComponents();
+    void init();
     void initSignalAndSlot();
     
     void setThisLayout();
     void setThisStyle();
+    void getNews(QString web);
+    QJsonObject readJson(QString filename);
     void paintEvent(QPaintEvent *event);
 };
 

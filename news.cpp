@@ -6,13 +6,13 @@
 #include <QStyleOption>
 #include <QPainter>
 
-News::News(QWidget *parent, QString title, QString time, QString abstract) : QWidget(parent)
+News::News(QWidget *parent, QString title, QString time, QString type, QString abstract) : QWidget(parent)
 {
     initComponents();// 初始化组件
     initSignalAndSlot();// 初始化信号与槽
 
     setThisLayout();
-    setThisStyle(title, time, abstract);
+    setThisStyle(title, time, type, abstract);
 }
 
 News::~News()
@@ -24,6 +24,7 @@ void News::initComponents()
 {
     title_Lab = new QLabel();
     time_Lab = new QLabel();
+    type_Lab = new QLabel();
     abstract_Lab = new QLabel();
 }
 
@@ -37,6 +38,7 @@ void News::setThisLayout()
     thislayout = new QVBoxLayout();
     thislayout->addWidget(title_Lab);
     thislayout->addWidget(time_Lab);
+    thislayout->addWidget(type_Lab);
     thislayout->addWidget(abstract_Lab);
     
     
@@ -48,16 +50,17 @@ void News::setThisLayout()
     
     this->setLayout(thislayout);
     this->setMinimumSize(0, 50);
-    this->setMaximumSize(16777215, 200);
+    this->setMaximumSize(16777215, 250);
 }
 
-void News::setThisStyle(QString title, QString time, QString abstract)
+void News::setThisStyle(QString title, QString time, QString type, QString abstract)
 {
-    title_Lab->setStyleSheet("QLabel{font-size: 15pt; color: blue;}");
+    title_Lab->setStyleSheet("QLabel{font-size: 15pt; color: black;}");
 
     title_Lab->setText(title);
-    title_Lab->setOpenExternalLinks(true);
+//    title_Lab->setOpenExternalLinks(true);
     time_Lab->setText(time);
+    type_Lab->setText(type);
     abstract_Lab->setText(abstract);
 
     pal.setColor(QPalette::Background, Qt::white);
