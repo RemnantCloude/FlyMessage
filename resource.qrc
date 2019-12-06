@@ -9,4 +9,8 @@
         <file alias="fontawesome_regular">fonts/Font Awesome 5 Free-Regular-400.otf</file>
     </qresource>
     <qresource prefix="/qss"/>
+    <qresource prefix="/icons">
+        <file>images/add.ico</file>
+        <file>images/clear.ico</file>
+    </qresource>
 </RCC>

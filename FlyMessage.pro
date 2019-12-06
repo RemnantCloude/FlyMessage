@@ -30,7 +30,8 @@ SOURCES += \
         main_window.cpp \
         title_bar.cpp \
     news.cpp \
-    fm_sidebar.cpp
+    fm_sidebar.cpp \
+    settingform.cpp
 
 
 HEADERS += \
@@ -38,7 +39,8 @@ HEADERS += \
         main_window.h \
         title_bar.h \
     news.h \
-    fm_sidebar.h
+    fm_sidebar.h \
+    settingform.h
 
 RESOURCES += \
     resource.qrc
@@ -49,5 +51,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-    fm_sidebar.ui
+    fm_sidebar.ui \
+    settingform.ui
 
