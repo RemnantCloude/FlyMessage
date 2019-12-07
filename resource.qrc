@@ -10,7 +10,8 @@
     </qresource>
     <qresource prefix="/qss"/>
     <qresource prefix="/icons">
-        <file>images/add.ico</file>
-        <file>images/clear.ico</file>
+        <file alias="add.ico">images/add.ico</file>
+        <file alias="clear.ico">images/clear.ico</file>
+        <file alias="right.ico">images/right.ico</file>
     </qresource>
 </RCC>

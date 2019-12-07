@@ -7,9 +7,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //FlyMessage w;
-    //w.show();
-    SettingForm sf;
-    sf.show();
+    FlyMessage w;
+    w.show();
     return a.exec();
 }

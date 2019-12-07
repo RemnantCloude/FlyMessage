@@ -13,6 +13,7 @@ class FM_SBButton : public QPushButton {
 public:
     explicit FM_SBButton(QWidget *parent,const QString &str);
     ~FM_SBButton() {}
+    void (*func)(); 
 };
 
 struct FM_SideItemData {
@@ -34,9 +35,7 @@ public:
     void setSideBarList(QVector<FM_SideItemData> &idata);
     void setWidgetStyle();
     void clearItems();
-    void doNothing();
-private slots:
-    void on_pushButton_clicked();
+    void defaultClicked();
 protected:
     void paintEvent(QPaintEvent *event);
 private:

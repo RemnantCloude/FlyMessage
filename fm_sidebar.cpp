@@ -48,30 +48,29 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
         FM_SBButton *pButton;
         pButton = new FM_SBButton(this, data.caption);
         this->items.append(pButton);
-        ui->verticalLayout->insertWidget(1, pButton);
-        if(data.func == nullptr) {
-            connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::doNothing);
-        }
-        else {
-            connect(pButton, &FM_SBButton::clicked, this, data.func);
-        }
+        ui->verticalLayout->insertWidget(0, pButton);
+        connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::defaultClicked);
+        pButton->func = data.func;
     }
 }
 
-void FM_SideBar::doNothing()
+void FM_SideBar::defaultClicked()
 {
-    //QMessageBox::information(this,"nothing","nothing but everything");
+    FM_SBButton *selected = qobject_cast<FM_SBButton *>(QObject::sender());
+    selected->setStyleSheet("QPushButton{background-color:rgb(200,200,200);qproperty-icon: url(:/icons/right.ico);}");
+    
+    foreach(FM_SBButton *btn, items) {
+        if(btn!=selected)
+            btn->setStyleSheet("QPushButton{background-color:rgb(243,243,243);qproperty-icon:none;}"
+                               "QPushButton:hover{background-color: rgb(220,220,220);}");
+    }
+    //(*selected->func)();
 }
 
 void FM_SideBar::clearItems()
 {
     foreach (FM_SBButton* btn, items) {   delete btn;  }    
     items.clear();
-}
-
-void FM_SideBar::on_pushButton_clicked()
-{
-    clearItems();
 }
 
 void FM_SideBar::paintEvent(QPaintEvent *event)

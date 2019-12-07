@@ -42,25 +42,6 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QPushButton" name="pushButton">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>50</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>幼圆</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>收藏夹</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <spacer name="vSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
