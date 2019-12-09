@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
     setThisLayout();
     setThisStyle();
-    getNews("网站1");
+    //getNews("website1");
 }
 
 MainWindow::~MainWindow()
@@ -57,7 +57,7 @@ void MainWindow::setThisStyle()
     this->setStyleSheet("News {background: white}"
                         "News:hover {border:1px solid blue; background: #d9fdff}"
                         "MainWindow {background : white}");
-    QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
+    QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     this->setSizePolicy(sizePolicy);
     this->setMinimumSize(QSize(500, 0));
 }
@@ -90,7 +90,7 @@ QJsonObject MainWindow::readJson(QString filename)
 void MainWindow::getNews(QString web)//TODO:
 {
     //读取设置文件内容
-    QJsonObject settings = readJson("./test_settings.json");
+    QJsonObject settings = readJson("./wa.json");
 
     //解析文件
     QJsonObject settings_type = settings.value(web).toObject();
@@ -103,7 +103,7 @@ void MainWindow::getNews(QString web)//TODO:
     //获取新闻内容
     QJsonObject news = readJson("./test_news.json");
     QJsonObject news_type = news.value(web).toObject();
-    for(int i = 2; i < settings_type.size(); i++)
+    for(int i = 0; i < settings_type.size(); i++)
     {
         if( settings_type.value(settings_str.at(i)).toBool() == true)//板块匹配
         {
@@ -113,6 +113,7 @@ void MainWindow::getNews(QString web)//TODO:
                 QJsonArray array1 = array.at(i).toArray();//单条新闻
                 News *news = new News(this,array1.at(0).toString(),array1.at(1).toString(),array1.at(2).toString(),array1.at(3).toString());
                 thislayout->addWidget(news);
+                thislayout->addWidget(news->line);
             }
         }
     }

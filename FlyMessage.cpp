@@ -1,5 +1,3 @@
-#include "FlyMessage.h"
-
 #include <QWidget>
 #include <QString>
 #include <QStyle>
@@ -9,6 +7,9 @@
 //TEST:
 #include <QDebug>
 
+#include "FlyMessage.h"
+#include "main_window.h"
+
 //TODO:
 #define BTN_WIDTH   (40)
 #define BTN_HEIGHT  (30)
@@ -17,7 +18,7 @@ FlyMessage::FlyMessage(QWidget *parent) : QWidget(parent)
 {
     // 无边框化|添加任务栏右键菜单|添加最大化最小化按键
     this->setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-
+    
     initLayout(); // 初始化窗体
     initSignalAndSlot();// 初始化信号与槽
 
@@ -25,6 +26,7 @@ FlyMessage::FlyMessage(QWidget *parent) : QWidget(parent)
     setThisLayout();
     setThisStyle();
 
+    
     hasBackgroundImage = false; // 默认无背景图片
 //    setBackgroundImage(":/images/bg");
 }
@@ -96,6 +98,7 @@ void FlyMessage::resizeEvent(QResizeEvent* size)
 { 
     QSize qs = this->geometry().size();
     qs.setWidth(qs.width()-247);
+    qs.setHeight(mainwindow->geometry().size().height());
     mainwindow->resize(qs);
 }
 

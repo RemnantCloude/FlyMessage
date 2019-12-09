@@ -11,7 +11,9 @@ class MainWindow : public QWidget
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    
+    void getNews(QString web);
+    
     QVBoxLayout *thislayout;
     QScrollArea *s;
     QString website;
@@ -22,14 +24,14 @@ signals:
 
 public slots:
     void switchMode(QString web);
-
+    
 protected:
     void init();
     void initSignalAndSlot();
     
     void setThisLayout();
     void setThisStyle();
-    void getNews(QString web);
+    
     QJsonObject readJson(QString filename);
     void paintEvent(QPaintEvent *event);
 };

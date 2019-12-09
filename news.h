@@ -19,15 +19,12 @@ public:
     QLabel *abstract_Lab;
     QVBoxLayout *thislayout;
     QPalette pal;
-
-signals:
-
-public slots:
+    QFrame *line;
 
 protected:
     void initComponents();
     void initSignalAndSlot();
-
+    void mousePressEvent ( QMouseEvent * event );
     void setThisLayout();
     void setThisStyle(QString title, QString time, QString tpye, QString abstract);
     void paintEvent(QPaintEvent *event);

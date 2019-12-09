@@ -50,7 +50,8 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
         this->items.append(pButton);
         ui->verticalLayout->insertWidget(0, pButton);
         connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::defaultClicked);
-        pButton->func = data.func;
+        //connect(pButton, &FM_SBButton::clicked, )
+        //pButton->func = data.func;
     }
 }
 
@@ -65,6 +66,7 @@ void FM_SideBar::defaultClicked()
                                "QPushButton:hover{background-color: rgb(220,220,220);}");
     }
     //(*selected->func)();
+    //emit getNews("website");
 }
 
 void FM_SideBar::clearItems()

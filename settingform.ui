@@ -216,7 +216,7 @@
            </property>
            <property name="icon">
             <iconset resource="resource.qrc">
-             <normaloff>:/icons/images/add.ico</normaloff>:/icons/images/add.ico</iconset>
+             <normaloff>:/icons/add.ico</normaloff>:/icons/add.ico</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -242,7 +242,7 @@
            </property>
            <property name="icon">
             <iconset resource="resource.qrc">
-             <normaloff>:/icons/images/clear.ico</normaloff>:/icons/images/clear.ico</iconset>
+             <normaloff>:/icons/clear.ico</normaloff>:/icons/clear.ico</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -322,21 +322,21 @@
         </property>
        </widget>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
