@@ -15,7 +15,6 @@ class FlyMessage : public QWidget
 public:
     explicit FlyMessage(QWidget *parent = nullptr);
     ~FlyMessage();
-    void customClicked1();
     
     bool hasBackgroundImage;
 
@@ -46,7 +45,6 @@ protected:
     void setThisLayout();
     void setThisStyle();
     void setBackgroundImage(QString filename); // 设置背景图片
-    void resizeEvent(QResizeEvent* size);
 };
 
 #endif // FLY_MESSAGE_H

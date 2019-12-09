@@ -44,13 +44,9 @@ void News::setThisLayout()
     thislayout->addWidget(type_Lab);
     thislayout->addWidget(abstract_Lab);
     
-    QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    this->setSizePolicy(sizePolicy);
+    this->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred));
     this->setLayout(thislayout);
-    this->setMinimumSize(250, 150);
-    this->setMaximumSize(16777215, 1000);
+    this->setMinimumSize(250, 0);
 }
 
 void News::setThisStyle(QString title, QString time, QString type, QString abstract)
@@ -66,11 +62,8 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
     line->setFrameShadow(QFrame::Raised);
     line->setFrameShape(QFrame::HLine);
     
-    QSizePolicy lineSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    lineSizePolicy.setHorizontalStretch(0);
-    lineSizePolicy.setVerticalStretch(0);
-    line->setSizePolicy(lineSizePolicy);
-    line->setMinimumSize(250, 3);
+    line->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred));
+    line->setMinimumSize(0, 3);
     line->setMaximumSize(16777215, 3);
 }
 

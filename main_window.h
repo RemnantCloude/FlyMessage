@@ -20,11 +20,6 @@ public:
 
     bool is_Settings; //设置界面
     
-signals:
-
-public slots:
-    void switchMode(QString web);
-    
 protected:
     void init();
     void initSignalAndSlot();

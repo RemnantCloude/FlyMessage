@@ -1,6 +1,3 @@
-#include "main_window.h"
-#include "news.h"
-
 #include <QtWidgets/QVBoxLayout>
 #include <QFontDatabase>
 #include <QScrollArea>
@@ -20,6 +17,9 @@
 #include <QStyleOption>
 #include <QPainter>
 
+#include "main_window.h"
+#include "news.h"
+
 #define BTN_WIDTH   (600)
 #define BTN_HEIGHT  (100)
 
@@ -27,20 +27,9 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
     setThisLayout();
     setThisStyle();
-    getNews("website1");
 }
 
 MainWindow::~MainWindow()
-{
-
-}
-
-void MainWindow::init()
-{
-
-}
-
-void MainWindow::initSignalAndSlot()
 {
 
 }
@@ -49,23 +38,14 @@ void MainWindow::setThisLayout()
 {
     thislayout = new QVBoxLayout();
     this->setLayout(thislayout);
+    thislayout->setSpacing(0);
 }
 
 void MainWindow::setThisStyle()
 {
-    thislayout->setSpacing(0);
     this->setStyleSheet("News {background: white}"
                         "News:hover {border:1px solid blue; background: #d9fdff;}"
-                        "MainWindow {background : white}");
-    QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-    this->setSizePolicy(sizePolicy);
-    this->setMinimumSize(QSize(500, 0));
-}
-
-void MainWindow::switchMode(QString web)
-{
-    website = web;
-    getNews(website);
+                        "MainWindow {background : white;}");
 }
 
 QJsonObject MainWindow::readJson(QString filename)
@@ -112,11 +92,13 @@ void MainWindow::getNews(QString web)//TODO:
             {
                 QJsonArray array1 = array.at(i).toArray();//单条新闻
                 News *news = new News(this,array1.at(0).toString(),array1.at(1).toString(),array1.at(2).toString(),array1.at(3).toString());
+                news->setCursor(Qt::PointingHandCursor);
                 thislayout->addWidget(news);
                 thislayout->addWidget(news->line);
             }
         }
     }
+    //setThisStyle();
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)

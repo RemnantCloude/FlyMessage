@@ -62,6 +62,7 @@ void FlyMessage::initLayout()
 
     // 设置布局器
     scrollarea->setWidget(mainwindow);
+    scrollarea->setWidgetResizable(true);
     scrollarea->setStyleSheet("QScrollArea {background:white}");
     scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     
@@ -71,18 +72,14 @@ void FlyMessage::initLayout()
     GLay->addWidget(scrollarea, 1, 1, 1, 4);
 
     QVector<FM_SideItemData> items;
-    items.append(FM_SideItemData("加载json",nullptr));
+    items.append(FM_SideItemData("加载json",&FM_SideBar::customClicked1));
+    connect(sidebar,&FM_SideBar::signal1, mainwindow, &MainWindow::getNews);
     items.append(FM_SideItemData("咕咕",nullptr));
     items.append(FM_SideItemData("喵喵",nullptr));
     items.append(FM_SideItemData("汪汪",nullptr));
     sidebar->setSideBarList(items);
     
     this->setLayout(GLay);
-}
-
-void FlyMessage::customClicked1()
-{
-    
 }
 
 void FlyMessage::initSignalAndSlot()
@@ -96,14 +93,6 @@ void FlyMessage::initSignalAndSlot()
 void FlyMessage::setThisStyle()
 {
     
-}
-
-void FlyMessage::resizeEvent(QResizeEvent* size)
-{ 
-    QSize qs = this->geometry().size();
-    qs.setWidth(qs.width()-247);
-    qs.setHeight(mainwindow->geometry().size().height());
-    mainwindow->resize(qs);
 }
 
 void FlyMessage::setThisLayout()
