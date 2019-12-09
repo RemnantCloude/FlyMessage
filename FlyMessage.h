@@ -15,7 +15,8 @@ class FlyMessage : public QWidget
 public:
     explicit FlyMessage(QWidget *parent = nullptr);
     ~FlyMessage();
-
+    void customClicked1();
+    
     bool hasBackgroundImage;
 
     TitleBar* titlebar;

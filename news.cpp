@@ -69,7 +69,6 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
     QSizePolicy lineSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     lineSizePolicy.setHorizontalStretch(0);
     lineSizePolicy.setVerticalStretch(0);
-    //sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
     line->setSizePolicy(lineSizePolicy);
     line->setMinimumSize(250, 3);
     line->setMaximumSize(16777215, 3);
@@ -88,4 +87,5 @@ void News::mousePressEvent ( QMouseEvent * event ) {
     if(event->button() != Qt::MidButton)
     QDesktopServices::openUrl(
                 QUrl(this->abstract_Lab->text()));
+    QWidget::mousePressEvent(event);
 }

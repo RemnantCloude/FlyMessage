@@ -1,3 +1,4 @@
+
 #ifndef FM_SIDEBAR_H
 #define FM_SIDEBAR_H
 
@@ -36,6 +37,7 @@ public:
     void setWidgetStyle();
     void clearItems();
     void defaultClicked();
+    void customClicked1();
 protected:
     void paintEvent(QPaintEvent *event);
 private:

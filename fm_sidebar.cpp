@@ -1,9 +1,9 @@
 #include "fm_sidebar.h"
 #include "ui_fm_sidebar.h"
 #include <QMessageBox>
-
 #include <QStyleOption>
 #include <QPainter>
+#include <main_window.h>
 
 FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) :
     QPushButton (parent)
@@ -51,7 +51,7 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
         ui->verticalLayout->insertWidget(0, pButton);
         connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::defaultClicked);
         //connect(pButton, &FM_SBButton::clicked, )
-        //pButton->func = data.func;
+        pButton->func = data.func;
     }
 }
 
@@ -66,7 +66,12 @@ void FM_SideBar::defaultClicked()
                                "QPushButton:hover{background-color: rgb(220,220,220);}");
     }
     //(*selected->func)();
-    //emit getNews("website");
+}
+
+void FM_SideBar::customClicked1()
+{
+    void (MainWindow::*function)(QString s) = &MainWindow::getNews;
+    //(*function)("website1");
 }
 
 void FM_SideBar::clearItems()

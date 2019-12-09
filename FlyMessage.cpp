@@ -71,14 +71,18 @@ void FlyMessage::initLayout()
     GLay->addWidget(scrollarea, 1, 1, 1, 4);
 
     QVector<FM_SideItemData> items;
-    
-    items.append(FM_SideItemData("嘎嘎",nullptr));
+    items.append(FM_SideItemData("加载json",nullptr));
     items.append(FM_SideItemData("咕咕",nullptr));
     items.append(FM_SideItemData("喵喵",nullptr));
     items.append(FM_SideItemData("汪汪",nullptr));
     sidebar->setSideBarList(items);
     
     this->setLayout(GLay);
+}
+
+void FlyMessage::customClicked1()
+{
+    
 }
 
 void FlyMessage::initSignalAndSlot()

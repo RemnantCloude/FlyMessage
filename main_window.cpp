@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
     setThisLayout();
     setThisStyle();
-    //getNews("website1");
+    getNews("website1");
 }
 
 MainWindow::~MainWindow()
@@ -55,7 +55,7 @@ void MainWindow::setThisStyle()
 {
     thislayout->setSpacing(0);
     this->setStyleSheet("News {background: white}"
-                        "News:hover {border:1px solid blue; background: #d9fdff}"
+                        "News:hover {border:1px solid blue; background: #d9fdff;}"
                         "MainWindow {background : white}");
     QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     this->setSizePolicy(sizePolicy);
