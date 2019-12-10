@@ -117,7 +117,12 @@ void MainWindow::getNews(QString web)
             for(int i = 0; i < array.size() & count < 10; i++)
             {
                 QJsonArray array1 = array.at(i).toArray();//单条新闻
-                News *news = new News(this,array1.at(0).toString(),array1.at(1).toString(),array1.at(2).toString(),array1.at(3).toString());
+                News *news = new News(this,
+                                      array1.at(0).toString(),
+                                      array1.at(1).toString(),
+                                      array1.at(2).toString(),
+                                      array1.at(3).toString(),
+                                      false);
                 news->setCursor(Qt::PointingHandCursor);
                 thislayout->addWidget(news);
                 thislayout->addWidget(news->line);

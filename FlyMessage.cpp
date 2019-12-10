@@ -29,9 +29,8 @@ FlyMessage::FlyMessage(QWidget *parent) : QWidget(parent)
     setThisLayout();
     setThisStyle();
 
-    
-    hasBackgroundImage = false; // 默认无背景图片
-//    setBackgroundImage(":/images/bg");
+    // hasBackgroundImage = false; // 默认无背景图片
+    // setBackgroundImage(":/images/bg");
 }
 
 FlyMessage::~FlyMessage()
@@ -63,29 +62,6 @@ void FlyMessage::initLayout()
     scrollarea = new QScrollArea(this);
 
     floatwindow = new FloatWindow(this);
-//    floatwindow->raise();//置顶窗口，貌似没用
-    floatwindow->setGeometry(width() - 200, height() - 150, 200, 150);// TODO 全屏时会有bug，位置需要重绘
-
-    // 设置布局器
-    scrollarea->setWidget(mainwindow);
-    scrollarea->setWidgetResizable(true);
-    scrollarea->setStyleSheet("QScrollArea {background:white}");
-    scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    
-    QGridLayout *GLay = new QGridLayout(this);
-    GLay->addWidget(titlebar, 0, 0, 1, 5);
-    GLay->addWidget(sidebar, 1, 0, 1, 1);
-    GLay->addWidget(scrollarea, 1, 1, 1, 4);
-
-    QVector<FM_SideItemData> items;
-    items.append(FM_SideItemData("加载json",&FM_SideBar::customClicked1));
-    connect(sidebar,&FM_SideBar::signal1, mainwindow, &MainWindow::getNews);
-    items.append(FM_SideItemData("咕咕",nullptr));
-    items.append(FM_SideItemData("喵喵",nullptr));
-    items.append(FM_SideItemData("汪汪",nullptr));
-    sidebar->setSideBarList(items);
-    
-    this->setLayout(GLay);
 }
 
 void FlyMessage::initSignalAndSlot()
@@ -104,8 +80,30 @@ void FlyMessage::setThisStyle()
 
 void FlyMessage::setThisLayout()
 {
-    // TODO:
     titlebar->setGeometry(0, 0, BTN_HEIGHT + 10, BTN_WIDTH);
+
+    floatwindow->setGeometry(width() - 200, height() - 150, 200, 150); // TODO 全屏时会有bug，位置需要重绘
+
+    // 设置布局器
+    scrollarea->setWidget(mainwindow);
+    scrollarea->setWidgetResizable(true);
+    scrollarea->setStyleSheet("QScrollArea {background:white}");
+    scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    QGridLayout *GLay = new QGridLayout(this);
+    GLay->addWidget(titlebar, 0, 0, 1, 5);
+    GLay->addWidget(sidebar, 1, 0, 1, 1);
+    GLay->addWidget(scrollarea, 1, 1, 1, 4);
+
+    QVector<FM_SideItemData> items;
+    items.append(FM_SideItemData("加载json", &FM_SideBar::customClicked1));
+    connect(sidebar, &FM_SideBar::signal1, mainwindow, &MainWindow::getNews);
+    items.append(FM_SideItemData("咕咕", nullptr));
+    items.append(FM_SideItemData("喵喵", nullptr));
+    items.append(FM_SideItemData("汪汪", nullptr));
+    sidebar->setSideBarList(items);
+
+    this->setLayout(GLay);
 }
 
 void FlyMessage::onMin(bool)

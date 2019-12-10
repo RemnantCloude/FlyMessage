@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
+#include <QGridLayout>
 #include <QPalette>
 #include <QStyleOption>
 #include <QPainter>
@@ -10,9 +11,12 @@
 #include <QMouseEvent>
 #include <QFile>
 #include <QTextStream>
+#include <QFontDatabase>
+#include <QPushButton>
 
-News::News(QWidget *parent, QString title, QString time, QString type, QString abstract) : QWidget(parent)
+News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool favor) : QWidget(parent)
 {
+    isFavor = favor;
     initComponents();// 初始化组件
     initSignalAndSlot();// 初始化信号与槽
 
@@ -31,21 +35,26 @@ void News::initComponents()
     time_Lab = new QLabel();
     type_Lab = new QLabel();
     abstract_Lab = new QLabel();
-    line = new QFrame(this);
+    favor_Btn = new QPushButton();
+    line = new QFrame();
 }
 
 void News::initSignalAndSlot()
 {
+    connect(favor_Btn,SIGNAL(clicked(bool)),SLOT(changeFavor(bool)));
 }
 
 void News::setThisLayout()
 {
-    thislayout = new QVBoxLayout();
-    thislayout->addWidget(title_Lab);
-    thislayout->addWidget(time_Lab);
-    thislayout->addWidget(type_Lab);
-    thislayout->addWidget(abstract_Lab);
-    
+    favor_Btn->setFixedSize(QSize(50, 50));
+
+    thislayout = new QGridLayout();
+    thislayout->addWidget(title_Lab, 0, 0, 1, 7);
+    thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
+    thislayout->addWidget(time_Lab, 1, 0, 1, 8);
+    thislayout->addWidget(type_Lab, 2, 0, 1, 8);
+    thislayout->addWidget(abstract_Lab, 3, 0, 1, 8);
+
     this->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding));
     this->setLayout(thislayout);
     this->setMinimumSize(400, 0);
@@ -59,21 +68,34 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
 //    QString stylesheet = filetext.readAll();
 //    this->setStyleSheet(stylesheet);
 //    file.close();
-title_Lab->setStyleSheet("QLabel{font-size:22px; font-family:\"黑体\"} color: black;");
+    title_Lab->setStyleSheet("QLabel{font-size:22px; font-family:\"黑体\"} color: black;");
 
-title_Lab->setText(title);
-title_Lab->setOpenExternalLinks(true);
-time_Lab->setText(time);
-type_Lab->setText(type);
-type_Lab->setWordWrap(true);
-abstract_Lab->setText(abstract);
+    title_Lab->setText(title);
+//    title_Lab->setOpenExternalLinks(true);
+    time_Lab->setText(time);
+    type_Lab->setText(type);
+    type_Lab->setWordWrap(true);//自动换行
+    abstract_Lab->setText(abstract);
 
-line->setFrameShadow(QFrame::Raised);
-line->setFrameShape(QFrame::HLine);
+    // 添加字体文件
+    int fontId = QFontDatabase::addApplicationFont(":/fonts/fontawesome_solid");
+    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+    // 创建字体
+    QFont font;
+    font.setFamily(fontFamilies.at(0));
 
-line->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
-line->setMinimumSize(0, 3);
-line->setMaximumSize(16777215, 3);
+    favor_Btn->setFlat(true);
+    favor_Btn->setToolTip("收藏");
+    favor_Btn->setFont(font);
+    favor_Btn->setText(QChar(0xf005));
+    favor_Btn->setStyleSheet("QPushButton{font-size:20px;}");
+
+    line->setFrameShadow(QFrame::Raised);
+    line->setFrameShape(QFrame::HLine);
+
+    line->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
+    line->setMinimumSize(0, 3);
+    line->setMaximumSize(16777215, 3);
 }
 
 void News::paintEvent(QPaintEvent *event)
@@ -90,4 +112,18 @@ void News::mousePressEvent ( QMouseEvent * event ) {
     QDesktopServices::openUrl(
                 QUrl(this->abstract_Lab->text()));
     QWidget::mousePressEvent(event);
+}
+
+void News::changeFavor(bool)
+{
+    if(isFavor == true)
+    {
+        isFavor = false;
+        favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: black}");
+    }
+    else
+    {
+        isFavor = true;
+        favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: #00A2FF}");
+    }
 }

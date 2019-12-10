@@ -4,22 +4,30 @@
 #include <QWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
+#include <QGridLayout>
 #include <QPalette>
+#include <QPushButton>
 
 class News : public QWidget
 {
     Q_OBJECT
 public:
-    explicit News(QWidget *parent, QString title, QString time, QString tpye, QString abstract);
+    explicit News(QWidget *parent, QString title, QString time, QString tpye, QString abstract, bool favor);
     ~News();
 
     QLabel *title_Lab;
     QLabel *time_Lab;
     QLabel *type_Lab;
     QLabel *abstract_Lab;
-    QVBoxLayout *thislayout;
+    QPushButton *favor_Btn;
+    QGridLayout *thislayout;
     QPalette pal;
     QFrame *line;
+
+    bool isFavor;
+
+public slots:
+    void changeFavor(bool);
 
 protected:
     void initComponents();
