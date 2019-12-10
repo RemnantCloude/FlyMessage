@@ -31,7 +31,8 @@ SOURCES += \
         title_bar.cpp \
     news.cpp \
     fm_sidebar.cpp \
-    settingform.cpp
+    settingform.cpp \
+    float_window.cpp
 
 
 HEADERS += \
@@ -40,7 +41,8 @@ HEADERS += \
         title_bar.h \
     news.h \
     fm_sidebar.h \
-    settingform.h
+    settingform.h \
+    float_window.h
 
 RESOURCES += \
     resource.qrc

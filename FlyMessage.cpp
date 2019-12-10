@@ -1,3 +1,6 @@
+#include "FlyMessage.h"
+#include "float_window.h"
+
 #include <QWidget>
 #include <QString>
 #include <QStyle>
@@ -57,8 +60,11 @@ void FlyMessage::initLayout()
     titlebar = new TitleBar(this);
     sidebar = new FM_SideBar(this);
     mainwindow = new MainWindow(this);
-    centerWidget = new QWidget(this);
     scrollarea = new QScrollArea(this);
+
+    floatwindow = new FloatWindow(this);
+//    floatwindow->raise();//置顶窗口，貌似没用
+    floatwindow->setGeometry(width() - 200, height() - 150, 200, 150);// TODO 全屏时会有bug，位置需要重绘
 
     // 设置布局器
     scrollarea->setWidget(mainwindow);
@@ -88,6 +94,7 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked(bool)), mainwindow, SLOT(onRefresh(bool)));
 }
 
 void FlyMessage::setThisStyle()

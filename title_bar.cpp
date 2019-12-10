@@ -68,11 +68,10 @@ void TitleBar::setThisStyle()
     skin_Btn->setFlat(true);
     settings_Btn->setFlat(true);
 
-    // TODO:学习QSS
     setStyleSheet(  "QPushButton{font-size: 12pt; border-style: none; color: black;}"
-                    "QPushButton:hover{background-color:gray;}"
-                    "QPushButton:pressed{background-color:lightgray; color: blue;}");
-    close_Btn->setStyleSheet("QPushButton{border-style: none/*;border-top-right-radius:5px*/}"
+                    "QPushButton:hover{background-color:lightgray;}"
+                    "QPushButton:pressed{background-color:gray; color: blue;}");
+    close_Btn->setStyleSheet("QPushButton{border-style: none}"
                             "QPushButton:hover{background-color:red; color: black;}"
                             "QPushButton:pressed{background-color:rgba(85, 170, 255,200); border-style: inset; }");
     title_Lab->setStyleSheet("QLabel{font-size: 12pt; color: black;}");

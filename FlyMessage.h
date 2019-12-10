@@ -7,6 +7,7 @@
 #include "title_bar.h"
 #include "fm_sidebar.h"
 #include "main_window.h"
+#include "float_window.h"
 
 class FlyMessage : public QWidget
 {
@@ -20,9 +21,9 @@ public:
 
     TitleBar* titlebar;
     FM_SideBar* sidebar;
-    MainWindow* mainwindow;//TODO:
-    QWidget* centerWidget;
+    MainWindow* mainwindow;
     QScrollArea *scrollarea;
+    FloatWindow *floatwindow;
     
     QImage background; // 背景图片
 
