@@ -1,6 +1,7 @@
 {
     "website1":{
         "politics":true,
+        "finance":true,
         "military":true
     }
 }

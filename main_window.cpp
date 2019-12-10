@@ -70,7 +70,7 @@ QJsonObject MainWindow::readJson(QString filename)
 void MainWindow::getNews(QString web)//TODO:
 {
     //读取设置文件内容
-    QJsonObject settings = readJson("./wa.json");
+    QJsonObject settings = readJson("./test_settings.json");
 
     //解析文件
     QJsonObject settings_type = settings.value(web).toObject();
