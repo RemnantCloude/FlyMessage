@@ -22,8 +22,7 @@ signals:
 
 public slots:
     void onRefreshNews(bool);//刷新新闻
-    void onDeleteFavorNews();//删除单条收藏夹新闻
-    void onAddFavorNews();
+    void onFavorNews(bool type);//删除或添加单条收藏夹新闻
 
 protected:
     void init();
@@ -32,6 +31,7 @@ protected:
     void setThisStyle();
     
     QJsonObject readJson(QString filename);
+    void writeJson(QString filename, QJsonArray news, bool type);
 
     void paintEvent(QPaintEvent *event);
 

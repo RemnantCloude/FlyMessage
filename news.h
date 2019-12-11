@@ -26,6 +26,9 @@ public:
 
     bool isFavor;
 
+signals:
+    void FavorNews(bool);
+
 public slots:
     void changeFavor(bool);
 

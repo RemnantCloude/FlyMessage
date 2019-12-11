@@ -14,6 +14,9 @@
 #include <QFontDatabase>
 #include <QPushButton>
 
+#define ADDNEWS     true
+#define DELETENEWS  false
+
 News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool favor) : QWidget(parent)
 {
     isFavor = favor;
@@ -41,7 +44,7 @@ void News::initComponents()
 
 void News::initSignalAndSlot()
 {
-    connect(favor_Btn,SIGNAL(clicked(bool)),SLOT(changeFavor(bool)));
+    connect(favor_Btn, SIGNAL(clicked(bool)), this, SLOT(changeFavor(bool)));
 }
 
 void News::setThisLayout()
@@ -50,7 +53,7 @@ void News::setThisLayout()
 
     thislayout = new QGridLayout();
     thislayout->addWidget(title_Lab, 0, 0, 1, 7);
-    //thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
+    thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
     thislayout->addWidget(time_Lab, 1, 0, 1, 8);
     thislayout->addWidget(type_Lab, 2, 0, 1, 8);
     thislayout->addWidget(abstract_Lab, 3, 0, 1, 8);
@@ -108,14 +111,16 @@ void News::mousePressEvent ( QMouseEvent * event ) {
 
 void News::changeFavor(bool)
 {
-    if(isFavor == true)
+    if(isFavor == true)//删除收藏
     {
         isFavor = false;
+        emit FavorNews(DELETENEWS);
         favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: black}");
     }
-    else
+    else//添加收藏
     {
         isFavor = true;
+        emit FavorNews(ADDNEWS);
         favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: #00A2FF}");//蓝色
     }
 }
