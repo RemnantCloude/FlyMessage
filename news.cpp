@@ -50,7 +50,7 @@ void News::setThisLayout()
 
     thislayout = new QGridLayout();
     thislayout->addWidget(title_Lab, 0, 0, 1, 7);
-    //thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
+    thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
     thislayout->addWidget(time_Lab, 1, 0, 1, 8);
     thislayout->addWidget(type_Lab, 2, 0, 1, 8);
     thislayout->addWidget(abstract_Lab, 3, 0, 1, 8);
