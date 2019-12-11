@@ -20,22 +20,20 @@
 FlyMessage::FlyMessage(QWidget *parent) : QWidget(parent)
 {
     // 无边框化|添加任务栏右键菜单|添加最大化最小化按键
-    this->setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
-    
-    initLayout(); // 初始化窗体
-    initSignalAndSlot();// 初始化信号与槽
-
-    // 设置控件位置和风格样式
-    setThisLayout();
-    setThisStyle();
-
+    this->setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint); 
+    this->resize (1024, 720); // TODO:默认大小需可记忆
     // hasBackgroundImage = false; // 默认无背景图片
     // setBackgroundImage(":/images/bg");
-}
-
-FlyMessage::~FlyMessage()
-{
-
+    
+    // 初始化窗体
+    initComponents(); 
+    
+    // 设置控件位置和风格样式
+    setComponentsLayout();
+    setComponentsStyle();
+    
+    // 初始化信号与槽
+    initSignalAndSlot();
 }
 
 //TODO:
@@ -52,15 +50,28 @@ void FlyMessage::setBackgroundImage(QString filename)
     setPalette(pal);
 }
 
-void FlyMessage::initLayout()
+void FlyMessage::initComponents()
 {
-    this->resize (1024, 720); // TODO:默认大小需可记忆
-
     titlebar = new TitleBar(this);
     sidebar = new FM_SideBar(this);
     mainwindow = new MainWindow(this);
     scrollarea = new QScrollArea(this);
     floatwindow = new FloatWindow(this);
+    GLay = new QGridLayout(this);
+    initSideBar();
+}
+
+void FlyMessage::initSideBar()
+{
+    QVector<FM_SideItemData> items;
+    items.append(FM_SideItemData("加载json", &FM_SideBar::customAction_refresh));
+    items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor));
+    sidebar->setSideBarList(items);
+    
+    connect(sidebar, &FM_SideBar::signal_refresh, mainwindow, &MainWindow::getNews);
+    connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
+    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
+    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
 }
 
 void FlyMessage::initSignalAndSlot()
@@ -69,43 +80,31 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
+    
     connect(floatwindow->refresh_Btn, SIGNAL(clicked(bool)), mainwindow, SLOT(onRefreshNews(bool)));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
 }
 
-void FlyMessage::returnToTop()
+void FlyMessage::setComponentsStyle()
 {
-    this->scrollarea->ensureVisible(0,0);
-}
-
-void FlyMessage::setThisStyle()
-{
+    scrollarea->setWidgetResizable(true);
+    scrollarea->setStyleSheet("QScrollArea {background:white}");
+    scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     
+    GLay->setContentsMargins(6,6,6,6);
+    GLay->setSpacing(0);
 }
 
-void FlyMessage::setThisLayout()
+void FlyMessage::setComponentsLayout()
 {
     titlebar->setGeometry(0, 0, BTN_HEIGHT + 10, BTN_WIDTH);
 
     // 设置布局器
     scrollarea->setWidget(mainwindow);
-    scrollarea->setWidgetResizable(true);
-    scrollarea->setStyleSheet("QScrollArea {background:white}");
-    scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QGridLayout *GLay = new QGridLayout(this);
     GLay->addWidget(titlebar, 0, 0, 1, 5);
     GLay->addWidget(sidebar, 1, 0, 1, 1);
     GLay->addWidget(scrollarea, 1, 1, 1, 4);
-
-    QVector<FM_SideItemData> items;
-    items.append(FM_SideItemData("加载json", &FM_SideBar::customClicked1));
-    connect(sidebar, &FM_SideBar::signal1, mainwindow, &MainWindow::getNews);
-    connect(sidebar, &FM_SideBar::signal1, floatwindow, &FloatWindow::showRefreshBtn);
-    items.append(FM_SideItemData("收藏夹", &FM_SideBar::customClicked2));
-    connect(sidebar, &FM_SideBar::signal2, mainwindow, &MainWindow::getFavorNews);
-    connect(sidebar, &FM_SideBar::signal2, floatwindow, &FloatWindow::hideRefreshBtn);
-    sidebar->setSideBarList(items);
 
     this->setLayout(GLay);
 }
@@ -113,28 +112,27 @@ void FlyMessage::setThisLayout()
 void FlyMessage::onMin(bool)
 {
     if( windowState() != Qt::WindowMinimized )
-    {
         setWindowState( Qt::WindowMinimized );
-    }
-}
-
-void FlyMessage::resizeEvent(QResizeEvent* size){
-    floatwindow->setGeometry(width() - 180,height()-100,120,60);
 }
 
 void FlyMessage::onMax(bool)
 {
     if( windowState() != Qt::WindowMaximized )// 最大化
-    {
         setWindowState( Qt::WindowMaximized );
-    }
     else// 还原成原窗口大小
-    {
         setWindowState( Qt::WindowNoState );
-    }
 }
 
 void FlyMessage::onClose(bool)
 {
     emit close();
+}
+
+void FlyMessage::resizeEvent(QResizeEvent* size){
+    floatwindow->setGeometry(width() - 200,height()-80,120,60);
+}
+
+void FlyMessage::returnToTop()
+{
+    this->scrollarea->ensureVisible(0,0);
 }

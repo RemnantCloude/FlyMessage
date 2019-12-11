@@ -15,10 +15,16 @@ class FlyMessage : public QWidget
 
 public:
     explicit FlyMessage(QWidget *parent = nullptr);
-    ~FlyMessage();
+    ~FlyMessage() {}
+    // 窗体移动事件的点
+    QPoint windowPos;
+    QPoint mousePos;
+    QPoint dPos;
     
+private:
     bool hasBackgroundImage;
 
+    QGridLayout *GLay;
     TitleBar* titlebar;
     FM_SideBar* sidebar;
     MainWindow* mainwindow;
@@ -27,26 +33,22 @@ public:
     
     QImage background; // 背景图片
 
-    // 窗体移动事件的点
-    QPoint windowPos;
-    QPoint mousePos;
-    QPoint dPos;
-
 public slots:
     void onMin(bool);
     void onMax(bool);
     void onClose(bool);
     void returnToTop();
 
-private:
-
 protected:
-    void initLayout();
+    void initComponents();
     void initSignalAndSlot();
-    void resizeEvent(QResizeEvent* size);
-    void setThisLayout();
-    void setThisStyle();
+    void initSideBar();
+    
+    void setComponentsLayout();
+    void setComponentsStyle();
     void setBackgroundImage(QString filename); // 设置背景图片
+    
+    void resizeEvent(QResizeEvent* size);
 };
 
 #endif // FLY_MESSAGE_H

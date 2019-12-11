@@ -12,12 +12,10 @@ class MainWindow : public QWidget
     Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() {}
 
     void getNews(QString web);
     void clearNews();
-    
-signals:
 
 public slots:
     void onRefreshNews(bool);//刷新新闻
@@ -32,9 +30,9 @@ protected:
     
     QJsonObject readJson(QString filename);
     void writeJson(QString filename, QJsonArray news, bool type);
-
-    void paintEvent(QPaintEvent *event);
-
+    
+    
+private:
     QVBoxLayout *thislayout;
     QString website;//当前网站
     int news_amounts;//每个板块新闻显示数量

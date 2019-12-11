@@ -8,7 +8,6 @@
 
 FloatWindow::FloatWindow(QWidget *parent) : QWidget(parent)
 {
-    this->setAttribute(Qt::WA_StyledBackground);
     initComponents();// 初始化组件
     initSignalAndSlot();// 初始化信号与槽
     setThisLayout();// 布局设置

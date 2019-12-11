@@ -19,17 +19,14 @@
 
 News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool favor) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground,true);
+    
     isFavor = favor;
     initComponents();// 初始化组件
     initSignalAndSlot();// 初始化信号与槽
 
     setThisLayout();
     setThisStyle(title, time, type, abstract);
-}
-
-News::~News()
-{
-
 }
 
 void News::initComponents()
@@ -91,15 +88,6 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
     line->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
     line->setMinimumSize(0, 3);
     line->setMaximumSize(16777215, 3);
-}
-
-void News::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-    QStyleOption styleOpt;
-    styleOpt.init(this);
-    QPainter painter(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &styleOpt, &painter, this);
 }
 
 void News::mousePressEvent ( QMouseEvent * event ) {

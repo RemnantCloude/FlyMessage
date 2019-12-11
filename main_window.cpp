@@ -24,16 +24,13 @@
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground,true);
+    
     website = "website1";//初始化
     news_amounts = 10;
 
     setThisLayout();
     setThisStyle();
-}
-
-MainWindow::~MainWindow()
-{
-
 }
 
 void MainWindow::setThisLayout()
@@ -45,21 +42,7 @@ void MainWindow::setThisLayout()
 
 void MainWindow::setThisStyle()
 {
-//    setAttribute(Qt::WA_StyledBackground,true);
-
-    //用不了
-//    QString qss;
-//    QFile qssFile(":/qss/main_window");
-//    qssFile.open(QFile::ReadOnly);
-
-//    if(qssFile.isOpen())
-//    {
-//        qDebug()<<"open successfully";
-//        qss = QLatin1String(qssFile.readAll());
-//        this->setStyleSheet(qss);
-//        qssFile.close();
-//    }
-    //可以用
+//可以用
 //    QFile file(":/qss/main_window");
 //    file.open(QFile::ReadOnly);
 //    QTextStream filetext(&file);
@@ -67,7 +50,6 @@ void MainWindow::setThisStyle()
 //    this->setStyleSheet(stylesheet);
 //    file.close();
 
-    thislayout->setSpacing(0);
     this->setStyleSheet("News {background: rgb(255,255,255)}"
                         "News:hover {border:1px solid blue; background: #d9fdff;}"
                         "MainWindow {background : rgb(255,255,255);}"
@@ -206,15 +188,6 @@ void MainWindow::clearNews()
         }
         delete child;
     }
-}
-
-void MainWindow::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-    QStyleOption styleOpt;
-    styleOpt.init(this);
-    QPainter painter(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &styleOpt, &painter, this);
 }
 
 void MainWindow::onRefreshNews(bool)

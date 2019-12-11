@@ -13,7 +13,7 @@ class News : public QWidget
     Q_OBJECT
 public:
     explicit News(QWidget *parent, QString title, QString time, QString tpye, QString abstract, bool favor);
-    ~News();
+    ~News() {}
 
     QLabel *title_Lab;
     QLabel *time_Lab;
@@ -35,10 +35,9 @@ public slots:
 protected:
     void initComponents();
     void initSignalAndSlot();
-    void mousePressEvent ( QMouseEvent * event );
     void setThisLayout();
     void setThisStyle(QString title, QString time, QString tpye, QString abstract);
-    void paintEvent(QPaintEvent *event);
+    void mousePressEvent ( QMouseEvent * event );
 };
 
 #endif // NEWS_H

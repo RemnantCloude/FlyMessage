@@ -15,6 +15,7 @@ class FM_SBButton : public QPushButton {
     Q_OBJECT
 public:
     explicit FM_SBButton(QWidget *parent,const QString &str);
+    
     ~FM_SBButton() {}
 };
 
@@ -39,14 +40,12 @@ public:
     void clearItems();
     
 public slots:
-    void defaultClicked();
-    void customClicked1();
-    void customClicked2();
+    void defaultAction();
+    void customAction_refresh();
+    void customAction_favor();
 signals:
-    void signal1(QString);
-    void signal2(void);
-protected:
-    void paintEvent(QPaintEvent *event);
+    void signal_refresh(QString);
+    void signal_favor(void);
 private:
     Ui::FM_SideBar *ui;
     QVector<FM_SBButton*> items;
