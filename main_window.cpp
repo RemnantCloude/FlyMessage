@@ -19,8 +19,8 @@
 
 #include "main_window.h"
 
-#define BTN_WIDTH   (600)
-#define BTN_HEIGHT  (100)
+#define ADDNEWS     true
+#define DELETENEWS  false
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
@@ -94,6 +94,67 @@ QJsonObject MainWindow::readJson(QString filename)
     return jsonObject;
 }
 
+void MainWindow::writeJson(QString filename, QJsonArray news, bool type)
+{
+    QFile file(filename);
+    file.open(QIODevice::ReadWrite);
+    QString value = file.readAll();
+    file.resize(0);
+
+    // 错误提示
+    QJsonParseError parseJsonErr;
+    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
+    if(!(parseJsonErr.error == QJsonParseError::NoError))
+    {
+        qDebug()<<"解析json文件错误!";
+    }
+    QJsonObject jsonObject = document.object();
+
+    //获取新闻
+    QJsonArray array = jsonObject.take("favorite").toArray();
+
+    if(type == ADDNEWS)//增加
+    {
+        array.append(news);
+    }
+    else//删除
+    {
+        for(int i = 0; i < array.size(); i++)
+        {
+            if(array.at(i).toArray() == news)
+            {
+                array.takeAt(i);
+                break;
+            }
+        }
+    }
+    jsonObject.insert("favorite", array);//添加到对象中
+    document.setObject(jsonObject);
+    file.write(document.toJson());
+    file.close();
+}
+
+void MainWindow::getFavorNews()
+{
+    clearNews();
+
+    QJsonObject favor = readJson("./test_favorite.json");
+    QJsonArray array = favor.value("favorite").toArray();
+    for(int i = 0; i < array.size(); i++)
+    {
+        QJsonArray array1 = array.at(i).toArray();//单条新闻
+        News *news = new News(this,
+                              array1.at(0).toString(),
+                              array1.at(1).toString(),
+                              array1.at(2).toString(),
+                              array1.at(3).toString(),
+                              false);
+        news->setCursor(Qt::PointingHandCursor);
+        thislayout->addWidget(news);
+        thislayout->addWidget(news->line);
+    }
+}
+
 void MainWindow::getNews(QString web)
 {
     int count = 0;
@@ -124,11 +185,26 @@ void MainWindow::getNews(QString web)
                 news->setCursor(Qt::PointingHandCursor);
                 thislayout->addWidget(news);
                 thislayout->addWidget(news->line);
+                connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
 
                 count++;
             }
             count = 0;//清零
         }
+    }
+}
+
+void MainWindow::clearNews()
+{
+    QLayoutItem *child;
+    while ((child = thislayout->takeAt(0)) != nullptr)
+    {
+        //setParent为NULL，防止删除之后界面不消失
+        if(child->widget())
+        {
+            child->widget()->setParent(nullptr);
+        }
+        delete child;
     }
 }
 
@@ -141,19 +217,21 @@ void MainWindow::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &styleOpt, &painter, this);
 }
 
-void MainWindow::onRefresh(bool)
+void MainWindow::onRefreshNews(bool)
 {
-    //清空新闻
-    QLayoutItem *child;
-    while ((child = thislayout->takeAt(0)) != nullptr)
-    {
-        //setParent为NULL，防止删除之后界面不消失
-        if(child->widget())
-        {
-            child->widget()->setParent(nullptr);
-        }
-        delete child;
-    }
-
+    clearNews();
     getNews(website);
 }
+
+void MainWindow::onFavorNews(bool type)
+{
+    News *news = dynamic_cast<News*>(sender());//获取信号发送者的指针
+    QJsonArray array;
+    array.insert(0, news->title_Lab->text());
+    array.insert(1, news->time_Lab->text());
+    array.insert(2, news->type_Lab->text());
+    array.insert(3, news->abstract_Lab->text());
+
+    writeJson("./test_favorite.json", array, type);
+}
+

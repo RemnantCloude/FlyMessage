@@ -69,7 +69,7 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked(bool)), mainwindow, SLOT(onRefresh(bool)));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked(bool)), mainwindow, SLOT(onRefreshNews(bool)));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
 }
 
