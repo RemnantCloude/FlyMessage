@@ -19,9 +19,6 @@
 
 #include "main_window.h"
 
-#define BTN_WIDTH   (600)
-#define BTN_HEIGHT  (100)
-
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 {
     website = "website1";//初始化
@@ -29,6 +26,26 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
     setThisLayout();
     setThisStyle();
+
+    //TEST 写文件
+//    QFile file("./test_favorite.json");
+//    file.open(QIODevice::ReadWrite);
+//    file.resize(0);
+
+//    QJsonArray jsonArray;
+
+//    for(int i = 0; i < 3; i++) {
+//        QJsonObject jsonObject;
+//        jsonObject.insert("name", "233");
+//        jsonObject.insert("age", i+18);
+//        jsonObject.insert("time", i);
+//        jsonArray.append(jsonObject);
+//    }
+//    QJsonDocument jsonDoc;
+//    jsonDoc.setArray(jsonArray);
+
+//    file.write(jsonDoc.toJson());
+//    file.close();
 }
 
 MainWindow::~MainWindow()
@@ -94,6 +111,26 @@ QJsonObject MainWindow::readJson(QString filename)
     return jsonObject;
 }
 
+void MainWindow::getFavorNews()
+{
+    clearNews();
+    QJsonObject favor = readJson("./test_favorite.json");
+    QJsonArray array = favor.value("favorite").toArray();
+    for(int i = 0; i < array.size(); i++)
+    {
+        QJsonArray array1 = array.at(i).toArray();//单条新闻
+        News *news = new News(this,
+                              array1.at(0).toString(),
+                              array1.at(1).toString(),
+                              array1.at(2).toString(),
+                              array1.at(3).toString(),
+                              false);
+        news->setCursor(Qt::PointingHandCursor);
+        thislayout->addWidget(news);
+        thislayout->addWidget(news->line);
+    }
+}
+
 void MainWindow::getNews(QString web)
 {
     int count = 0;
@@ -124,11 +161,26 @@ void MainWindow::getNews(QString web)
                 news->setCursor(Qt::PointingHandCursor);
                 thislayout->addWidget(news);
                 thislayout->addWidget(news->line);
+                connect(news->favor_Btn, SIGNAL(clicked(bool)), this, SLOT(addFavorNews(bool)));
 
                 count++;
             }
             count = 0;//清零
         }
+    }
+}
+
+void MainWindow::clearNews()
+{
+    QLayoutItem *child;
+    while ((child = thislayout->takeAt(0)) != nullptr)
+    {
+        //setParent为NULL，防止删除之后界面不消失
+        if(child->widget())
+        {
+            child->widget()->setParent(nullptr);
+        }
+        delete child;
     }
 }
 
@@ -141,19 +193,18 @@ void MainWindow::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &styleOpt, &painter, this);
 }
 
-void MainWindow::onRefresh(bool)
+void MainWindow::onRefreshNews(bool)
 {
-    //清空新闻
-    QLayoutItem *child;
-    while ((child = thislayout->takeAt(0)) != nullptr)
-    {
-        //setParent为NULL，防止删除之后界面不消失
-        if(child->widget())
-        {
-            child->widget()->setParent(nullptr);
-        }
-        delete child;
-    }
-
+    clearNews();
     getNews(website);
+}
+
+void MainWindow::onDeleteFavorNews()
+{
+
+}
+
+void MainWindow::onAddFavorNews()
+{
+
 }

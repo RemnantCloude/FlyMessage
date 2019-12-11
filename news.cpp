@@ -116,6 +116,6 @@ void News::changeFavor(bool)
     else
     {
         isFavor = true;
-        favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: #00A2FF}");
+        favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: #00A2FF}");//蓝色
     }
 }

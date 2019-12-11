@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QScrollArea>
+#include <QFile>
 #include "news.h"
 
 class MainWindow : public QWidget
@@ -13,19 +14,16 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     
+    void getFavorNews();//获取收藏夹新闻
     void getNews(QString web);
-    
-    QVBoxLayout *thislayout;
-    QScrollArea *s;
-    QString website;//当前网站
-    int news_amounts;//每个板块新闻显示数量
-
-    bool is_Settings; //设置界面
+    void clearNews();
     
 signals:
 
 public slots:
-    void onRefresh(bool);
+    void onRefreshNews(bool);//刷新新闻
+    void onDeleteFavorNews();//删除单条收藏夹新闻
+    void onAddFavorNews();
 
 protected:
     void init();
@@ -36,6 +34,11 @@ protected:
     QJsonObject readJson(QString filename);
 
     void paintEvent(QPaintEvent *event);
+
+    QVBoxLayout *thislayout;
+    QString website;//当前网站
+    int news_amounts;//每个板块新闻显示数量
+    QFile favor_json;//收藏夹文件
 
 };
 
