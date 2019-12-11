@@ -36,7 +36,7 @@ FM_SideBar::~FM_SideBar()
 void FM_SideBar::setWidgetStyle()
 {
     setStyleSheet("*{background-color: rgb(243,243,243);}"
-                  "QPushButton{border: 0px;background-color: rgb(243,243,243);font-size:17px;font-family:\"幼圆\"}"
+                  "QPushButton{border: 0px; background-color: rgb(243,243,243);font-size:17px;font-family:\"幼圆\"}"
                   "QPushButton:hover {background-color: rgb(220,220,220);}"
                   "QPushButton:pressed {background-color: rgb(200,200,200);}"
                   );

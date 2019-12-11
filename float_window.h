@@ -12,7 +12,7 @@ class FloatWindow : public QWidget
 public:
     explicit FloatWindow(QWidget *parent = nullptr);
     ~FloatWindow();
-
+    
     QPushButton *refresh_Btn;
     QPushButton *returnToTop_Btn;
 
@@ -26,9 +26,9 @@ private:
 protected:
     void initComponents();
     void initSignalAndSlot();
-
     void setThisLayout();
     void setThisStyle();
+    void paintEvent(QPaintEvent *event);
 };
 
 #endif // FLOAT_WINDOW_H

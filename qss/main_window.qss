@@ -6,6 +6,7 @@ MainWindow::News
 News:hover{background:rgb(220,220,220)}
 
 MainWindow{
+    border: 1px solid black;
     background:rgb(243,243,243)
 }
 /*News::QLabel {

@@ -36,13 +36,14 @@ public slots:
     void onMin(bool);
     void onMax(bool);
     void onClose(bool);
+    void returnToTop();
 
 private:
 
 protected:
     void initLayout();
     void initSignalAndSlot();
-
+    void resizeEvent(QResizeEvent* size);
     void setThisLayout();
     void setThisStyle();
     void setBackgroundImage(QString filename); // 设置背景图片

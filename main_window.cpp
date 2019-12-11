@@ -70,11 +70,9 @@ void MainWindow::setThisStyle()
     thislayout->setSpacing(0);
     this->setStyleSheet("News {background: rgb(243,243,243)}"
                         "News:hover {background: rgb(220,220,220)}"
-                        "MainWindow {background : rgb(243,243,243)}"
+                        "MainWindow {background : rgb(243,243,243);}"
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
-    QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-    this->setSizePolicy(sizePolicy);
-    this->setMinimumSize(QSize(500, 0));
+
 }
 
 QJsonObject MainWindow::readJson(QString filename)

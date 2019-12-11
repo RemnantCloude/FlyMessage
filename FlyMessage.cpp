@@ -60,7 +60,6 @@ void FlyMessage::initLayout()
     sidebar = new FM_SideBar(this);
     mainwindow = new MainWindow(this);
     scrollarea = new QScrollArea(this);
-
     floatwindow = new FloatWindow(this);
 }
 
@@ -71,6 +70,12 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
     connect(floatwindow->refresh_Btn, SIGNAL(clicked(bool)), mainwindow, SLOT(onRefresh(bool)));
+    connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
+}
+
+void FlyMessage::returnToTop()
+{
+    this->scrollarea->ensureVisible(0,0);
 }
 
 void FlyMessage::setThisStyle()
@@ -81,8 +86,6 @@ void FlyMessage::setThisStyle()
 void FlyMessage::setThisLayout()
 {
     titlebar->setGeometry(0, 0, BTN_HEIGHT + 10, BTN_WIDTH);
-
-    floatwindow->setGeometry(width() - 200, height() - 150, 200, 150); // TODO 全屏时会有bug，位置需要重绘
 
     // 设置布局器
     scrollarea->setWidget(mainwindow);
@@ -112,6 +115,10 @@ void FlyMessage::onMin(bool)
     {
         setWindowState( Qt::WindowMinimized );
     }
+}
+
+void FlyMessage::resizeEvent(QResizeEvent* size){
+    floatwindow->setGeometry(width() - 180,height()-100,120,60);
 }
 
 void FlyMessage::onMax(bool)

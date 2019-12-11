@@ -12,6 +12,8 @@
         <file alias="add.ico">images/add.ico</file>
         <file alias="clear.ico">images/clear.ico</file>
         <file alias="right.ico">images/right.ico</file>
+        <file alias="refresh.ico">images/refresh.ico</file>
+        <file alias="top.ico">images/top.ico</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="FlyMessage">qss/FlyMessage.qss</file>

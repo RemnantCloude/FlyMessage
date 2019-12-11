@@ -50,28 +50,20 @@ void News::setThisLayout()
 
     thislayout = new QGridLayout();
     thislayout->addWidget(title_Lab, 0, 0, 1, 7);
-    thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
+    //thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
     thislayout->addWidget(time_Lab, 1, 0, 1, 8);
     thislayout->addWidget(type_Lab, 2, 0, 1, 8);
     thislayout->addWidget(abstract_Lab, 3, 0, 1, 8);
 
-    this->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding));
+    this->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred));
     this->setLayout(thislayout);
     this->setMinimumSize(400, 0);
 }
 
 void News::setThisStyle(QString title, QString time, QString type, QString abstract)
 {
-//    QFile file(":/qss/main_window");
-//    file.open(QFile::ReadOnly);
-//    QTextStream filetext(&file);
-//    QString stylesheet = filetext.readAll();
-//    this->setStyleSheet(stylesheet);
-//    file.close();
     title_Lab->setStyleSheet("QLabel{font-size:22px; font-family:\"黑体\"} color: black;");
-
     title_Lab->setText(title);
-//    title_Lab->setOpenExternalLinks(true);
     time_Lab->setText(time);
     type_Lab->setText(type);
     type_Lab->setWordWrap(true);//自动换行
