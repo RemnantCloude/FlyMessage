@@ -50,7 +50,7 @@ void TitleBar::setThisLayout()
     setFixedHeight(50);
     // 设置控件布局
     icon_Lab->setGeometry   (0, 0, 50, 50);
-    title_Lab->setGeometry  (55, 0, 4*BTN_WIDTH, BTN_HEIGHT);
+    title_Lab->setGeometry  (55, 0, 6*BTN_WIDTH, BTN_HEIGHT);
     
     close_Btn->setGeometry  (width () - 1*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
     max_Btn->setGeometry    (width () - 2*BTN_WIDTH, 0,   BTN_WIDTH, BTN_HEIGHT);
@@ -74,7 +74,7 @@ void TitleBar::setThisStyle()
     close_Btn->setStyleSheet("QPushButton{border-style: none}"
                             "QPushButton:hover{background-color:red; color: black;}"
                             "QPushButton:pressed{background-color:rgba(85, 170, 255,200); border-style: inset; }");
-    title_Lab->setStyleSheet("QLabel{font-size: 12pt; color: black;}");
+    //title_Lab->setStyleSheet("QLabel{font-size: 12pt; color: black;}");
 
     // 添加字体文件
     int fontId = QFontDatabase::addApplicationFont(":/fonts/fontawesome_solid");
@@ -103,10 +103,10 @@ void TitleBar::setThisStyle()
     skin_Btn->setFont(font);
     skin_Btn->setText(QChar(0xf553));
 
-    QPixmap pixmap(":/images/logo");// TODO:需要换成其它大logo
-    icon_Lab->setPixmap(pixmap);
+    icon_Lab->setStyleSheet("border-image: url(:/images/logo)");
 
-    title_Lab->setText("飞讯");
+    title_Lab->setText("飞讯 FlyMessage");
+    title_Lab->setStyleSheet("font-size:28px;font-family:\"幼圆\"");
 }
 
 void TitleBar::mousePressEvent(QMouseEvent *event)

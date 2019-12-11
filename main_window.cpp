@@ -68,9 +68,9 @@ void MainWindow::setThisStyle()
 //    file.close();
 
     thislayout->setSpacing(0);
-    this->setStyleSheet("News {background: rgb(243,243,243)}"
-                        "News:hover {background: rgb(220,220,220)}"
-                        "MainWindow {background : rgb(243,243,243);}"
+    this->setStyleSheet("News {background: rgb(255,255,255)}"
+                        "News:hover {border:1px solid blue; background: #d9fdff;}"
+                        "MainWindow {background : rgb(255,255,255);}"
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
 
 }
