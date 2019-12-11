@@ -20,9 +20,10 @@ public:
 
 signals:
 
-private slots:
+public slots:
+    void hideRefreshBtn();
+    void showRefreshBtn();
 
-private:
 protected:
     void initComponents();
     void initSignalAndSlot();

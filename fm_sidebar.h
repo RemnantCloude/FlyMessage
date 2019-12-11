@@ -37,10 +37,14 @@ public:
     void setSideBarList(QVector<FM_SideItemData> &idata);
     void setWidgetStyle();
     void clearItems();
+    
+public slots:
     void defaultClicked();
     void customClicked1();
+    void customClicked2();
 signals:
     void signal1(QString);
+    void signal2(void);
 protected:
     void paintEvent(QPaintEvent *event);
 private:

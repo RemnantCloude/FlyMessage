@@ -66,10 +66,22 @@ void FM_SideBar::defaultClicked()
                                "QPushButton:hover{background-color: rgb(220,220,220);}");
     }
 }
-
+/**
+  * @brief: 刷新
+  * 
+  * */
 void FM_SideBar::customClicked1()
 {
     emit signal1("website1");
+}
+
+/**
+  * @brief: 收藏
+  * 
+  * */
+void FM_SideBar::customClicked2()
+{
+    emit signal2();
 }
 
 void FM_SideBar::clearItems()

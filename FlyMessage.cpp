@@ -101,9 +101,10 @@ void FlyMessage::setThisLayout()
     QVector<FM_SideItemData> items;
     items.append(FM_SideItemData("加载json", &FM_SideBar::customClicked1));
     connect(sidebar, &FM_SideBar::signal1, mainwindow, &MainWindow::getNews);
-    items.append(FM_SideItemData("咕咕", nullptr));
-    items.append(FM_SideItemData("喵喵", nullptr));
-    items.append(FM_SideItemData("汪汪", nullptr));
+    connect(sidebar, &FM_SideBar::signal1, floatwindow, &FloatWindow::showRefreshBtn);
+    items.append(FM_SideItemData("收藏夹", &FM_SideBar::customClicked2));
+    connect(sidebar, &FM_SideBar::signal2, mainwindow, &MainWindow::getFavorNews);
+    connect(sidebar, &FM_SideBar::signal2, floatwindow, &FloatWindow::hideRefreshBtn);
     sidebar->setSideBarList(items);
 
     this->setLayout(GLay);

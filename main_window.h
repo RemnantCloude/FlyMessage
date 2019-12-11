@@ -13,8 +13,7 @@ class MainWindow : public QWidget
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    
-    void getFavorNews();//获取收藏夹新闻
+
     void getNews(QString web);
     void clearNews();
     
@@ -23,7 +22,8 @@ signals:
 public slots:
     void onRefreshNews(bool);//刷新新闻
     void onFavorNews(bool type);//删除或添加单条收藏夹新闻
-
+    void getFavorNews();//获取收藏夹新闻
+    
 protected:
     void init();
     void initSignalAndSlot();

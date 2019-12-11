@@ -72,6 +72,16 @@ void FloatWindow::setThisStyle()
 
 }
 
+void FloatWindow::hideRefreshBtn()
+{
+    this->refresh_Btn->hide();
+}
+
+void FloatWindow::showRefreshBtn()
+{
+    this->refresh_Btn->show();
+}
+
 void FloatWindow::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
