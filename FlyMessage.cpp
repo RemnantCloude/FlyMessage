@@ -129,7 +129,7 @@ void FlyMessage::onClose(bool)
 }
 
 void FlyMessage::resizeEvent(QResizeEvent* size){
-    floatwindow->setGeometry(width() - 200,height()-80,120,60);
+    floatwindow->setGeometry(width() - 200,height()-80,120,50);
 }
 
 void FlyMessage::returnToTop()

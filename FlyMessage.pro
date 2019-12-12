@@ -53,6 +53,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-    fm_sidebar.ui \
     settingform.ui
 
