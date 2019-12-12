@@ -27,8 +27,6 @@ private slots:
     
     void on_stepBtn3_clicked();
     
-    void on_stepBtn4_clicked();
-    
 private:
     Ui::WebWizardForm *ui;
     int currentPage = 1;
