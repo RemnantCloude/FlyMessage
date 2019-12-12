@@ -1,16 +1,5 @@
 #include "FlyMessage.h"
 #include "float_window.h"
-
-#include <QWidget>
-#include <QString>
-#include <QStyle>
-#include <QGridLayout>
-#include <QScrollArea>
-#include <QResizeEvent>
-//TEST:
-#include <QDebug>
-
-#include "FlyMessage.h"
 #include "main_window.h"
 
 //TODO:
@@ -34,6 +23,8 @@ FlyMessage::FlyMessage(QWidget *parent) : QWidget(parent)
     
     // 初始化信号与槽
     initSignalAndSlot();
+    
+    traySetting();
 }
 
 //TODO:
@@ -109,10 +100,53 @@ void FlyMessage::setComponentsLayout()
     this->setLayout(GLay);
 }
 
+void FlyMessage::traySetting()
+{
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(":/images/logo"));
+    trayIcon->setToolTip("飞讯"); //提示文字
+    createMenu();
+    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));
+    trayIcon->show();
+}
+
+void FlyMessage::createMenu()
+{
+    mShowMainAction = new QAction("显示主界面",this);
+    connect(mShowMainAction,SIGNAL(triggered()),this,SLOT(show()));
+
+    mExitAppAction = new QAction("退出",this);
+    connect(mExitAppAction,SIGNAL(triggered()),this,SLOT(close()));
+    
+    mMenu = new QMenu(this);
+    //新增菜单项---显示主界面
+    mMenu->addAction(mShowMainAction);
+    //增加分隔符
+    mMenu->addSeparator();
+    //新增菜单项---退出程序
+    mMenu->addAction(mExitAppAction);
+    //把QMenu赋给QSystemTrayIcon对象
+    trayIcon->setContextMenu(mMenu);
+}
+
+void FlyMessage::actSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
+{
+    switch(reason){
+    case QSystemTrayIcon::Trigger:  //双击托盘图标
+        break;
+    case QSystemTrayIcon::DoubleClick:  //双击托盘图标
+        this->show();
+        break;
+    default:
+        break;
+    }
+}
+
 void FlyMessage::onMin(bool)
 {
-    if( windowState() != Qt::WindowMinimized )
-        setWindowState( Qt::WindowMinimized );
+    this->hide();
+    trayIcon->showMessage("飞讯","飞讯最小化在任务栏",QSystemTrayIcon::Information,1000);
 }
 
 void FlyMessage::onMax(bool)

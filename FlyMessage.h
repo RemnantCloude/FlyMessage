@@ -3,6 +3,14 @@
 
 #include <QWidget>
 #include <QScrollArea>
+#include <QSystemTrayIcon>
+#include <QWidget>
+#include <QString>
+#include <QStyle>
+#include <QGridLayout>
+#include <QScrollArea>
+#include <QResizeEvent>
+#include <QMenu>
 
 #include "title_bar.h"
 #include "fm_sidebar.h"
@@ -32,22 +40,29 @@ private:
     FloatWindow *floatwindow;
     
     QImage background; // 背景图片
-
+    QSystemTrayIcon *trayIcon;
+    QMenu *mMenu;
+    QAction *mShowMainAction;
+    QAction *mExitAppAction;
+    
 public slots:
     void onMin(bool);
     void onMax(bool);
     void onClose(bool);
     void returnToTop();
+    void actSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
 
 protected:
     void initComponents();
     void initSignalAndSlot();
     void initSideBar();
+    void traySetting();
+    void createMenu();
     
     void setComponentsLayout();
     void setComponentsStyle();
     void setBackgroundImage(QString filename); // 设置背景图片
-    
+
     void resizeEvent(QResizeEvent* size);
 };
 
