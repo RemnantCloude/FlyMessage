@@ -3,7 +3,6 @@
 #include <main_window.h>
 
 #include "fm_sidebar.h"
-#include "ui_fm_sidebar.h"
 #include "main_window.h"
 
 FM_SideItemData::FM_SideItemData(QString s, void(FM_SideBar::*f)()) : caption(s), func(f)
@@ -11,8 +10,7 @@ FM_SideItemData::FM_SideItemData(QString s, void(FM_SideBar::*f)()) : caption(s)
     
 }
 
-FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) :
-    QPushButton (parent)
+FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) : QPushButton (parent)
 {
     this->setText(str);
     this->setObjectName(str);
@@ -20,22 +18,24 @@ FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) :
     this->setProperty("btnClicked",false);
 }
 
-FM_SideBar::FM_SideBar(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::FM_SideBar)
+FM_SideBar::FM_SideBar(QWidget *parent) : QWidget(parent)
 {
-    ui->setupUi(this);
-    setWidgetStyle();
-
+    setupUI();
 }
 
-FM_SideBar::~FM_SideBar()
+void FM_SideBar::setupUI()
 {
-    delete ui;
-}
-
-void FM_SideBar::setWidgetStyle()
-{
+    verticalLayout = new QVBoxLayout(this);
+    vSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    
+    resize(200, 373);    
+    this->setSizePolicy(QSizePolicy (QSizePolicy::Fixed, QSizePolicy::Preferred));
+    this->setMinimumSize(QSize(200, 0));
+    
+    verticalLayout->setSpacing(0);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
+    verticalLayout->addItem(vSpacer);
+    
     setStyleSheet("QPushButton{border: 0px; font-size:17px;font-family:\"幼圆\"}"
                   "QPushButton[btnClicked=true]{background-color:rgb(200,200,200);qproperty-icon: url(:/icons/right.ico);}"
                   "QPushButton[btnClicked=false]{qproperty-icon:none;}"
@@ -52,7 +52,7 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
         pButton = new FM_SBButton(this, data.caption);
         
         this->items.append(pButton);
-        ui->verticalLayout->insertWidget(0, pButton);
+        verticalLayout->insertWidget(0, pButton);
         
         connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::defaultAction);
         connect(pButton, &FM_SBButton::clicked, this, data.func);

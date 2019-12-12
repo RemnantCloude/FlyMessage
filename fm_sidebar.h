@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QVector>
 #include <QPushButton>
+#include <QVBoxLayout>
+#include <QSpacerItem>
 namespace Ui {
 class FM_SideBar;
 }
@@ -34,21 +36,26 @@ class FM_SideBar : public QWidget
     
 public:
     explicit FM_SideBar(QWidget *parent = nullptr);
-    ~FM_SideBar();
+    ~FM_SideBar() {}
     void setSideBarList(QVector<FM_SideItemData> &idata);
-    void setWidgetStyle();
     void clearItems();
     
 public slots:
     void defaultAction();
     void customAction_refresh();
     void customAction_favor();
+    
 signals:
     void signal_refresh(QString);
     void signal_favor(void);
+    
 private:
     Ui::FM_SideBar *ui;
     QVector<FM_SBButton*> items;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *vSpacer;
+    
+    void setupUI();
 };
 
 #endif // FM_SIDEBAR_H

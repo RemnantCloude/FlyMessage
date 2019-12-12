@@ -32,8 +32,8 @@ void FloatWindow::initSignalAndSlot()
 
 void FloatWindow::setThisLayout()
 {
-    refresh_Btn->setFixedSize(QSize(48,48));
-    returnToTop_Btn->setFixedSize(QSize(48,48));
+    refresh_Btn->setFixedSize(QSize(36,36));
+    returnToTop_Btn->setFixedSize(QSize(36,36));
 
     thislayout = new QHBoxLayout();
     thislayout->addWidget(refresh_Btn);
@@ -41,8 +41,6 @@ void FloatWindow::setThisLayout()
     this->setLayout(thislayout);
     
     setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
-//    setMinimumSize(0, 3);
-//    setMaximumSize(16777215, 3);
 }
 
 void FloatWindow::setThisStyle()
@@ -50,24 +48,16 @@ void FloatWindow::setThisStyle()
     refresh_Btn->setObjectName("refresh_Btn");
     returnToTop_Btn->setObjectName("returnToTop_Btn");
 
-    setStyleSheet("QPushButton {border: 0px; background: #d9fdff;}"                  
-                  "QPushButton:pressed{background: rgb(153,217,234);}"
-                  "QPushButton:hover{border:1px solid blue;}"
+    setStyleSheet("QPushButton {border: 1px solid blue;border-radius:5px; background: rgba(255,255,255,100);}"
+                  "QPushButton:hover{background: rgb(220,220,220);}"
                   "#refresh_Btn {qproperty-icon: url(:/icons/refresh.ico)}"
                   "#returnToTop_Btn {qproperty-icon: url(:/icons/top.ico)}");
-
-//    // 添加字体文件
-//    int fontId = QFontDatabase::addApplicationFont(":/fonts/fontawesome_solid");
-//    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-//    // 创建字体
-//    QFont font;
-//    font.setFamily(fontFamilies.at(0));
 
     refresh_Btn->setToolTip("刷新");
     returnToTop_Btn->setToolTip("返回顶部");
     
-    refresh_Btn->setIconSize(QSize(36,36));
-    returnToTop_Btn->setIconSize(QSize(36,36));
+    refresh_Btn->setIconSize(QSize(24,24));
+    returnToTop_Btn->setIconSize(QSize(24,24));
 
 }
 
