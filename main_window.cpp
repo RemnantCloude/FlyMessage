@@ -1,4 +1,4 @@
-#include <QtWidgets/QVBoxLayout>
+﻿#include <QtWidgets/QVBoxLayout>
 #include <QFontDatabase>
 
 #include <QDebug>
@@ -139,6 +139,8 @@ void MainWindow::getFavorNews()
 
 void MainWindow::getNews(QString web)
 {
+    clearNews();
+
     int count = 0;
     //读取设置文件内容
     QJsonObject settings = readJson("./test_settings.json");
@@ -192,7 +194,6 @@ void MainWindow::clearNews()
 
 void MainWindow::onRefreshNews(bool)
 {
-    clearNews();
     getNews(website);
 }
 
