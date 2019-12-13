@@ -89,6 +89,13 @@ void FM_SideBar::customAction_favor()
 {
     emit signal_favor();
 }
+/**
+  * @brief: 返回主界面
+  * */
+void FM_SideBar::customAction_back()
+{
+    emit signal_back();
+}
 
 void FM_SideBar::clearItems()
 {

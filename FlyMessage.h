@@ -1,6 +1,6 @@
 #ifndef FLY_MESSAGE_H
 #define FLY_MESSAGE_H
-
+#include <QScroller>
 #include <QWidget>
 #include <QScrollArea>
 #include <QSystemTrayIcon>
@@ -9,6 +9,7 @@
 #include <QStyle>
 #include <QGridLayout>
 #include <QScrollArea>
+#include <QListWidget>
 #include <QResizeEvent>
 #include <QMenu>
 
@@ -16,6 +17,7 @@
 #include "fm_sidebar.h"
 #include "main_window.h"
 #include "float_window.h"
+#include "settingform.h"
 
 class FlyMessage : public QWidget
 {
@@ -32,12 +34,15 @@ public:
 private:
     bool hasBackgroundImage;
 
-    QGridLayout *GLay;
     TitleBar* titlebar;
     FM_SideBar* sidebar;
     MainWindow* mainwindow;
-    QScrollArea *scrollarea;
     FloatWindow *floatwindow;
+    SettingForm *settingform;
+
+    QGridLayout *GLay;
+    QScrollArea *scrollarea;
+    QScroller *scroller;
     
     QImage background; // 背景图片
     QSystemTrayIcon *trayIcon;
@@ -50,6 +55,8 @@ public slots:
     void onMax(bool);
     void onClose(bool);
     void returnToTop();
+    void moveToSettingForm();
+    void moveToMainWindow();
     void actSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
 
 protected:
