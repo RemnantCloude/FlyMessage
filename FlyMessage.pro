@@ -33,7 +33,8 @@ SOURCES += \
     fm_sidebar.cpp \
     settingform.cpp \
     float_window.cpp \
-    webwizardform.cpp
+    webwizardform.cpp \
+    fm_setting.cpp
 
 
 HEADERS += \
@@ -44,7 +45,8 @@ HEADERS += \
     fm_sidebar.h \
     settingform.h \
     float_window.h \
-    webwizardform.h
+    webwizardform.h \
+    fm_setting.h
 
 RESOURCES += \
     resource.qrc

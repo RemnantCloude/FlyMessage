@@ -20,6 +20,7 @@ FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) : QPushButton (pare
 
 FM_SideBar::FM_SideBar(QWidget *parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground,true);
     setupUI();
 }
 
@@ -36,12 +37,14 @@ void FM_SideBar::setupUI()
     verticalLayout->setContentsMargins(0, 0, 0, 0);
     verticalLayout->addItem(vSpacer);
     
-    setStyleSheet("QPushButton{border: 0px; font-size:17px;font-family:\"幼圆\"}"
+    setStyleSheet("QPushButton{border: 0px; font-size:17px;font-family:\"幼圆\";}"
                   "QPushButton[btnClicked=true]{background-color:rgb(200,200,200);qproperty-icon: url(:/icons/right.ico);}"
                   "QPushButton[btnClicked=false]{qproperty-icon:none;}"
                   "QPushButton[btnClicked=false]:hover{background-color: rgb(220,220,220);}"
                   "QPushButton[btnClicked=false]:pressed {background-color: rgb(200,200,200);}"
+                  "FM_SideBar{background:rgba(243,243,243,100);}"
                   );
+    
 }
 
 void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
@@ -50,7 +53,6 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
     foreach(FM_SideItemData data, idata) {
         FM_SBButton *pButton;
         pButton = new FM_SBButton(this, data.caption);
-        
         this->items.append(pButton);
         verticalLayout->insertWidget(0, pButton);
         

@@ -62,7 +62,7 @@ void FlyMessage::initSideBar()
     items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor));
     sidebar->setSideBarList(items);
     
-    connect(sidebar, &FM_SideBar::signal_refresh, mainwindow, &MainWindow::getNews);
+    connect(sidebar, &FM_SideBar::signal_refresh, mainwindow, &MainWindow::onRefreshNews);
     connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
     connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
     connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
@@ -76,7 +76,7 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
     connect(titlebar->settings_Btn, SIGNAL(clicked()), SLOT(moveToSettingForm()));
     
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked(bool)), mainwindow, SLOT(onRefreshNews(bool)));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
 }
 
