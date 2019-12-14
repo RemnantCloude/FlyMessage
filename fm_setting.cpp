@@ -40,7 +40,7 @@ void FM_Setting::set_max_display_news(int i)
 void FM_Setting::get_web_list(QVector<QString> &ret)
 {
     ret.clear();
-    foreach(const FM_WebSetting *s , web_settings)
+    foreach(FM_WebSetting *s , web_settings)
     {
         ret.push_back(s->web_name);
     }
@@ -50,15 +50,18 @@ void FM_Setting::get_web_columns(QString web, QVector<QString> &ret, QVector<boo
 {
     ret.clear();
     bret.clear();
-    foreach(const FM_WebSetting* s, web_settings)
+    foreach(FM_WebSetting* s, web_settings)
     {
+        qDebug() << s->web_name;
         if(s->web_name == web)
+        {
             foreach(const FM_ColumnSetting* cs, s->web_columns)
             {
                 ret.push_back(cs->column_name);
                 bret.push_back(cs->is_enabled);
             }
-        break;
+            break;
+        }
     }
 }
 
@@ -127,6 +130,8 @@ void FM_Setting::read_setting_from_json()
 
     foreach(const QString &website, settings.keys())
     {
+        if(website == "global_settings")
+            continue;
         QJsonObject jcolumn = settings.value(website).toObject();
         QVector<FM_ColumnSetting *> column_setting;
         foreach(const QString &column, jcolumn.keys())

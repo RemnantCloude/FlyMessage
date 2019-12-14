@@ -36,9 +36,9 @@ SettingForm::~SettingForm()
     vector<QLabel *> columnLabels;
     vector<QCheckBox *> columnCheckBoxes;
 */
-WebSettingWidget::WebSettingWidget(FM_Setting *s, QString webName, QWidget *parent) : 
+WebSettingWidget::WebSettingWidget(FM_Setting *s, QString w, QWidget *parent) : 
     QWidget (parent),
-    webName (webName),
+    webName (w),
     settings(s)
 {
     QVector<QString> columns;
@@ -46,7 +46,7 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString webName, QWidget *pare
     
     webBtn = new QCommandLinkButton(webName, this);
     columnGroup = new QGroupBox(webName, this);
-    columnLayout = new QGridLayout(columnGroup);
+    columnLayout = new QGridLayout(this);
     
     settings->get_web_columns(webName, columns, columns_states);
     
