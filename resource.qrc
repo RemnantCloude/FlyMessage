@@ -3,6 +3,7 @@
         <file alias="logop">images/logo.jpg</file>
         <file alias="bg">images/background.jpg</file>
         <file alias="logo">images/s2.png</file>
+        <file alias="sb">images/sb.jpg</file>
     </qresource>
     <qresource prefix="/fonts">
         <file alias="fontawesome_solid">fonts/Font Awesome 5 Free-Solid-900.otf</file>

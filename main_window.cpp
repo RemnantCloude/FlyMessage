@@ -41,13 +41,27 @@ void MainWindow::setThisLayout()
     this->setLayout(thislayout);
     thislayout->setSpacing(0);
     
-    
-    tipLabel = new QLabel("这里空空如也~");
-    tipLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
+    tipLabel = new QLabel("这里空空如也~",this);
+    tipLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
     tipLabel->setAlignment(Qt::AlignCenter);
     tipLabel->setStyleSheet("font-family: \"微软雅黑\"; font-size: 48px; color:gray; text-align: center;");
-    
     thislayout->addWidget(tipLabel);
+    
+    sbImage = new QLabel(this);
+    sbImage->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
+    sbImage->setAlignment(Qt::AlignCenter);
+    sbImage->setPixmap(QPixmap(":/images/sb"));
+    thislayout->addWidget(sbImage);
+    
+    tip2Label = new QLabel("已经到底了~",this);
+    tip2Label->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
+    tip2Label->setAlignment(Qt::AlignCenter);
+    tip2Label->setStyleSheet("font-family: \"微软雅黑\"; font-size: 24px; color:gray; text-align: center;");
+    thislayout->addWidget(tip2Label);
+    tip2Label->hide();
+    
+    newsSpacer = new QSpacerItem(10, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    thislayout->addItem(newsSpacer);
 }
 
 void MainWindow::setThisStyle()
@@ -132,8 +146,8 @@ void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool ne
     newsArray.append(news);
     
     news->setCursor(Qt::PointingHandCursor);
-    thislayout->addWidget(news);
-    thislayout->addWidget(news->line);
+    thislayout->insertWidget(newsArray.size()*2,news);
+    thislayout->insertWidget(newsArray.size()*2+1,news->line);
     
     connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
     
@@ -229,8 +243,14 @@ void MainWindow::onFavorNews(bool type)
 void MainWindow::nullPageJudge()
 {
     if(newsArray.size() == 0)
+    {
         tipLabel->show();
+        sbImage->show();
+        tip2Label->hide();
+    }
     else {
         tipLabel->hide();
+        sbImage->hide();
+        tip2Label->show();
     }
 }

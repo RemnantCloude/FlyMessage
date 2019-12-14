@@ -45,7 +45,9 @@ private:
     QFile favor_json;//收藏夹文件
     QVector<News *> newsArray;
     FM_Setting *settings;
-    QLabel *tipLabel;
+    QLabel *tipLabel, *tip2Label;
+    QLabel *sbImage;
+    QSpacerItem *newsSpacer;
 /*
  * 非255 代表其他页面
  * 255 代表收藏夹
