@@ -46,7 +46,8 @@ HEADERS += \
     settingform.h \
     float_window.h \
     webwizardform.h \
-    fm_setting.h
+    fm_setting.h \
+    aero.h
 
 RESOURCES += \
     resource.qrc

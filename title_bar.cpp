@@ -14,6 +14,7 @@
 
 TitleBar::TitleBar(QWidget *parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_StyledBackground);
     thisparent = (FlyMessage*)parentWidget();// 获得父窗口的指针
 
     initComponents();// 初始化组件

@@ -38,11 +38,10 @@ void FM_SideBar::setupUI()
     verticalLayout->addItem(vSpacer);
     
     setStyleSheet("QPushButton{border: 0px; font-size:17px;font-family:\"幼圆\";}"
-                  "QPushButton[btnClicked=true]{background-color:rgb(200,200,200);qproperty-icon: url(:/icons/right.ico);}"
+                  "QPushButton[btnClicked=true]{background-color:rgba(200,200,200,100);qproperty-icon: url(:/icons/right.ico);}"
                   "QPushButton[btnClicked=false]{qproperty-icon:none;}"
-                  "QPushButton[btnClicked=false]:hover{background-color: rgb(220,220,220);}"
-                  "QPushButton[btnClicked=false]:pressed {background-color: rgb(200,200,200);}"
-                  "FM_SideBar{background:rgba(243,243,243,100);}"
+                  "QPushButton[btnClicked=false]:hover{background-color: rgba(220,220,220,100);}"
+                  "QPushButton[btnClicked=false]:pressed {background-color: rgba(200,200,200,100);}"
                   );
     
 }

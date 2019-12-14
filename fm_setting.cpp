@@ -37,7 +37,7 @@ void FM_Setting::set_max_display_news(int i)
     this->max_display_news = i;
 }
 
-void FM_Setting::get_web_list(vector<QString> &ret)
+void FM_Setting::get_web_list(QVector<QString> &ret)
 {
     ret.clear();
     foreach(const FM_WebSetting s , web_settings)
@@ -46,14 +46,18 @@ void FM_Setting::get_web_list(vector<QString> &ret)
     }
 }
 
-void FM_Setting::get_web_columns(QString web, vector<QString> ret)
+void FM_Setting::get_web_columns(QString web, QVector<QString> ret, vector<bool> bret)
 {
     ret.clear();
+    bret.clear();
     foreach(const FM_WebSetting s, web_settings)
     {
         if(s.web_name == web)
             foreach(const FM_ColumnSetting cs, s.web_columns)
+            {
                 ret.push_back(cs.column_name);
+                bret.push_back(cs.is_enabled);
+            }
         break;
     }
 }

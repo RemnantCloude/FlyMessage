@@ -1,30 +1,43 @@
 #include "FlyMessage.h"
 #include "float_window.h"
 #include "main_window.h"
+#include "aero.h"
 
+#include <QPainter>
 //TODO:
 #define BTN_WIDTH   (40)
 #define BTN_HEIGHT  (30)
 
-FlyMessage::FlyMessage(QWidget *parent) : QWidget(parent)
-{
-    // 无边框化|添加任务栏右键菜单|添加最大化最小化按键
-    this->setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint); 
-    this->resize (1024, 720); // TODO:默认大小需可记忆
-    // hasBackgroundImage = false; // 默认无背景图片
-    // setBackgroundImage(":/images/bg");
-    
+FlyMessage::FlyMessage(QWidget *parent) : 
+    QWidget(parent),
+    settings(new FM_Setting())
+{    
     // 初始化窗体
     initComponents(); 
     
     // 设置控件位置和风格样式
     setComponentsLayout();
     setComponentsStyle();
+    //setAeroStyle();
+    initWindowStyle();
     
     // 初始化信号与槽
     initSignalAndSlot();
     
-    traySetting();
+    traySetting();   
+}
+
+void FlyMessage::initWindowStyle()
+{
+    this->resize (1024, 720); // TODO:默认大小需可记忆
+    this->setStyleSheet("TitleBar{background-color:rgba(255,243,255,60);}"
+                        "FM_SideBar{background-color:rgba(255,255,255,60);}");    
+
+    setAttribute(Qt::WA_TransparentForMouseEvents, false);
+    setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint); 
+    setAttribute(Qt::WA_TranslucentBackground, true);
+
+    setAeroStyle();
 }
 
 //TODO:
@@ -48,7 +61,7 @@ void FlyMessage::initComponents()
     mainwindow = new MainWindow(this);
     scrollarea = new QScrollArea(this);
     floatwindow = new FloatWindow(this);
-    settingform = new SettingForm(this);
+    settingform = new SettingForm(settings, this);
     GLay = new QGridLayout(this);
     scroller = QScroller::scroller(scrollarea);
     initSideBar();
@@ -171,6 +184,7 @@ void FlyMessage::onClose(bool)
 }
 
 void FlyMessage::resizeEvent(QResizeEvent* size){
+    Q_UNUSED(size);
     floatwindow->setGeometry(width() - 200,height()-80,120,50);
 }
 
@@ -201,4 +215,27 @@ void FlyMessage::moveToMainWindow()
     settingform->hide();
     
     initSideBar();
+}
+
+void FlyMessage::setAeroStyle()
+{
+
+    HWND hwnd = (HWND)this->winId();
+    DWORD style = ::GetWindowLong(hwnd, GWL_STYLE);
+    ::SetWindowLong(hwnd, GWL_STYLE, style | WS_EX_LAYERED);
+    
+    HMODULE hUser = GetModuleHandle(L"user32.dll");
+    if (hUser)
+    {
+        pfnSetWindowCompositionAttribute setWindowCompositionAttribute = (pfnSetWindowCompositionAttribute)GetProcAddress(hUser, "SetWindowCompositionAttribute");
+        if (setWindowCompositionAttribute)
+        {
+            ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
+            WINDOWCOMPOSITIONATTRIBDATA data;
+            data.Attrib = WCA_ACCENT_POLICY;
+            data.pvData = &accent;
+            data.cbData = sizeof(accent);
+            setWindowCompositionAttribute(hwnd, &data);
+        }
+    }
 }

@@ -3,8 +3,9 @@
 
 #include <QTime>
 #include <QString>
-#include <vector>
+#include <QVector>
 #include <QJsonObject>
+
 
 using namespace std;
 
@@ -15,7 +16,7 @@ struct FM_ColumnSetting {
 
 struct FM_WebSetting{
     QString web_name;
-    vector<FM_ColumnSetting> web_columns;
+    QVector<FM_ColumnSetting> web_columns;
 };
 
 class FM_Setting
@@ -34,15 +35,16 @@ public:
     int get_max_display_news();
     void set_max_display_news(int i);
     
-    void get_web_list(vector<QString> &ret);
-    void get_web_columns(QString web, vector<QString>);
+    void get_web_list(QVector<QString> &ret);
+    void get_web_columns(QString web, QVector<QString>, vector<bool> bret);
     bool get_column_state(QString web, QString column);
     
 private:
     bool global_notice;
     QTime refresh_time;
     int max_display_news;
-    vector<FM_WebSetting> web_settings;
+    QVector<FM_WebSetting> web_settings;
+    
     QJsonObject readJson(QString filename);
     void writeJson(QString filename, QJsonArray news, bool type);
 };

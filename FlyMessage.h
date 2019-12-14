@@ -50,6 +50,8 @@ private:
     QAction *mShowMainAction;
     QAction *mExitAppAction;
     
+    FM_Setting *settings;
+    
 public slots:
     void onMin(bool);
     void onMax(bool);
@@ -71,6 +73,8 @@ protected:
     void setBackgroundImage(QString filename); // 设置背景图片
 
     void resizeEvent(QResizeEvent* size);
+    void setAeroStyle();
+    void initWindowStyle();
 };
 
 #endif // FLY_MESSAGE_H
