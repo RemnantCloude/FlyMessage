@@ -16,7 +16,7 @@ class FM_SideBar;
 class FM_SBButton : public QPushButton {
     Q_OBJECT
 public:
-    explicit FM_SBButton(QWidget *parent,const QString &str);
+    explicit FM_SBButton(QWidget *parent, const QString &str, bool checked);
     
     ~FM_SBButton() {}
 };
@@ -26,6 +26,7 @@ struct FM_SideItemData {
     FM_SideItemData(QString s, void(FM_SideBar::*f)());
     ~FM_SideItemData() {}
     QString caption;
+    bool checked = false;
     void (FM_SideBar::*func)();
     
 };
@@ -54,6 +55,7 @@ signals:
 private:
     Ui::FM_SideBar *ui;
     QVector<FM_SBButton*> items;
+    QVector<FM_SideItemData> *btn_data;
     QVBoxLayout *verticalLayout;
     QSpacerItem *vSpacer;
     

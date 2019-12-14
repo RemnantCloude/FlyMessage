@@ -58,7 +58,7 @@ void FlyMessage::initComponents()
 {
     titlebar = new TitleBar(this);
     sidebar = new FM_SideBar(this);
-    mainwindow = new MainWindow(this);
+    mainwindow = new MainWindow(settings, this);
     scrollarea = new QScrollArea(this);
     floatwindow = new FloatWindow(this);
     settingform = new SettingForm(settings, this);
@@ -70,15 +70,21 @@ void FlyMessage::initComponents()
 
 void FlyMessage::initSideBar()
 {
-    QVector<FM_SideItemData> items;
-    items.append(FM_SideItemData("加载json", &FM_SideBar::customAction_refresh));
-    items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor));
-    sidebar->setSideBarList(items);
+    
+    main_sidebar_items.append(FM_SideItemData("加载json", &FM_SideBar::customAction_refresh));
+    main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor));
+    
+    setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back));
     
     connect(sidebar, &FM_SideBar::signal_refresh, mainwindow, &MainWindow::onRefreshNews);
     connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
+    
     connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
     connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
+    
+    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+    
+    sidebar->setSideBarList(main_sidebar_items);
 }
 
 void FlyMessage::initSignalAndSlot()
@@ -100,7 +106,7 @@ void FlyMessage::setComponentsStyle()
     scrollarea->setStyleSheet("QScrollArea {background:white}");
     scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     
-    settingform->setStyleSheet("SettingForm{background:white}");
+    settingform->setStyleSheet("SettingForm{background:white;}");
     
     GLay->setContentsMargins(6,6,6,6);
     GLay->setSpacing(0);
@@ -199,12 +205,7 @@ void FlyMessage::moveToSettingForm()
     scrollarea->setWidget(settingform);
     mainwindow->hide();
     floatwindow->hide();
-    
-    QVector<FM_SideItemData> items;
-    items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back));
-    sidebar->setSideBarList(items);
-    
-    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+    sidebar->setSideBarList(setting_sidebar_items);
 }
 
 void FlyMessage::moveToMainWindow()
@@ -213,8 +214,8 @@ void FlyMessage::moveToMainWindow()
     scrollarea->setWidget(mainwindow);
     floatwindow->show();
     settingform->hide();
-    
-    initSideBar();
+    setting_sidebar_items[0].checked = false;
+    sidebar->setSideBarList(main_sidebar_items);
 }
 
 void FlyMessage::setAeroStyle()

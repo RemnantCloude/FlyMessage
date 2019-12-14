@@ -25,16 +25,18 @@ public:
     void putMeIntoLayout(QVBoxLayout *layout);
     void expandColumns();
     void contractColumns();
+protected:
+    void paintEvent(QPaintEvent *event);
 protected slots:
     void toggleColumns();
 private:
-    bool isExtend = true;
+    bool isExtend = false;
+    int groupHeight = 0;
     QCommandLinkButton *webBtn;
     QGroupBox *columnGroup;
     QGridLayout *columnLayout;
     vector<QCheckBox *> columnCheckBoxes;
     QPropertyAnimation *animation;
-    
     const QString webName;
     FM_Setting *settings;
 };

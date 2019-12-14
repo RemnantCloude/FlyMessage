@@ -12,8 +12,8 @@ class News : public QWidget
 {
     Q_OBJECT
 public:
-    explicit News(QWidget *parent, QString title, QString time, QString tpye, QString abstract, bool favor);
-    ~News() {}
+    explicit News(QWidget *parent, QString title, QString time, QString tpye, QString abstract, bool needfavor);
+    ~News();
 
     QLabel *title_Lab;
     QLabel *time_Lab;
@@ -21,7 +21,6 @@ public:
     QLabel *abstract_Lab;
     QPushButton *favor_Btn;
     QGridLayout *thislayout;
-    QPalette pal;
     QFrame *line;
 
     bool isFavor;

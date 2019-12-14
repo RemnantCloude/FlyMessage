@@ -10,12 +10,12 @@ FM_SideItemData::FM_SideItemData(QString s, void(FM_SideBar::*f)()) : caption(s)
     
 }
 
-FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) : QPushButton (parent)
+FM_SBButton::FM_SBButton(QWidget *parent,const QString &str, bool checked) : QPushButton (parent)
 {
     this->setText(str);
     this->setObjectName(str);
     this->setMinimumSize(QSize(0, 50));
-    this->setProperty("btnClicked",false);
+    this->setProperty("btnClicked",checked);
 }
 
 FM_SideBar::FM_SideBar(QWidget *parent) : QWidget(parent)
@@ -51,28 +51,35 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
     clearItems();
     foreach(FM_SideItemData data, idata) {
         FM_SBButton *pButton;
-        pButton = new FM_SBButton(this, data.caption);
+        pButton = new FM_SBButton(this, data.caption, data.checked);
         this->items.append(pButton);
         verticalLayout->insertWidget(0, pButton);
         
         connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::defaultAction);
         connect(pButton, &FM_SBButton::clicked, this, data.func);
     }
+    btn_data = &idata;
 }
 
 void FM_SideBar::defaultAction()
 {
     FM_SBButton *selected = qobject_cast<FM_SBButton *>(QObject::sender());
 
-    foreach(FM_SBButton *btn, items)
+    for (int i = 0; i < items.size(); ++i)
     {
-        if(btn!=selected)
-            btn->setProperty("btnClicked", false);
+        if(items[i]!=selected)
+        {
+            items[i]->setProperty("btnClicked", false);
+            (*btn_data)[i].checked = false;
+        }
         else
-            btn->setProperty("btnClicked", true);
-        
-        btn->style()->unpolish(btn);
-        btn->style()->polish(btn);
+        {
+            items[i]->setProperty("btnClicked", true);
+            (*btn_data)[i].checked = true;
+        }
+
+        items[i]->style()->unpolish(items[i]);
+        items[i]->style()->polish(items[i]);
     }
 }
 /**

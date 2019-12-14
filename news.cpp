@@ -3,7 +3,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QGridLayout>
-#include <QPalette>
 #include <QStyleOption>
 #include <QPainter>
 #include <QDesktopServices>
@@ -17,17 +16,31 @@
 #define ADDNEWS     true
 #define DELETENEWS  false
 
-News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool favor) : QWidget(parent)
+News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool needfavor) : QWidget(parent)
 {
     setAttribute(Qt::WA_StyledBackground,true);
     
-    isFavor = favor;
+    isFavor = !needfavor;
+    
     initComponents();// 初始化组件
     initSignalAndSlot();// 初始化信号与槽
 
     setThisLayout();
     setThisStyle(title, time, type, abstract);
 }
+
+News::~News()
+{
+    delete title_Lab;
+    delete time_Lab;
+    delete type_Lab;
+    delete abstract_Lab;
+    delete favor_Btn;
+    delete thislayout;
+    delete line;
+}
+
+
 
 void News::initComponents()
 {
@@ -81,7 +94,17 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
     favor_Btn->setFont(font);
     favor_Btn->setText(QChar(0xf005));
     favor_Btn->setStyleSheet("QPushButton{font-size:20px;}");
-
+    if(isFavor)
+        favor_Btn->setProperty("favored",true);
+    else {
+        favor_Btn->setProperty("favored",false);
+    }
+    favor_Btn->setStyleSheet("QPushButton{font-size: 20px; border: 0px; background:rgba(255,255,255,0);}"
+                             "QPushButton[favored=false]{color: black;}"
+                             "QPushButton[favored=true]{color: #00A2FF;}"
+                             "QPushButton:hover{color: rgb(255,201,14);}");
+    
+    
     line->setFrameShadow(QFrame::Raised);
     line->setFrameShape(QFrame::HLine);
 
@@ -103,12 +126,14 @@ void News::changeFavor(bool)
     {
         isFavor = false;
         emit FavorNews(DELETENEWS);
-        favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: black}");
+        favor_Btn->setProperty("favored",false);
     }
     else//添加收藏
     {
         isFavor = true;
         emit FavorNews(ADDNEWS);
-        favor_Btn->setStyleSheet("QPushButton{font-size: 20px; color: #00A2FF}");//蓝色
+        favor_Btn->setProperty("favored",true);
     }
+    favor_Btn->style()->unpolish(favor_Btn);
+    favor_Btn->style()->polish(favor_Btn);
 }

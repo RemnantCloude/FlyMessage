@@ -22,7 +22,9 @@
 #define ADDNEWS     true
 #define DELETENEWS  false
 
-MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
+MainWindow::MainWindow(FM_Setting *se, QWidget *parent) : 
+    QWidget(parent),
+    settings(se)
 {
     setAttribute(Qt::WA_StyledBackground,true);
     
@@ -38,6 +40,14 @@ void MainWindow::setThisLayout()
     thislayout = new QVBoxLayout();
     this->setLayout(thislayout);
     thislayout->setSpacing(0);
+    
+    
+    tipLabel = new QLabel("这里空空如也~");
+    tipLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
+    tipLabel->setAlignment(Qt::AlignCenter);
+    tipLabel->setStyleSheet("font-family: \"微软雅黑\"; font-size: 48px; color:gray; text-align: center;");
+    
+    thislayout->addWidget(tipLabel);
 }
 
 void MainWindow::setThisStyle()
@@ -116,6 +126,30 @@ void MainWindow::writeJson(QString filename, QJsonArray news, bool type)
     file.close();
 }
 
+void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool needFavor)
+{
+    News *news = new News(this,a,b,c,d,needFavor);
+    newsArray.append(news);
+    
+    news->setCursor(Qt::PointingHandCursor);
+    thislayout->addWidget(news);
+    thislayout->addWidget(news->line);
+    
+    connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
+    
+    nullPageJudge();
+}
+
+void MainWindow::clearNews()
+{
+    foreach(News *news, newsArray)
+    {
+        delete news;
+        newsArray.pop_back();
+    }
+    nullPageJudge();
+}
+
 void MainWindow::getFavorNews()
 {
     clearNews();
@@ -125,71 +159,49 @@ void MainWindow::getFavorNews()
     for(int i = 0; i < array.size(); i++)
     {
         QJsonArray array1 = array.at(i).toArray();//单条新闻
-        News *news = new News(this,
-                              array1.at(0).toString(),
-                              array1.at(1).toString(),
-                              array1.at(2).toString(),
-                              array1.at(3).toString(),
-                              false);
-        news->setCursor(Qt::PointingHandCursor);
-        thislayout->addWidget(news);
-        thislayout->addWidget(news->line);
+        addNewsItem(array1.at(0).toString(),
+                    array1.at(1).toString(),
+                    array1.at(2).toString(),
+                    array1.at(3).toString(),
+                    false);
+
     }
+    pageState = PageState::FavorPage;
 }
 
 void MainWindow::getNews(QString web)
 {
-    clearNews();
-
     int count = 0;
-    //读取设置文件内容
-    QJsonObject settings = readJson("./test_settings.json");
 
-    //解析文件
-    QJsonObject settings_type = settings.value(web).toObject();
-    QStringList settings_str = settings_type.keys();//获得板块名
+    QVector<QString> column_str;
+    QVector<bool>    column_bool;
+    
+    settings->get_web_columns(web,column_str,column_bool);
 
     //获取新闻内容
     QJsonObject news = readJson("./test_news.json");
     QJsonObject news_type = news.value(web).toObject();
-    for(int i = 0; i < settings_type.size(); i++)
+    
+    for(int i = 0; i < column_str.size(); i++)
     {
-        if( settings_type.value(settings_str.at(i)).toBool() == true)//板块匹配
+        if(column_bool[i])
         {
-            QJsonArray array = news_type.value(settings_str.at(i)).toArray();//网站新闻
+            QJsonArray array = news_type.value(column_str[i]).toArray();//网站新闻
             for(int i = 0; i < array.size() & count < 10; i++)
             {
                 QJsonArray array1 = array.at(i).toArray();//单条新闻
-                News *news = new News(this,
-                                      array1.at(0).toString(),
-                                      array1.at(1).toString(),
-                                      array1.at(2).toString(),
-                                      array1.at(3).toString(),
-                                      false);
-                news->setCursor(Qt::PointingHandCursor);
-                thislayout->addWidget(news);
-                thislayout->addWidget(news->line);
-                connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
-
+                
+                addNewsItem(array1.at(0).toString(),
+                            array1.at(1).toString(),
+                            array1.at(2).toString(),
+                            array1.at(3).toString(),
+                            true);                
                 count++;
             }
             count = 0;//清零
         }
     }
-}
-
-void MainWindow::clearNews()
-{
-    QLayoutItem *child;
-    while ((child = thislayout->takeAt(0)) != nullptr)
-    {
-        //setParent为NULL，防止删除之后界面不消失
-        if(child->widget())
-        {
-            child->widget()->setParent(nullptr);
-        }
-        delete child;
-    }
+    pageState = PageState::OtherPage;
 }
 
 void MainWindow::onRefreshNews()
@@ -205,7 +217,20 @@ void MainWindow::onFavorNews(bool type)
     array.insert(1, news->time_Lab->text());
     array.insert(2, news->type_Lab->text());
     array.insert(3, news->abstract_Lab->text());
-
     writeJson("./test_favorite.json", array, type);
+    //收藏夹状态删除条目
+    if(type == false && pageState == PageState::FavorPage){
+        newsArray.removeOne(news);
+        delete news;
+    }
+    nullPageJudge();
 }
 
+void MainWindow::nullPageJudge()
+{
+    if(newsArray.size() == 0)
+        tipLabel->show();
+    else {
+        tipLabel->hide();
+    }
+}

@@ -50,6 +50,9 @@ private:
     QAction *mShowMainAction;
     QAction *mExitAppAction;
     
+    QVector<FM_SideItemData> main_sidebar_items;
+    QVector<FM_SideItemData> setting_sidebar_items;
+    
     FM_Setting *settings;
     
 public slots:
