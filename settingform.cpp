@@ -9,11 +9,11 @@ SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
     ui(new Ui::SettingForm)
 {
     ui->setupUi(this);
-    
+    updateWebWidget();
 }
 
 void SettingForm::updateWebWidget() {
-    vector<QString> webList;
+    QVector<QString> webList;
     settings->get_web_list(webList);
     foreach(QString webName, webList)
     {
@@ -41,12 +41,12 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString webName, QWidget *pare
     webName (webName),
     settings(s)
 {
-    vector<QString> columns;
-    vector<bool> columns_states;
+    QVector<QString> columns;
+    QVector<bool> columns_states;
     
     webBtn = new QCommandLinkButton(webName, this);
     columnGroup = new QGroupBox(webName, this);
-    columnLayout = new QGridLayout(this);
+    columnLayout = new QGridLayout(columnGroup);
     
     settings->get_web_columns(webName, columns, columns_states);
     
@@ -59,12 +59,13 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString webName, QWidget *pare
         
         columnLayout->addWidget(columnCheck, i / max_columns_a_row, i % max_columns_a_row);
     }
+    columnGroup->setLayout(columnLayout);
 }
 
 void WebSettingWidget::putMeIntoLayout(QVBoxLayout *layout)
 {
-    layout->addWidget(this->webBtn);
-    layout->addWidget(this->columnGroup);
+    layout->insertWidget(1,this->columnGroup);
+    layout->insertWidget(1,this->webBtn);
 }
 
 void WebSettingWidget::expandColumns()

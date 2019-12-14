@@ -10,19 +10,23 @@
 using namespace std;
 
 struct FM_ColumnSetting {
+    FM_ColumnSetting (QString c, bool i) : column_name(c), is_enabled(i) {}
+    FM_ColumnSetting () {}
     QString column_name;
     bool is_enabled;
 };
 
 struct FM_WebSetting{
+    FM_WebSetting (QString w, QVector<FM_ColumnSetting *> wc) : web_name(w), web_columns(wc) {}
+    FM_WebSetting () {}
     QString web_name;
-    QVector<FM_ColumnSetting> web_columns;
+    QVector<FM_ColumnSetting *> web_columns;
 };
 
 class FM_Setting
 {
 public:
-    FM_Setting() {}
+    FM_Setting();
     void read_setting_from_json();
     void update_setting_from_json();
     
@@ -36,14 +40,14 @@ public:
     void set_max_display_news(int i);
     
     void get_web_list(QVector<QString> &ret);
-    void get_web_columns(QString web, QVector<QString>, vector<bool> bret);
+    void get_web_columns(QString web, QVector<QString> &, QVector<bool> &bret);
     bool get_column_state(QString web, QString column);
     
 private:
     bool global_notice;
     QTime refresh_time;
     int max_display_news;
-    QVector<FM_WebSetting> web_settings;
+    QVector<FM_WebSetting *> web_settings;
     
     QJsonObject readJson(QString filename);
     void writeJson(QString filename, QJsonObject settings);

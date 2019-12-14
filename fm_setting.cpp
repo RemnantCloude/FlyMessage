@@ -40,23 +40,23 @@ void FM_Setting::set_max_display_news(int i)
 void FM_Setting::get_web_list(QVector<QString> &ret)
 {
     ret.clear();
-    foreach(const FM_WebSetting s , web_settings)
+    foreach(const FM_WebSetting *s , web_settings)
     {
-        ret.push_back(s.web_name);
+        ret.push_back(s->web_name);
     }
 }
 
-void FM_Setting::get_web_columns(QString web, QVector<QString> ret, vector<bool> bret)
+void FM_Setting::get_web_columns(QString web, QVector<QString> &ret, QVector<bool> &bret)
 {
     ret.clear();
     bret.clear();
-    foreach(const FM_WebSetting s, web_settings)
+    foreach(const FM_WebSetting* s, web_settings)
     {
-        if(s.web_name == web)
-            foreach(const FM_ColumnSetting cs, s.web_columns)
+        if(s->web_name == web)
+            foreach(const FM_ColumnSetting* cs, s->web_columns)
             {
-                ret.push_back(cs.column_name);
-                bret.push_back(cs.is_enabled);
+                ret.push_back(cs->column_name);
+                bret.push_back(cs->is_enabled);
             }
         break;
     }
@@ -64,12 +64,12 @@ void FM_Setting::get_web_columns(QString web, QVector<QString> ret, vector<bool>
 
 bool FM_Setting::get_column_state(QString web, QString column)
 {
-    foreach(const FM_WebSetting s, web_settings)
+    foreach(FM_WebSetting *s, web_settings)
     {
-        if(s.web_name == web)
-            foreach(const FM_ColumnSetting cs, s.web_columns)
-                if(cs.column_name == column)
-                    return cs.is_enabled;
+        if(s->web_name == web)
+            foreach(const FM_ColumnSetting *cs, s->web_columns)
+                if(cs->column_name == column)
+                    return cs->is_enabled;
         break;
     }
                 
@@ -107,6 +107,11 @@ void FM_Setting::writeJson(QString filename, QJsonObject settings)
     file.close();
 }
 
+FM_Setting::FM_Setting()
+{
+    read_setting_from_json();
+}
+
 void FM_Setting::read_setting_from_json()
 {
     //读取设置文件内容
@@ -123,12 +128,12 @@ void FM_Setting::read_setting_from_json()
     foreach(const QString &website, settings.keys())
     {
         QJsonObject jcolumn = settings.value(website).toObject();
-        QVector<FM_ColumnSetting> column_setting;
+        QVector<FM_ColumnSetting *> column_setting;
         foreach(const QString &column, jcolumn.keys())
         {
-            column_setting.append(column, jcolumn.value(column));
+            column_setting.append(new FM_ColumnSetting(column, jcolumn.value(column).toBool()));
         }
-        web_settings.append(website, )
+        web_settings.append(new FM_WebSetting(website, column_setting));
     }
 }
 
