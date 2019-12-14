@@ -1,4 +1,4 @@
-#ifndef FM_SETTING_H
+﻿#ifndef FM_SETTING_H
 #define FM_SETTING_H
 
 #include <QTime>
@@ -46,7 +46,7 @@ private:
     QVector<FM_WebSetting> web_settings;
     
     QJsonObject readJson(QString filename);
-    void writeJson(QString filename, QJsonArray news, bool type);
+    void writeJson(QString filename, QJsonObject settings);
 };
 
 #endif // FM_SETTING_H

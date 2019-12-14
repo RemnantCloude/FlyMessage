@@ -1,4 +1,4 @@
-#include "fm_setting.h"
+﻿#include "fm_setting.h"
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
@@ -95,25 +95,54 @@ QJsonObject FM_Setting::readJson(QString filename)
     return jsonObject;
 }
 
-void FM_Setting::writeJson(QString filename, QJsonArray news, bool type)
+void FM_Setting::writeJson(QString filename, QJsonObject settings)
 {
+    QFile file(filename);
+    file.open(QIODevice::ReadWrite);
+    file.resize(0);
 
+    QJsonDocument document;
+    document.setObject(settings);
+    file.write(document.toJson());
+    file.close();
 }
 
 void FM_Setting::read_setting_from_json()
 {
     //读取设置文件内容
     QJsonObject settings = readJson("./test_settings.json");
-    QStringList webs = settings.keys();
-    
-    
-    
-    //解析文件
-    //QJsonObject settings_type = settings.value(web).toObject();
-    //QStringList settings_str = settings_type.keys();//获得板块名
+    QJsonObject global_settings = settings.value("global_settings").toObject();
+
+    global_notice = global_settings.value("global_notice").toBool();
+    refresh_time.setHMS(global_settings.value("refresh_time_hour").toInt(),
+                        global_settings.value("refresh_time_minute").toInt(),
+                        global_settings.value("refresh_time_second").toInt(),
+                        global_settings.value("refresh_time_msec").toInt());
+    max_display_news = global_settings.value("max_display_news").toInt();
+
+    foreach(const QString &website, settings.keys())
+    {
+        QJsonObject jcolumn = settings.value(website).toObject();
+        QVector<FM_ColumnSetting> column_setting;
+        foreach(const QString &column, jcolumn.keys())
+        {
+            column_setting.append(column, jcolumn.value(column));
+        }
+        web_settings.append(website, )
+    }
 }
 
 void FM_Setting::update_setting_from_json()
 {
-    
+    QJsonObject settings;
+    settings.insert("global_notice", QJsonValue(global_notice));
+    settings.insert("refresh_time_hour", QJsonValue(refresh_time.hour()));
+    settings.insert("refresh_time_minute", QJsonValue(refresh_time.minute()));
+    settings.insert("refresh_time_second", QJsonValue(refresh_time.second()));
+    settings.insert("refresh_time_msec", QJsonValue(refresh_time.msec()));
+    settings.insert("max_display_news", QJsonValue(max_display_news));
+    settings.insert("minimize_notice_first_time", QJsonValue(false));
+    settings.insert("use_software_first_time", QJsonValue(false));
+
+    writeJson("./test_settings.json", settings);
 }
