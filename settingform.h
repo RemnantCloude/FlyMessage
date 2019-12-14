@@ -25,6 +25,9 @@ public:
     void putMeIntoLayout(QVBoxLayout *layout);
     void expandColumns();
     void contractColumns();
+    
+    const QString webName;
+    vector<QCheckBox *> columnCheckBoxes;
 protected:
     void paintEvent(QPaintEvent *event);
 protected slots:
@@ -35,9 +38,7 @@ private:
     QCommandLinkButton *webBtn;
     QGroupBox *columnGroup;
     QGridLayout *columnLayout;
-    vector<QCheckBox *> columnCheckBoxes;
     QPropertyAnimation *animation;
-    const QString webName;
     FM_Setting *settings;
 };
 
@@ -49,10 +50,14 @@ public:
     explicit SettingForm(FM_Setting *s, QWidget *parent = nullptr);
     ~SettingForm();
     void updateWebWidget();
+public slots:
+    void updateGlobalSettings();
+    
 private:
     FM_Setting *settings;
     Ui::SettingForm *ui;
     vector<WebSettingWidget *> websWidget;
+    void updateUIWithSettings();
 };
 
 #endif // SETTINGFORM_H

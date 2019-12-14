@@ -28,13 +28,13 @@ class FM_Setting
 public:
     FM_Setting();
     void read_setting_from_json();
-    void update_setting_from_json();
+    void update_setting_to_json();
     
     bool get_global_notice();
     void set_global_notice(bool b);
     
     QTime get_refresh_time();
-    void set_refresh_time(QTime &q);
+    void set_refresh_time(QTime q);
     
     int get_max_display_news();
     void set_max_display_news(int i);
@@ -42,7 +42,7 @@ public:
     void get_web_list(QVector<QString> &ret);
     void get_web_columns(QString web, QVector<QString> &, QVector<bool> &bret);
     bool get_column_state(QString web, QString column);
-    
+    void set_column_state(QString web, QString column, bool state);
 private:
     bool global_notice;
     QTime refresh_time;

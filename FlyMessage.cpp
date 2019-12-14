@@ -83,6 +83,7 @@ void FlyMessage::initSideBar()
     connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
     
     connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+    connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
     
     sidebar->setSideBarList(main_sidebar_items);
 }

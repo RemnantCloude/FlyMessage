@@ -40,8 +40,6 @@ News::~News()
     delete line;
 }
 
-
-
 void News::initComponents()
 {
     title_Lab = new QLabel();

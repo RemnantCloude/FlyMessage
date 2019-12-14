@@ -22,7 +22,7 @@ QTime FM_Setting::get_refresh_time()
     return this->refresh_time;
 }
 
-void FM_Setting::set_refresh_time(QTime &q)
+void FM_Setting::set_refresh_time(QTime q)
 {
     this->refresh_time = q;
 }
@@ -69,12 +69,31 @@ bool FM_Setting::get_column_state(QString web, QString column)
     foreach(FM_WebSetting *s, web_settings)
     {
         if(s->web_name == web)
+        {
             foreach(const FM_ColumnSetting *cs, s->web_columns)
+            {
                 if(cs->column_name == column)
+                {
                     return cs->is_enabled;
-        break;
+                }
+            }
+        }
     }
-                
+    return false;
+}
+
+void FM_Setting::set_column_state(QString web, QString column, bool state)
+{
+    foreach(FM_WebSetting *s, web_settings)
+    {
+        if(s->web_name == web)
+            foreach(FM_ColumnSetting *cs, s->web_columns)
+                if(cs->column_name == column)
+                {
+                    cs->is_enabled = state;
+                    break;
+                }
+    }
 }
 
 
@@ -141,7 +160,7 @@ void FM_Setting::read_setting_from_json()
     }
 }
 
-void FM_Setting::update_setting_from_json()
+void FM_Setting::update_setting_to_json()
 {
     QJsonObject settings;
     settings.insert("global_notice", QJsonValue(global_notice));

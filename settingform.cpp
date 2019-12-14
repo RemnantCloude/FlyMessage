@@ -25,6 +25,7 @@ SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
     //this->setFont(myFont);
     
     updateWebWidget();
+    updateUIWithSettings();
 }
 
 void SettingForm::updateWebWidget() {
@@ -36,6 +37,31 @@ void SettingForm::updateWebWidget() {
         pWidget = new WebSettingWidget(settings, webName, this);
         pWidget->putMeIntoLayout(ui->webSettingLayout);
     }
+}
+
+void SettingForm::updateGlobalSettings()
+{
+    settings->set_global_notice(ui->noticeCheckBox->checkState());
+    settings->set_refresh_time(QTime(ui->HourSpin->value(),ui->MinuteSpin->value(),0,0));
+    settings->set_max_display_news(ui->maxNewsNum->value());
+    foreach(WebSettingWidget *wsw,websWidget)
+    {
+        foreach(QCheckBox *qcb,wsw->columnCheckBoxes)
+        {
+            settings->set_column_state(wsw->webName, qcb->text(), qcb->checkState());
+        }
+    }
+    settings->update_setting_to_json();
+}
+
+void SettingForm::updateUIWithSettings()
+{
+    QTime time;
+    ui->noticeCheckBox->setChecked(settings->get_global_notice());
+    time = settings->get_refresh_time();
+    ui->HourSpin->setValue(time.hour());
+    ui->MinuteSpin->setValue(time.minute());
+    ui->maxNewsNum->setValue(settings->get_max_display_news());    
 }
 
 SettingForm::~SettingForm()
@@ -68,11 +94,12 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString w, QWidget *parent) :
     }
     columnGroup->setLayout(columnLayout);
     columnGroup->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Maximum));
-    //columnGroup->setMaximumHeight(0);
     animation = new QPropertyAnimation(columnGroup, "maximumHeight");  
     
     connect(webBtn, &QCommandLinkButton::clicked, this, &WebSettingWidget::toggleColumns);
 }
+
+
 
 void WebSettingWidget::putMeIntoLayout(QVBoxLayout *layout)
 {
