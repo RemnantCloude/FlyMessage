@@ -1,7 +1,17 @@
 {
-    "website1":{
-        "politics":true,
-        "finance":true,
-        "military":true
+    "global_settings": {
+        "global_notice": true,
+        "refresh_time_hour": 0,
+        "refresh_time_minute": 30,
+        "refresh_time_second": 0,
+        "refresh_time_msec": 0,
+        "max_display_news": 10,
+        "minimize_notice_first_time": false,
+        "use_software_first_time": false
+    },
+    "website1": {
+        "using": false,
+        "板块1": false,
+        "板块2": false
     }
 }
