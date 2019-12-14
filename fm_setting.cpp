@@ -52,7 +52,6 @@ void FM_Setting::get_web_columns(QString web, QVector<QString> &ret, QVector<boo
     bret.clear();
     foreach(FM_WebSetting* s, web_settings)
     {
-        qDebug() << s->web_name;
         if(s->web_name == web)
         {
             foreach(const FM_ColumnSetting* cs, s->web_columns)

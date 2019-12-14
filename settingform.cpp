@@ -1,7 +1,7 @@
 #include "settingform.h"
 #include "ui_settingform.h"
 
-const uint32_t max_columns_a_row = 3;
+const uint32_t max_columns_a_row = 2;
 
 SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
     QWidget(parent),
@@ -60,6 +60,11 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString w, QWidget *parent) :
         columnLayout->addWidget(columnCheck, i / max_columns_a_row, i % max_columns_a_row);
     }
     columnGroup->setLayout(columnLayout);
+    columnGroup->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Minimum));
+    columnGroup->setMaximumHeight(0);
+    animation = new QPropertyAnimation(columnGroup, "maximumHeight");  
+    
+    connect(webBtn, &QCommandLinkButton::clicked, this, &WebSettingWidget::toggleColumns);
 }
 
 void WebSettingWidget::putMeIntoLayout(QVBoxLayout *layout)
@@ -76,4 +81,22 @@ void WebSettingWidget::expandColumns()
 void WebSettingWidget::contractColumns()
 {
     
+}
+
+void WebSettingWidget::toggleColumns()
+{
+    if(isExtend)
+    {
+        animation->setDuration(300);
+        animation->setStartValue(0);  
+        animation->setEndValue(100);
+    }
+    else
+    {
+        animation->setDuration(300);
+        animation->setStartValue(columnGroup->height()+10);
+        animation->setEndValue(0);
+    }
+    animation->start();
+    isExtend = !isExtend;
 }

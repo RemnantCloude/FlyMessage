@@ -10,6 +10,7 @@
 #include <QCheckBox>
 #include <QGridLayout>
 #include <QVBoxLayout>
+#include <QPropertyAnimation>
 
 namespace Ui {
 class SettingForm;
@@ -24,11 +25,15 @@ public:
     void putMeIntoLayout(QVBoxLayout *layout);
     void expandColumns();
     void contractColumns();
+protected slots:
+    void toggleColumns();
 private:
+    bool isExtend = true;
     QCommandLinkButton *webBtn;
     QGroupBox *columnGroup;
     QGridLayout *columnLayout;
     vector<QCheckBox *> columnCheckBoxes;
+    QPropertyAnimation *animation;
     
     const QString webName;
     FM_Setting *settings;
