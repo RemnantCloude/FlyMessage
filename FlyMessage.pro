@@ -32,7 +32,9 @@ SOURCES += \
     news.cpp \
     fm_sidebar.cpp \
     settingform.cpp \
-    float_window.cpp
+    float_window.cpp \
+    webwizardform.cpp \
+    fm_setting.cpp
 
 
 HEADERS += \
@@ -42,7 +44,9 @@ HEADERS += \
     news.h \
     fm_sidebar.h \
     settingform.h \
-    float_window.h
+    float_window.h \
+    webwizardform.h \
+    fm_setting.h
 
 RESOURCES += \
     resource.qrc
@@ -53,5 +57,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 FORMS += \
-    settingform.ui
+    settingform.ui \
+    webwizardform.ui
 

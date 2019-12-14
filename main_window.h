@@ -18,7 +18,7 @@ public:
     void clearNews();
 
 public slots:
-    void onRefreshNews(bool);//刷新新闻
+    void onRefreshNews();//刷新新闻
     void onFavorNews(bool type);//删除或添加单条收藏夹新闻
     void getFavorNews();//获取收藏夹新闻
     

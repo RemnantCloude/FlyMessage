@@ -44,10 +44,12 @@ public slots:
     void defaultAction();
     void customAction_refresh();
     void customAction_favor();
+    void customAction_back();
     
 signals:
     void signal_refresh(QString);
     void signal_favor(void);
+    void signal_back();
     
 private:
     Ui::FM_SideBar *ui;

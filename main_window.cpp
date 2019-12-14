@@ -192,7 +192,7 @@ void MainWindow::clearNews()
     }
 }
 
-void MainWindow::onRefreshNews(bool)
+void MainWindow::onRefreshNews()
 {
     getNews(website);
 }

@@ -48,8 +48,11 @@ void FlyMessage::initComponents()
     mainwindow = new MainWindow(this);
     scrollarea = new QScrollArea(this);
     floatwindow = new FloatWindow(this);
+    settingform = new SettingForm(this);
     GLay = new QGridLayout(this);
+    scroller = QScroller::scroller(scrollarea);
     initSideBar();
+    settingform->hide();
 }
 
 void FlyMessage::initSideBar()
@@ -59,7 +62,7 @@ void FlyMessage::initSideBar()
     items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor));
     sidebar->setSideBarList(items);
     
-    connect(sidebar, &FM_SideBar::signal_refresh, mainwindow, &MainWindow::getNews);
+    connect(sidebar, &FM_SideBar::signal_refresh, mainwindow, &MainWindow::onRefreshNews);
     connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
     connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
     connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
@@ -71,16 +74,20 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
+    connect(titlebar->settings_Btn, SIGNAL(clicked()), SLOT(moveToSettingForm()));
     
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked(bool)), mainwindow, SLOT(onRefreshNews(bool)));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
 }
 
 void FlyMessage::setComponentsStyle()
 {
+    
     scrollarea->setWidgetResizable(true);
     scrollarea->setStyleSheet("QScrollArea {background:white}");
     scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    
+    settingform->setStyleSheet("SettingForm{background:white}");
     
     GLay->setContentsMargins(6,6,6,6);
     GLay->setSpacing(0);
@@ -92,6 +99,7 @@ void FlyMessage::setComponentsLayout()
 
     // 设置布局器
     scrollarea->setWidget(mainwindow);
+    scrollarea->setAlignment(Qt::AlignHCenter);
 
     GLay->addWidget(titlebar, 0, 0, 1, 5);
     GLay->addWidget(sidebar, 1, 0, 1, 1);
@@ -168,5 +176,29 @@ void FlyMessage::resizeEvent(QResizeEvent* size){
 
 void FlyMessage::returnToTop()
 {
-    this->scrollarea->ensureVisible(0,0);
+    scroller->scrollTo(QPointF(0, 0));
+}
+
+void FlyMessage::moveToSettingForm()
+{
+    scrollarea->takeWidget();
+    scrollarea->setWidget(settingform);
+    mainwindow->hide();
+    floatwindow->hide();
+    
+    QVector<FM_SideItemData> items;
+    items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back));
+    sidebar->setSideBarList(items);
+    
+    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+}
+
+void FlyMessage::moveToMainWindow()
+{
+    scrollarea->takeWidget();
+    scrollarea->setWidget(mainwindow);
+    floatwindow->show();
+    settingform->hide();
+    
+    initSideBar();
 }

@@ -3,6 +3,7 @@
 #include "FlyMessage.h"
 #include "fm_sidebar.h"
 #include "settingform.h"
+#include "webwizardform.h"
 
 int main(int argc, char *argv[])
 {
