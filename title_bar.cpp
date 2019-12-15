@@ -26,13 +26,13 @@ TitleBar::TitleBar(QWidget *parent) : QWidget(parent)
 
 TitleBar::~TitleBar()
 {
-//    delete min_Btn; // 显示最大或者最小的图标
-//    delete max_Btn; // 最大化按钮
-//    delete close_Btn;// 关闭按钮
-//    delete settings_Btn;// 设置按钮
-//    delete skin_Btn;// 皮肤设置按钮
-//    delete icon_Lab; // 图标
-//    delete title_Lab; // 标题
+    delete min_Btn; // 显示最大或者最小的图标
+    delete max_Btn; // 最大化按钮
+    delete close_Btn;// 关闭按钮
+    delete settings_Btn;// 设置按钮
+    delete skin_Btn;// 皮肤设置按钮
+    delete icon_Lab; // 图标
+    delete title_Lab; // 标题
 }
 
 void TitleBar::initComponents()

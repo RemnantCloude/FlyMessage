@@ -18,13 +18,14 @@ struct FM_ColumnSetting {
 
 struct FM_WebSetting{
     FM_WebSetting (QString w, QVector<FM_ColumnSetting *> wc) : web_name(w), web_columns(wc) {}
-    FM_WebSetting ();
+    ~FM_WebSetting ();
     QString web_name;
     QVector<FM_ColumnSetting *> web_columns;
 };
 
 class FM_Setting
 {
+    
 public:
     FM_Setting();
     ~FM_Setting();

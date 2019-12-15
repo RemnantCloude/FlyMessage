@@ -91,7 +91,7 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString w, QWidget *parent) :
     {
         QCheckBox *columnCheck;
         
-        columnCheck = new QCheckBox(columns[i], columnGroup);
+        columnCheck = new QCheckBox(columns[i], this);
         columnCheck->setChecked(columns_states[i]);
         
         columnLayout->addWidget(columnCheck, i / max_columns_a_row, i % max_columns_a_row);
@@ -99,7 +99,7 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString w, QWidget *parent) :
     }
     columnGroup->setLayout(columnLayout);
     columnGroup->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Maximum));
-    animation = new QPropertyAnimation(columnGroup, "maximumHeight");  
+    animation = new QPropertyAnimation(columnGroup, "maximumHeight", this);  
     
     connect(webBtn, &QCommandLinkButton::clicked, this, &WebSettingWidget::toggleColumns);
 }

@@ -16,7 +16,8 @@
 #define ADDNEWS     true
 #define DELETENEWS  false
 
-News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool needfavor) : QWidget(parent)
+News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool needfavor) :
+    QWidget(parent)
 {
     setAttribute(Qt::WA_StyledBackground,true);
     
@@ -42,12 +43,12 @@ News::~News()
 
 void News::initComponents()
 {
-    title_Lab = new QLabel();
-    time_Lab = new QLabel();
-    type_Lab = new QLabel();
-    abstract_Lab = new QLabel();
-    favor_Btn = new QPushButton();
-    line = new QFrame();
+    title_Lab = new QLabel(this);
+    time_Lab = new QLabel(this);
+    type_Lab = new QLabel(this);
+    abstract_Lab = new QLabel(this);
+    favor_Btn = new QPushButton(this);
+    line = new QFrame(this);
 }
 
 void News::initSignalAndSlot()
@@ -59,7 +60,7 @@ void News::setThisLayout()
 {
     favor_Btn->setFixedSize(QSize(50, 50));
 
-    thislayout = new QGridLayout();
+    thislayout = new QGridLayout(this);
     thislayout->addWidget(title_Lab, 0, 0, 1, 7);
     thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
     thislayout->addWidget(time_Lab, 1, 0, 1, 8);

@@ -28,10 +28,10 @@ FM_SideBar::FM_SideBar(QWidget *parent) : QWidget(parent)
 
 FM_SideBar::~FM_SideBar()
 {
-//    foreach(FM_SBButton* sbb, items)
-//        delete sbb;
-//    delete verticalLayout;
-//    delete vSpacer;
+    foreach(FM_SBButton* sbb, items)
+        delete sbb;
+    delete verticalLayout;
+    delete vSpacer;
 }
 
 void FM_SideBar::setupUI()

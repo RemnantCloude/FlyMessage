@@ -55,7 +55,6 @@ signals:
     void signal_favor(void);
     void signal_back();
 private:
-    Ui::FM_SideBar *ui;
     QVector<FM_SBButton*> items;
     QVector<FM_SideItemData> *btn_data;
     QVBoxLayout *verticalLayout;

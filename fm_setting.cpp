@@ -151,8 +151,8 @@ FM_Setting::FM_Setting()
 
 FM_Setting::~FM_Setting()
 {
-//    foreach(FM_WebSetting * fws, web_settings)
-//        delete fws;
+    foreach(FM_WebSetting * fws, web_settings)
+        delete fws;
 }
 
 void FM_Setting::read_setting_from_json()
@@ -197,8 +197,8 @@ void FM_Setting::update_setting_to_json()
     writeJson("./test_settings.json", settings);
 }
 
-FM_WebSetting::FM_WebSetting()
+FM_WebSetting::~FM_WebSetting()
 {
-//    foreach(FM_ColumnSetting *fcs, web_columns)
-//        delete fcs;
+    foreach(FM_ColumnSetting *fcs, web_columns)
+        delete fcs;
 }

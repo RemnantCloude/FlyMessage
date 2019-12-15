@@ -36,17 +36,21 @@ MainWindow::MainWindow(FM_Setting *se, QWidget *parent) :
 }
 
 MainWindow::~MainWindow()
-{
-//    clearNews();
-//    delete tipLabel;
-//    delete tip2Label;
-//    delete sbImage;
-//    delete newsSpacer;
+{    
+    foreach(News *news, newsArray)
+    {
+        delete news;
+    }
+    delete tipLabel;
+    delete tip2Label;
+    delete sbImage;
+    delete newsSpacer;
+    delete thislayout;
 }
 
 void MainWindow::setThisLayout()
 {
-    thislayout = new QVBoxLayout();
+    thislayout = new QVBoxLayout(this);
     this->setLayout(thislayout);
     thislayout->setSpacing(0);
     

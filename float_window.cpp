@@ -16,13 +16,15 @@ FloatWindow::FloatWindow(QWidget *parent) : QWidget(parent)
 
 FloatWindow::~FloatWindow()
 {
-
+    delete refresh_Btn;
+    delete returnToTop_Btn;
+    delete thislayout;
 }
 
 void FloatWindow::initComponents()
 {
-    refresh_Btn = new QPushButton();
-    returnToTop_Btn = new QPushButton();
+    refresh_Btn = new QPushButton(this);
+    returnToTop_Btn = new QPushButton(this);
 }
 
 void FloatWindow::initSignalAndSlot()
@@ -35,7 +37,7 @@ void FloatWindow::setThisLayout()
     refresh_Btn->setFixedSize(QSize(36,36));
     returnToTop_Btn->setFixedSize(QSize(36,36));
 
-    thislayout = new QHBoxLayout();
+    thislayout = new QHBoxLayout(this);
     thislayout->addWidget(refresh_Btn);
     thislayout->addWidget(returnToTop_Btn);
     this->setLayout(thislayout);

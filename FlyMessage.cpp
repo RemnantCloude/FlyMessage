@@ -32,21 +32,21 @@ FlyMessage::FlyMessage(QWidget *parent) :
 
 FlyMessage::~FlyMessage()
 {
-//    delete titlebar;
-//    delete sidebar;
-//    delete mainwindow;
-//    delete floatwindow;
-//    delete settingform;
+    delete titlebar;
+    delete sidebar;
+    delete mainwindow;
+    delete floatwindow;
+    delete settingform;
 
-//    delete GLay;
-//    delete scrollarea;
+    delete GLay;
+    delete scrollarea;
     
-//    delete trayIcon;
-//    delete mMenu;
-//    delete mShowMainAction;
-//    delete mExitAppAction;
+    delete trayIcon;
+    delete mMenu;
+    delete mShowMainAction;
+    delete mExitAppAction;
     
-//    delete settings;
+    delete settings;
 }
 
 void FlyMessage::initWindowStyle()
