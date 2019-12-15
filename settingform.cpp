@@ -87,7 +87,7 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString w, QWidget *parent) :
     
     settings->get_web_columns(webName, columns, columns_states);
     
-    for(uint32_t i = 0; i < columns.size(); i++)
+    for(int i = 0; i < columns.size(); i++)
     {
         QCheckBox *columnCheck;
         

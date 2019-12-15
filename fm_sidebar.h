@@ -18,7 +18,6 @@ class FM_SBButton : public QPushButton {
 public:
     explicit FM_SBButton(QWidget *parent, const QString &str, bool checked);
     QString web_name;
-    ~FM_SBButton() {}
 };
 
 struct FM_SideItemData {
@@ -45,13 +44,11 @@ public:
     void setBtnClicked(int i);
 public slots:
     void defaultAction();
-    void customAction_refreshAll();
     void customAction_favor();
     void customAction_back();
     void customAction_column();
     
 signals:
-    void signal_refreshAll();
     void signal_refresh(QString);
     void signal_favor(void);
     void signal_back();
