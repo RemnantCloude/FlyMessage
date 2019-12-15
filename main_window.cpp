@@ -53,17 +53,17 @@ void MainWindow::setThisLayout()
     this->setLayout(thislayout);
     thislayout->setSpacing(0);
     
-    tipLabel = new QLabel("这里空空如也~",this);
-    tipLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
-    tipLabel->setAlignment(Qt::AlignCenter);
-    tipLabel->setStyleSheet("font-family: \"微软雅黑\"; font-size: 48px; color:gray; text-align: center;");
-    thislayout->addWidget(tipLabel);
-    
     sbImage = new QLabel(this);
     sbImage->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
     sbImage->setAlignment(Qt::AlignCenter);
     sbImage->setPixmap(QPixmap(":/images/sb"));
     thislayout->addWidget(sbImage);
+    
+    tipLabel = new QLabel("这里空空如也~",this);
+    tipLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
+    tipLabel->setAlignment(Qt::AlignCenter);
+    tipLabel->setStyleSheet("font-family: \"微软雅黑\"; font-size: 48px; color:gray; text-align: center;");
+    thislayout->addWidget(tipLabel);
     
     tip2Label = new QLabel("已经到底了~",this);
     tip2Label->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));

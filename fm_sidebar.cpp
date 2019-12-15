@@ -12,12 +12,12 @@ FM_SideItemData::FM_SideItemData(QString s, void(FM_SideBar::*f)(), bool cb) :
     
 }
 
-FM_SBButton::FM_SBButton(QWidget *parent,const QString &str, bool checked) : QPushButton (parent)
+FM_SBButton::FM_SBButton(QWidget *parent,const QString &str) : QPushButton (parent)
 {
     this->setText(str);
     this->setObjectName(str);
     this->setMinimumSize(QSize(0, 50));
-    this->setProperty("btnClicked",checked);
+    this->setProperty("btnClicked",false);
 }
 
 FM_SideBar::FM_SideBar(QWidget *parent) : QWidget(parent)
@@ -59,12 +59,9 @@ void FM_SideBar::setBtnClicked(int cpi)
 {
     if(cpi < items.size())
     {
-        items[cpi]->setProperty("btnClicked", true);
-        (*btn_data)[cpi].checked = true;
-        items[cpi]->style()->unpolish(items[cpi]);
-        items[cpi]->style()->polish(items[cpi]);
+        emit items[cpi]->clicked();
     }
-    emit items[cpi]->clicked();
+    
 }
 
 void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
@@ -74,7 +71,7 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
     FM_SBButton *tempBtn = nullptr;
     foreach(FM_SideItemData data, idata) {
         FM_SBButton *pButton;
-        pButton = new FM_SBButton(this, data.caption, data.checked);
+        pButton = new FM_SBButton(this, data.caption);
         pButton->web_name = data.caption;
         
         if(data.checked == true)
@@ -96,7 +93,7 @@ void FM_SideBar::addSideBarList(QVector<FM_SideItemData> &idata, FM_SideItemData
 {
     int items_now = verticalLayout->count();
     FM_SBButton *pButton;
-    pButton = new FM_SBButton(this, data.caption, data.checked);
+    pButton = new FM_SBButton(this, data.caption);
     pButton->web_name = data.caption;
     
     this->items.append(pButton);

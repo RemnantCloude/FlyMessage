@@ -16,7 +16,7 @@ class FM_SideBar;
 class FM_SBButton : public QPushButton {
     Q_OBJECT
 public:
-    explicit FM_SBButton(QWidget *parent, const QString &str, bool checked);
+    explicit FM_SBButton(QWidget *parent, const QString &str);
     QString web_name;
 };
 
