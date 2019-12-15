@@ -259,7 +259,7 @@ void MainWindow::onFavorNews(bool type)
     array.insert(1, news->time_Lab->text());
     array.insert(2, news->type_Lab->text());
     array.insert(3, news->abstract_Lab->text());
-    writeJson("./test_favorite.json", array, type);
+    writeJson("./favorite.json", array, type);
     //收藏夹状态删除条目
     if(type == false && pageState == PageState::FavorPage){
         deleteNews(news);

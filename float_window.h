@@ -1,9 +1,9 @@
-#ifndef FLOAT_WINDOW_H
+﻿#ifndef FLOAT_WINDOW_H
 #define FLOAT_WINDOW_H
 
 #include <QWidget>
 #include <QPushButton>
-#include <QHBoxLayout>
+#include <QGridLayout>
 
 class FlyMessage;
 
@@ -16,7 +16,7 @@ public:
     QPushButton *refresh_Btn;
     QPushButton *returnToTop_Btn;
 
-    QHBoxLayout *thislayout;
+    QGridLayout *thislayout;
 
 signals:
 

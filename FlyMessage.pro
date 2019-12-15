@@ -35,7 +35,8 @@ SOURCES += \
     float_window.cpp \
     webwizardform.cpp \
     fm_setting.cpp \
-    fm_python.cpp
+    fm_python.cpp \
+    fm_notice.cpp
 
 
 HEADERS += \
@@ -49,7 +50,8 @@ HEADERS += \
     webwizardform.h \
     fm_setting.h \
     aero.h \
-    fm_python.h
+    fm_python.h \
+    fm_notice.h
 
 RESOURCES += \
     resource.qrc

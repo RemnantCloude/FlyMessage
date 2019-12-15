@@ -37,6 +37,16 @@ void FM_Setting::set_max_display_news(int i)
     this->max_display_news = i;
 }
 
+bool FM_Setting::is_minimize_notice_first_time()
+{
+    return this->minimize_notice_first_time;
+}
+
+void FM_Setting::set_minimize_notice_first_time()
+{
+    this->minimize_notice_first_time = false;
+}
+
 void FM_Setting::get_web_list(QVector<QString> &ret)
 {
     ret.clear();
@@ -164,6 +174,7 @@ void FM_Setting::read_setting_from_json()
 
     global_notice = global_settings.value("global_notice").toBool();
     self_starting = global_settings.value("self_starting").toBool();
+    minimize_notice_first_time = global_settings.value("minimize_notice_first_time").toBool();
     refresh_time.setHMS(global_settings.value("refresh_time_hour").toInt(),
                         global_settings.value("refresh_time_minute").toInt(),
                         global_settings.value("refresh_time_second").toInt(),
@@ -196,8 +207,8 @@ void FM_Setting::update_setting_to_json()
     global_settings.insert("refresh_time_second", QJsonValue(refresh_time.second()));
     global_settings.insert("refresh_time_msec", QJsonValue(refresh_time.msec()));
     global_settings.insert("max_display_news", QJsonValue(max_display_news));
-    global_settings.insert("minimize_notice_first_time", QJsonValue(false));
-    global_settings.insert("use_software_first_time", QJsonValue(false));
+    global_settings.insert("minimize_notice_first_time", QJsonValue(minimize_notice_first_time));
+    global_settings.insert("use_software_first_time", QJsonValue(false));//TODO
 
     settings.insert("global_settings", global_settings);
 
