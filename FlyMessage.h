@@ -3,7 +3,6 @@
 #include <QScroller>
 #include <QWidget>
 #include <QScrollArea>
-#include <QSystemTrayIcon>
 #include <QWidget>
 #include <QString>
 #include <QStyle>
@@ -11,13 +10,13 @@
 #include <QScrollArea>
 #include <QListWidget>
 #include <QResizeEvent>
-#include <QMenu>
 
 #include "title_bar.h"
 #include "fm_sidebar.h"
 #include "main_window.h"
 #include "float_window.h"
 #include "settingform.h"
+#include "fm_notice.h"
 
 class FlyMessage : public QWidget
 {
@@ -45,16 +44,15 @@ private:
     QScroller *scroller;
     
     QImage background; // 背景图片
-    QSystemTrayIcon *trayIcon;
-    QMenu *mMenu;
-    QAction *mShowMainAction;
-    QAction *mExitAppAction;
     
     QVector<FM_SideItemData> main_sidebar_items;
     QVector<FM_SideItemData> setting_sidebar_items;
     
     FM_Setting *settings;
+    FM_Notice *notice;
     
+signals:
+    void minimize_notice();
 
 public slots:
     void onMin(bool);
@@ -73,8 +71,6 @@ protected:
     void reinitMainSideBarItems();
     void initSettingSideBarItems();
     void initSideBarSAS();
-    void traySetting();
-    void createMenu();
     
     void setComponentsLayout();
     void setComponentsStyle();

@@ -1,4 +1,4 @@
-#include <QWidget>
+﻿#include <QWidget>
 #include <QFontDatabase>
 #include <QStyleOption>
 #include <QPainter>
@@ -37,9 +37,9 @@ void FloatWindow::setThisLayout()
     refresh_Btn->setFixedSize(QSize(36,36));
     returnToTop_Btn->setFixedSize(QSize(36,36));
 
-    thislayout = new QHBoxLayout(this);
-    thislayout->addWidget(refresh_Btn);
-    thislayout->addWidget(returnToTop_Btn);
+    thislayout = new QGridLayout(this);
+    thislayout->addWidget(refresh_Btn, 0, 0, 1, 1);
+    thislayout->addWidget(returnToTop_Btn, 0, 1, 1, 1);
     this->setLayout(thislayout);
     
     setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));

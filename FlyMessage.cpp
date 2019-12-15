@@ -20,8 +20,6 @@ FlyMessage::FlyMessage(QWidget *parent) :
     // 初始化信号与槽
     initSignalAndSlot();
     
-    traySetting();
-    
     //加载所有数据
 
 }
@@ -36,11 +34,6 @@ FlyMessage::~FlyMessage()
 
     delete scrollarea;
     delete GLay;
-    
-    delete trayIcon;
-    delete mShowMainAction;
-    delete mExitAppAction;
-    delete mMenu;
     
     delete settings;
 }
@@ -105,12 +98,21 @@ void FlyMessage::initComponents()
     settingform = new SettingForm(settings, this);
     GLay = new QGridLayout(this);
     scroller = QScroller::scroller(scrollarea);
+    notice = new FM_Notice(this, settings->get_refresh_time());
     
     initSideBarSAS();
     initMainSideBarItems();
     initSettingSideBarItems();
     
-    settingform->hide();
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
+    connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
+
+    connect(notice->trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));
+    connect(notice->mShowMainAction,SIGNAL(triggered()),this,SLOT(show()));
+    connect(notice->mExitAppAction,SIGNAL(triggered()),this,SLOT(close()));
+    connect(this, SIGNAL(minimize_notice()), notice, SLOT(onMinimize_notice()));
 }
 
 void FlyMessage::setComponentsStyle()
@@ -139,36 +141,6 @@ void FlyMessage::setComponentsLayout()
     this->setLayout(GLay);
 }
 
-void FlyMessage::traySetting()
-{
-    trayIcon = new QSystemTrayIcon(this);
-    trayIcon->setIcon(QIcon(":/images/logo"));
-    trayIcon->setToolTip("飞讯"); //提示文字
-    createMenu();
-    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-            this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));
-    trayIcon->show();
-}
-
-void FlyMessage::createMenu()
-{
-    mShowMainAction = new QAction("显示主界面",this);
-    connect(mShowMainAction,SIGNAL(triggered()),this,SLOT(show()));
-
-    mExitAppAction = new QAction("退出",this);
-    connect(mExitAppAction,SIGNAL(triggered()),this,SLOT(close()));
-    
-    mMenu = new QMenu(this);
-    //新增菜单项---显示主界面
-    mMenu->addAction(mShowMainAction);
-    //增加分隔符
-    mMenu->addSeparator();
-    //新增菜单项---退出程序
-    mMenu->addAction(mExitAppAction);
-    //把QMenu赋给QSystemTrayIcon对象
-    trayIcon->setContextMenu(mMenu);
-}
-
 void FlyMessage::actSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
 {
     switch(reason){
@@ -180,6 +152,34 @@ void FlyMessage::actSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
     default:
         break;
     }
+}
+
+void FlyMessage::onMin(bool)
+{
+    this->hide();
+    if(settings->is_minimize_notice_first_time() == true)
+    {
+        settings->set_minimize_notice_first_time();
+        emit minimize_notice();
+    }
+}
+
+void FlyMessage::onMax(bool)
+{
+    if( windowState() != Qt::WindowMaximized )// 最大化
+        setWindowState( Qt::WindowMaximized );
+    else// 还原成原窗口大小
+        setWindowState( Qt::WindowNoState );
+}
+
+void FlyMessage::onClose(bool)
+{
+    emit close();
+}
+
+void FlyMessage::resizeEvent(QResizeEvent* size){
+    Q_UNUSED(size);
+    floatwindow->setGeometry(width() - 200,height()-80,120,50);
 }
 
 void FlyMessage::returnToTopAtOnce()
