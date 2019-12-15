@@ -48,6 +48,7 @@ public:
     void get_valid_web(QVector<QString> &ret);
 private:
     bool global_notice;
+    bool self_starting;
     QTime refresh_time;
     int max_display_news;
     QVector<FM_WebSetting *> web_settings;

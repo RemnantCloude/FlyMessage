@@ -158,10 +158,11 @@ FM_Setting::~FM_Setting()
 void FM_Setting::read_setting_from_json()
 {
     //读取设置文件内容
-    QJsonObject settings = readJson("./test_settings.json");
-    QJsonObject global_settings = settings.value("global_settings").toObject();
+    QJsonObject settings = readJson("./settings.json");
+    QJsonObject global_settings = settings.value("global_settings").toObject();//读取全局设置
 
     global_notice = global_settings.value("global_notice").toBool();
+    self_starting = global_settings.value("self_starting").toBool();
     refresh_time.setHMS(global_settings.value("refresh_time_hour").toInt(),
                         global_settings.value("refresh_time_minute").toInt(),
                         global_settings.value("refresh_time_second").toInt(),
@@ -185,16 +186,32 @@ void FM_Setting::read_setting_from_json()
 void FM_Setting::update_setting_to_json()
 {
     QJsonObject settings;
-    settings.insert("global_notice", QJsonValue(global_notice));
-    settings.insert("refresh_time_hour", QJsonValue(refresh_time.hour()));
-    settings.insert("refresh_time_minute", QJsonValue(refresh_time.minute()));
-    settings.insert("refresh_time_second", QJsonValue(refresh_time.second()));
-    settings.insert("refresh_time_msec", QJsonValue(refresh_time.msec()));
-    settings.insert("max_display_news", QJsonValue(max_display_news));
-    settings.insert("minimize_notice_first_time", QJsonValue(false));
-    settings.insert("use_software_first_time", QJsonValue(false));
 
-    writeJson("./test_settings.json", settings);
+    QJsonObject global_settings;
+    global_settings.insert("global_notice", QJsonValue(global_notice));
+    global_settings.insert("self_starting", QJsonValue(self_starting));
+    global_settings.insert("refresh_time_hour", QJsonValue(refresh_time.hour()));
+    global_settings.insert("refresh_time_minute", QJsonValue(refresh_time.minute()));
+    global_settings.insert("refresh_time_second", QJsonValue(refresh_time.second()));
+    global_settings.insert("refresh_time_msec", QJsonValue(refresh_time.msec()));
+    global_settings.insert("max_display_news", QJsonValue(max_display_news));
+    global_settings.insert("minimize_notice_first_time", QJsonValue(false));
+    global_settings.insert("use_software_first_time", QJsonValue(false));
+
+    settings.insert("global_settings", global_settings);
+
+    foreach(FM_WebSetting* website, web_settings)
+    {
+        QJsonObject jcolumn;
+        foreach(FM_ColumnSetting* column, website->web_columns)
+        {
+            jcolumn.insert(column->column_name,
+                           QJsonValue(column->is_enabled));
+        }
+        settings.insert(website->web_name, jcolumn);
+    }
+
+    writeJson("./settings.json", settings);
 }
 
 FM_WebSetting::~FM_WebSetting()
