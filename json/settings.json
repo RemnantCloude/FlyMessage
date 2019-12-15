@@ -1,0 +1,47 @@
+{
+    "global_settings": {
+        "global_notice": true,
+        "self_starting": false,
+        "refresh_time_hour": 0,
+        "refresh_time_minute": 30,
+        "refresh_time_second": 0,
+        "refresh_time_msec": 0,
+        "max_display_news": 10,
+        "minimize_notice_first_time": false,
+        "use_software_first_time": false
+    },
+    "人民网": {
+        "是否使用": 1,
+        "通知或新闻": 0,
+        "政治": 1,
+        "财经": 1,
+        "军事": 1,
+        "法制": 1,
+        "领导": 1
+    },
+    "网易": {
+        "是否使用": 1,
+        "通知或新闻": 0,
+        "旅游": 1,
+        "娱乐": 1,
+        "体育": 1,
+        "教育": 1,
+        "科技": 1
+    },
+    "新浪": {
+        "是否使用": 1,
+        "通知或新闻": 0,
+        "教育": 1,
+        "娱乐": 1,
+        "体育": 1,
+        "时尚": 1,
+        "科技": 1
+    },
+    "教务处": {
+        "是否使用": 1,
+        "通知或新闻": 1,
+        "国际教育": 1,
+        "实践教学": 1,
+        "教务学籍": 1
+    }
+}

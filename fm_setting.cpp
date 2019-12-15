@@ -159,7 +159,8 @@ void FM_Setting::read_setting_from_json()
 {
     //读取设置文件内容
     QJsonObject settings = readJson("./settings.json");
-    QJsonObject global_settings = settings.value("global_settings").toObject();//读取全局设置
+    //读取全局设置
+    QJsonObject global_settings = settings.value("global_settings").toObject();
 
     global_notice = global_settings.value("global_notice").toBool();
     self_starting = global_settings.value("self_starting").toBool();
@@ -168,7 +169,7 @@ void FM_Setting::read_setting_from_json()
                         global_settings.value("refresh_time_second").toInt(),
                         global_settings.value("refresh_time_msec").toInt());
     max_display_news = global_settings.value("max_display_news").toInt();
-
+    //读取网站设置
     foreach(const QString &website, settings.keys())
     {
         if(website == "global_settings")

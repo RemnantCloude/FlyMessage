@@ -1,4 +1,4 @@
-#include <QStyleOption>
+﻿#include <QStyleOption>
 #include <QPainter>
 #include <main_window.h>
 #include <QDebug>
@@ -54,6 +54,17 @@ void FM_SideBar::setupUI()
                   "QPushButton[btnClicked=false]:pressed {background-color: rgba(200,200,200,100);}"
                   );
     
+}
+
+void FM_SideBar::setBtnClicked(int cpi)
+{
+    if(cpi < items.size())
+    {
+        items[cpi]->setProperty("btnClicked", true);
+        (*btn_data)[cpi].checked = true;
+        items[cpi]->style()->unpolish(items[cpi]);
+        items[cpi]->style()->polish(items[cpi]);
+    }
 }
 
 void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)

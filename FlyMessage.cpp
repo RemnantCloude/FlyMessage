@@ -1,12 +1,9 @@
-#include "FlyMessage.h"
+﻿#include "FlyMessage.h"
 #include "float_window.h"
 #include "main_window.h"
 #include "aero.h"
 
 #include <QPainter>
-//TODO:
-#define BTN_WIDTH   (40)
-#define BTN_HEIGHT  (30)
 
 FlyMessage::FlyMessage(QWidget *parent) : 
     QWidget(parent),
@@ -85,37 +82,79 @@ void FlyMessage::initComponents()
     settingform = new SettingForm(settings, this);
     GLay = new QGridLayout(this);
     scroller = QScroller::scroller(scrollarea);
-    initSideBar();
+    initMainSideBarItems();
+    initSettingSideBarItems();
+    initSideBarSAS();
     settingform->hide();
 }
 
-void FlyMessage::initSideBar()
+void FlyMessage::initMainSideBarItems()
 {
 
-    main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_refreshAll,true));
-    connect(sidebar, &FM_SideBar::signal_refreshAll, mainwindow, &MainWindow::onRefreshAllNews);
-    connect(sidebar, &FM_SideBar::signal_refreshAll, floatwindow, &FloatWindow::showRefreshBtn);
-    
-    main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor,false));
-    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
-    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
-    
+//    QVector<bool> temp_for_clicked_attribute;
+//    for(int i = 0; i < main_sidebar_items.size(); i++)
+//        main_sidebar_items.clear();
+    QVector<FM_SideItemData> temp(main_sidebar_items);
+
+    main_sidebar_items.clear();
+    if(temp.size() > 0)
+    {
+        main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_refreshAll,temp[0].checked));
+        main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor,temp[1].checked));
+    }
+    else {
+        main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_refreshAll,true));
+        main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor,false));
+    }
+
     QVector<QString> valid_webs;
+    bool find_checked = false;
     settings->get_valid_web(valid_webs);
     foreach(QString s, valid_webs)
     {
-        main_sidebar_items.append(FM_SideItemData(s, &FM_SideBar::customAction_column,false));
+        bool temp_checked = false;
+        for(int i = 0; i < temp.size(); i++)
+        {
+            if(temp[i].caption == s)
+            {
+                temp_checked = temp[i].checked;
+                break;
+            }
+        }
+        if(temp_checked == true)
+        {
+            find_checked = true;
+        }
+        main_sidebar_items.append(FM_SideItemData(s, &FM_SideBar::customAction_column,temp_checked));
     }
+
+    sidebar->setSideBarList(main_sidebar_items);
+    if(!find_checked)
+        sidebar->setBtnClicked(0);
+}
+
+void FlyMessage::initSettingSideBarItems()
+{
+    setting_sidebar_items.clear();
+    setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back,false));
+}
+
+void FlyMessage::initSideBarSAS()
+{
     connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
     connect(sidebar, &FM_SideBar::signal_refreshAll, floatwindow, &FloatWindow::showRefreshBtn);
-    
-    setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back,false));
-    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+
     connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
+    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+
     connect(sidebar, SIGNAL(signal_back()), mainwindow, SLOT(onRefreshNews()));
     connect(sidebar, SIGNAL(signal_back()), this, SLOT(returnToTopAtOnce()));
-    
-    sidebar->setSideBarList(main_sidebar_items);
+
+    connect(sidebar, &FM_SideBar::signal_refreshAll, mainwindow, &MainWindow::onRefreshAllNews);
+    connect(sidebar, &FM_SideBar::signal_refreshAll, floatwindow, &FloatWindow::showRefreshBtn);
+
+    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
+    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
 }
 
 void FlyMessage::initSignalAndSlot()
@@ -146,7 +185,7 @@ void FlyMessage::setComponentsStyle()
 
 void FlyMessage::setComponentsLayout()
 {
-    titlebar->setGeometry(0, 0, BTN_HEIGHT + 10, BTN_WIDTH);
+    // titlebar->setGeometry(0, 0, 40, 40);
 
     // 设置布局器
     scrollarea->setWidget(mainwindow);
@@ -252,7 +291,8 @@ void FlyMessage::moveToMainWindow()
     floatwindow->show();
     settingform->hide();
     setting_sidebar_items[0].checked = false;
-    sidebar->setSideBarList(main_sidebar_items);
+    initMainSideBarItems();
+    //sidebar->setSideBarList(main_sidebar_items);
 }
 
 void FlyMessage::setAeroStyle()

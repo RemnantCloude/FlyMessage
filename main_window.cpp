@@ -181,7 +181,7 @@ void MainWindow::getFavorNews()
 {
     clearNews();
 
-    QJsonObject favor = readJson("./test_favorite.json");
+    QJsonObject favor = readJson("./favorite.json");
     QJsonArray array = favor.value("favorite").toArray();
     for(int i = 0; i < array.size(); i++)
     {
@@ -198,23 +198,21 @@ void MainWindow::getFavorNews()
 
 void MainWindow::getNews(QString web)
 {
-    int count = 0;
-
     QVector<QString> column_str;
     QVector<bool>    column_bool;
     
     settings->get_web_columns(web,column_str,column_bool);
+    int max_display_news = settings->get_max_display_news();
 
     //获取新闻内容
-    QJsonObject news = readJson("./test_news.json");
+    QJsonObject news = readJson("./news.json");
     QJsonObject news_type = news.value(web).toObject();
-    
     for(int i = 0; i < column_str.size(); i++)
     {
         if(column_bool[i])
         {
             QJsonArray array = news_type.value(column_str[i]).toArray();//网站新闻
-            for(int i = 0; i < array.size() & count < 10; i++)
+            for(int i = 0;i < array.size() && i < max_display_news; i++)
             {
                 QJsonArray array1 = array.at(i).toArray();//单条新闻
                 
@@ -223,9 +221,7 @@ void MainWindow::getNews(QString web)
                             array1.at(2).toString(),
                             array1.at(3).toString(),
                             true);                
-                count++;
             }
-            count = 0;//清零
         }
     }
     pageState = PageState::OtherPage;

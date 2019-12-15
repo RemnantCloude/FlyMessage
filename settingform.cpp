@@ -1,4 +1,4 @@
-#include "settingform.h"
+﻿#include "settingform.h"
 #include "ui_settingform.h"
 #include <QFontDatabase>
 #include <QStyleOption>
@@ -53,7 +53,7 @@ void SettingForm::updateGlobalSettings()
             settings->set_column_state(wsw->webName, qcb->text(), qcb->checkState());
         }
     }
-    //settings->update_setting_to_json();
+    settings->update_setting_to_json();
 }
 
 void SettingForm::updateUIWithSettings()

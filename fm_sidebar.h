@@ -1,4 +1,4 @@
-
+﻿
 #ifndef FM_SIDEBAR_H
 #define FM_SIDEBAR_H
 
@@ -42,6 +42,7 @@ public:
     void addSideBarList(QVector<FM_SideItemData> &idata, FM_SideItemData &data);
     void clearItems();
     
+    void setBtnClicked(int i);
 public slots:
     void defaultAction();
     void customAction_refreshAll();

@@ -1,4 +1,4 @@
-#ifndef FLY_MESSAGE_H
+﻿#ifndef FLY_MESSAGE_H
 #define FLY_MESSAGE_H
 #include <QScroller>
 #include <QWidget>
@@ -55,6 +55,7 @@ private:
     
     FM_Setting *settings;
     
+
 public slots:
     void onMin(bool);
     void onMax(bool);
@@ -68,7 +69,9 @@ public slots:
 protected:
     void initComponents();
     void initSignalAndSlot();
-    void initSideBar();
+    void initMainSideBarItems();
+    void initSettingSideBarItems();
+    void initSideBarSAS();
     void traySetting();
     void createMenu();
     
