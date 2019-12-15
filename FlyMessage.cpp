@@ -18,7 +18,6 @@ FlyMessage::FlyMessage(QWidget *parent) :
     // 设置控件位置和风格样式
     setComponentsLayout();
     setComponentsStyle();
-    //setAeroStyle();
     initWindowStyle();
     
     // 初始化信号与槽
@@ -38,13 +37,13 @@ FlyMessage::~FlyMessage()
     delete floatwindow;
     delete settingform;
 
-    delete GLay;
     delete scrollarea;
+    delete GLay;
     
     delete trayIcon;
-    delete mMenu;
     delete mShowMainAction;
     delete mExitAppAction;
+    delete mMenu;
     
     delete settings;
 }
