@@ -68,6 +68,7 @@ protected:
     void initComponents();
     void initSignalAndSlot();
     void initMainSideBarItems();
+    void reinitMainSideBarItems();
     void initSettingSideBarItems();
     void initSideBarSAS();
     

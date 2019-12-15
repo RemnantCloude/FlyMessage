@@ -31,7 +31,6 @@ FM_SideBar::~FM_SideBar()
     foreach(FM_SBButton* sbb, items)
         delete sbb;
     delete verticalLayout;
-    delete vSpacer;
 }
 
 void FM_SideBar::setupUI()
@@ -65,19 +64,21 @@ void FM_SideBar::setBtnClicked(int cpi)
         items[cpi]->style()->unpolish(items[cpi]);
         items[cpi]->style()->polish(items[cpi]);
     }
+    emit items[cpi]->clicked();
 }
 
 void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
 {
-    
-    
     clearItems();
     int items_now = verticalLayout->count();
-    
+    FM_SBButton *tempBtn = nullptr;
     foreach(FM_SideItemData data, idata) {
         FM_SBButton *pButton;
         pButton = new FM_SBButton(this, data.caption, data.checked);
         pButton->web_name = data.caption;
+        
+        if(data.checked == true)
+            tempBtn = pButton;
         
         this->items.append(pButton);
         verticalLayout->insertWidget(items_now-1, pButton);
@@ -87,6 +88,8 @@ void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
         connect(pButton, &FM_SBButton::clicked, this, data.func);
     }
     btn_data = &idata;
+    if(tempBtn != nullptr)
+        emit tempBtn->clicked();
 }
 
 void FM_SideBar::addSideBarList(QVector<FM_SideItemData> &idata, FM_SideItemData &data)
@@ -126,13 +129,6 @@ void FM_SideBar::defaultAction()
         items[i]->style()->unpolish(items[i]);
         items[i]->style()->polish(items[i]);
     }
-}
-/**
-  * @brief: 刷新
-  * */
-void FM_SideBar::customAction_refreshAll()
-{
-    emit signal_refreshAll();
 }
 
 /**

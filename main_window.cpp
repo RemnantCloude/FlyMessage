@@ -28,7 +28,7 @@ MainWindow::MainWindow(FM_Setting *se, QWidget *parent) :
 {
     setAttribute(Qt::WA_StyledBackground,true);
     
-    //website = "website1";//初始化
+    now_website = "全部新闻";
     news_amounts = 10;
 
     setThisLayout();
@@ -44,7 +44,6 @@ MainWindow::~MainWindow()
     delete tipLabel;
     delete tip2Label;
     delete sbImage;
-    delete newsSpacer;
     delete thislayout;
 }
 
@@ -92,6 +91,138 @@ void MainWindow::setThisStyle()
                         "MainWindow {background : rgb(255,255,255);}"
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
 
+}
+
+void MainWindow::nullPageJudge()
+{
+    if(newsArray.size() == 0)
+    {
+        tipLabel->show();
+        sbImage->show();
+        tip2Label->hide();
+    }
+    else {
+        tipLabel->hide();
+        sbImage->hide();
+        tip2Label->show();
+    }
+}
+
+void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool needFavor)
+{
+    News *news = new News(this,a,b,c,d,needFavor);
+    newsArray.append(news);
+    
+    news->setCursor(Qt::PointingHandCursor);
+    thislayout->insertWidget(newsArray.size()*2,news);
+    thislayout->insertWidget(newsArray.size()*2+1,news->line);
+    
+    connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
+    
+    nullPageJudge();
+}
+
+void MainWindow::clearNews()
+{
+    foreach(News *news, newsArray)
+    {
+        delete news;
+        newsArray.pop_back();
+    }
+    nullPageJudge();
+}
+
+void MainWindow::getNews(QString web)
+{
+    QVector<QString> column_str;
+    QVector<bool>    column_bool;
+    
+    settings->get_web_columns(web,column_str,column_bool);
+    int max_display_news = settings->get_max_display_news();
+
+    //获取新闻内容
+    QJsonObject news = readJson("./news.json");
+    QJsonObject news_type = news.value(web).toObject();
+    for(int i = 0; i < column_str.size(); i++)
+    {
+        if(column_bool[i])
+        {
+            QJsonArray array = news_type.value(column_str[i]).toArray();//网站新闻
+            for(int i = 0;i < array.size() && i < max_display_news; i++)
+            {
+                QJsonArray array1 = array.at(i).toArray();//单条新闻
+                
+                addNewsItem(array1.at(0).toString(),
+                            array1.at(1).toString(),
+                            array1.at(2).toString(),
+                            array1.at(3).toString(),
+                            true);                
+            }
+        }
+    }
+    pageState = PageState::OtherPage;
+}
+
+void MainWindow::getFavorNews()
+{
+    clearNews();
+
+    QJsonObject favor = readJson("./favorite.json");
+    QJsonArray array = favor.value("favorite").toArray();
+    for(int i = 0; i < array.size(); i++)
+    {
+        QJsonArray array1 = array.at(i).toArray();//单条新闻
+        addNewsItem(array1.at(0).toString(),
+                    array1.at(1).toString(),
+                    array1.at(2).toString(),
+                    array1.at(3).toString(),
+                    false);
+
+    }
+    pageState = PageState::FavorPage;
+}
+
+void MainWindow::refreshAllNews()
+{
+    clearNews();
+}
+
+void MainWindow::onRefreshNews(QString website)
+{
+    clearNews();
+    now_website = website;
+    if(website!="全部新闻")
+        getNews(website);
+    else
+        refreshAllNews();
+}
+
+void MainWindow::onRefreshNews()
+{
+    clearNews();
+    getNews(now_website);
+}
+
+void MainWindow::deleteNews(News *news)
+{
+    newsArray.removeOne(news);
+    delete news;
+}
+
+void MainWindow::onFavorNews(bool type)
+{
+    News *news = dynamic_cast<News*>(sender());//获取信号发送者的指针
+    QJsonArray array;
+    array.insert(0, news->title_Lab->text());
+    array.insert(1, news->time_Lab->text());
+    array.insert(2, news->type_Lab->text());
+    array.insert(3, news->abstract_Lab->text());
+    writeJson("./favorite.json", array, type);
+    //收藏夹状态删除条目
+    if(type == false && pageState == PageState::FavorPage){
+        deleteNews(news);
+    }
+    nullPageJudge();
 }
 
 QJsonObject MainWindow::readJson(QString filename)
@@ -151,133 +282,4 @@ void MainWindow::writeJson(QString filename, QJsonArray news, bool type)
     document.setObject(jsonObject);
     file.write(document.toJson());
     file.close();
-}
-
-void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool needFavor)
-{
-    News *news = new News(this,a,b,c,d,needFavor);
-    newsArray.append(news);
-    
-    news->setCursor(Qt::PointingHandCursor);
-    thislayout->insertWidget(newsArray.size()*2,news);
-    thislayout->insertWidget(newsArray.size()*2+1,news->line);
-    
-    connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
-    
-    nullPageJudge();
-}
-
-void MainWindow::clearNews()
-{
-    foreach(News *news, newsArray)
-    {
-        delete news;
-        newsArray.pop_back();
-    }
-    nullPageJudge();
-}
-
-void MainWindow::getFavorNews()
-{
-    clearNews();
-
-    QJsonObject favor = readJson("./favorite.json");
-    QJsonArray array = favor.value("favorite").toArray();
-    for(int i = 0; i < array.size(); i++)
-    {
-        QJsonArray array1 = array.at(i).toArray();//单条新闻
-        addNewsItem(array1.at(0).toString(),
-                    array1.at(1).toString(),
-                    array1.at(2).toString(),
-                    array1.at(3).toString(),
-                    false);
-
-    }
-    pageState = PageState::FavorPage;
-}
-
-void MainWindow::getNews(QString web)
-{
-    QVector<QString> column_str;
-    QVector<bool>    column_bool;
-    
-    settings->get_web_columns(web,column_str,column_bool);
-    int max_display_news = settings->get_max_display_news();
-
-    //获取新闻内容
-    QJsonObject news = readJson("./news.json");
-    QJsonObject news_type = news.value(web).toObject();
-    for(int i = 0; i < column_str.size(); i++)
-    {
-        if(column_bool[i])
-        {
-            QJsonArray array = news_type.value(column_str[i]).toArray();//网站新闻
-            for(int i = 0;i < array.size() && i < max_display_news; i++)
-            {
-                QJsonArray array1 = array.at(i).toArray();//单条新闻
-                
-                addNewsItem(array1.at(0).toString(),
-                            array1.at(1).toString(),
-                            array1.at(2).toString(),
-                            array1.at(3).toString(),
-                            true);                
-            }
-        }
-    }
-    pageState = PageState::OtherPage;
-}
-
-void MainWindow::onRefreshAllNews()
-{
-    clearNews();
-}
-
-void MainWindow::onRefreshNews(QString website)
-{
-    clearNews();
-    now_website = website;
-    getNews(website);
-}
-
-void MainWindow::onRefreshNews()
-{
-    clearNews();
-    getNews(now_website);
-}
-
-void MainWindow::deleteNews(News *news)
-{
-    newsArray.removeOne(news);
-    delete news;
-}
-
-void MainWindow::onFavorNews(bool type)
-{
-    News *news = dynamic_cast<News*>(sender());//获取信号发送者的指针
-    QJsonArray array;
-    array.insert(0, news->title_Lab->text());
-    array.insert(1, news->time_Lab->text());
-    array.insert(2, news->type_Lab->text());
-    array.insert(3, news->abstract_Lab->text());
-    writeJson("./favorite.json", array, type);
-    //收藏夹状态删除条目
-    if(type == false && pageState == PageState::FavorPage){
-        deleteNews(news);
-    }
-    nullPageJudge();
-}
-
-void MainWindow::nullPageJudge()
-{
-    if(newsArray.size() == 0)
-    {
-        tipLabel->show();
-        sbImage->show();
-        tip2Label->hide();
-    }
-    else {
-        tipLabel->hide();
-        sbImage->hide();
-        tip2Label->show();
-    }
 }

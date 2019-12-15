@@ -21,7 +21,7 @@ FlyMessage::FlyMessage(QWidget *parent) :
     initSignalAndSlot();
     
     //加载所有数据
-    //mainwindow->onRefreshAllNews();
+
 }
 
 FlyMessage::~FlyMessage()
@@ -51,6 +51,29 @@ void FlyMessage::initWindowStyle()
     setAeroStyle();
 }
 
+void FlyMessage::setAeroStyle()
+{
+
+    HWND hwnd = (HWND)this->winId();
+    DWORD style = ::GetWindowLong(hwnd, GWL_STYLE);
+    ::SetWindowLong(hwnd, GWL_STYLE, style | WS_EX_LAYERED);
+    
+    HMODULE hUser = GetModuleHandle(L"user32.dll");
+    if (hUser)
+    {
+        pfnSetWindowCompositionAttribute setWindowCompositionAttribute = (pfnSetWindowCompositionAttribute)GetProcAddress(hUser, "SetWindowCompositionAttribute");
+        if (setWindowCompositionAttribute)
+        {
+            ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
+            WINDOWCOMPOSITIONATTRIBDATA data;
+            data.Attrib = WCA_ACCENT_POLICY;
+            data.pvData = &accent;
+            data.cbData = sizeof(accent);
+            setWindowCompositionAttribute(hwnd, &data);
+        }
+    }
+}
+
 //TODO:
 void FlyMessage::setBackgroundImage(QString filename)
 {
@@ -76,88 +99,10 @@ void FlyMessage::initComponents()
     GLay = new QGridLayout(this);
     scroller = QScroller::scroller(scrollarea);
     notice = new FM_Notice(this, settings->get_refresh_time());
+    
+    initSideBarSAS();
     initMainSideBarItems();
     initSettingSideBarItems();
-    initSideBarSAS();
-    settingform->hide();
-}
-
-void FlyMessage::initMainSideBarItems()
-{
-
-//    QVector<bool> temp_for_clicked_attribute;
-//    for(int i = 0; i < main_sidebar_items.size(); i++)
-//        main_sidebar_items.clear();
-    QVector<FM_SideItemData> temp(main_sidebar_items);
-
-    main_sidebar_items.clear();
-    if(temp.size() > 0)
-    {
-        main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_refreshAll,temp[0].checked));
-        main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor,temp[1].checked));
-    }
-    else {
-        main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_refreshAll,true));
-        main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor,false));
-    }
-
-    QVector<QString> valid_webs;
-    bool find_checked = false;
-    settings->get_valid_web(valid_webs);
-    foreach(QString s, valid_webs)
-    {
-        bool temp_checked = false;
-        for(int i = 0; i < temp.size(); i++)
-        {
-            if(temp[i].caption == s)
-            {
-                temp_checked = temp[i].checked;
-                break;
-            }
-        }
-        if(temp_checked == true)
-        {
-            find_checked = true;
-        }
-        main_sidebar_items.append(FM_SideItemData(s, &FM_SideBar::customAction_column,temp_checked));
-    }
-
-    sidebar->setSideBarList(main_sidebar_items);
-    if(!find_checked)
-        sidebar->setBtnClicked(0);
-}
-
-void FlyMessage::initSettingSideBarItems()
-{
-    setting_sidebar_items.clear();
-    setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back,false));
-}
-
-void FlyMessage::initSideBarSAS()
-{
-    connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
-    connect(sidebar, &FM_SideBar::signal_refreshAll, floatwindow, &FloatWindow::showRefreshBtn);
-
-    connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
-    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
-
-    connect(sidebar, SIGNAL(signal_back()), mainwindow, SLOT(onRefreshNews()));
-    connect(sidebar, SIGNAL(signal_back()), this, SLOT(returnToTopAtOnce()));
-
-    connect(sidebar, &FM_SideBar::signal_refreshAll, mainwindow, &MainWindow::onRefreshAllNews);
-    connect(sidebar, &FM_SideBar::signal_refreshAll, floatwindow, &FloatWindow::showRefreshBtn);
-
-    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
-    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
-}
-
-void FlyMessage::initSignalAndSlot()
-{
-    connect(titlebar->min_Btn, SIGNAL(clicked(bool)), SLOT(onMin(bool)));
-    connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
-    connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
-    connect(titlebar, SIGNAL(mouseDoubleClick(bool)), SLOT(onMax(bool)));
-    connect(titlebar->settings_Btn, SIGNAL(clicked()), SLOT(moveToSettingForm()));
     
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
@@ -185,8 +130,6 @@ void FlyMessage::setComponentsStyle()
 
 void FlyMessage::setComponentsLayout()
 {
-    // titlebar->setGeometry(0, 0, 40, 40);
-
     // 设置布局器
     scrollarea->setWidget(mainwindow);
     scrollarea->setAlignment(Qt::AlignHCenter);
@@ -265,29 +208,109 @@ void FlyMessage::moveToMainWindow()
     floatwindow->show();
     settingform->hide();
     setting_sidebar_items[0].checked = false;
-    initMainSideBarItems();
-    //sidebar->setSideBarList(main_sidebar_items);
+    reinitMainSideBarItems();
 }
 
-void FlyMessage::setAeroStyle()
+void FlyMessage::initMainSideBarItems()
 {
-
-    HWND hwnd = (HWND)this->winId();
-    DWORD style = ::GetWindowLong(hwnd, GWL_STYLE);
-    ::SetWindowLong(hwnd, GWL_STYLE, style | WS_EX_LAYERED);
+    main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_column,true));
+    main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor,false));
     
-    HMODULE hUser = GetModuleHandle(L"user32.dll");
-    if (hUser)
+    QVector<QString> valid_webs;
+    settings->get_valid_web(valid_webs);
+    foreach(QString s, valid_webs)
     {
-        pfnSetWindowCompositionAttribute setWindowCompositionAttribute = (pfnSetWindowCompositionAttribute)GetProcAddress(hUser, "SetWindowCompositionAttribute");
-        if (setWindowCompositionAttribute)
-        {
-            ACCENT_POLICY accent = { ACCENT_ENABLE_BLURBEHIND, 0, 0, 0 };
-            WINDOWCOMPOSITIONATTRIBDATA data;
-            data.Attrib = WCA_ACCENT_POLICY;
-            data.pvData = &accent;
-            data.cbData = sizeof(accent);
-            setWindowCompositionAttribute(hwnd, &data);
+        main_sidebar_items.append(FM_SideItemData(s, &FM_SideBar::customAction_column,false));
+    }
+
+    sidebar->setSideBarList(main_sidebar_items);
+}
+
+void FlyMessage::initSettingSideBarItems()
+{
+    setting_sidebar_items.clear();
+    setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back,false));
+}
+
+void FlyMessage::initSideBarSAS()
+{
+    connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
+    connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
+
+    connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
+    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+    connect(sidebar, SIGNAL(signal_back()), this, SLOT(returnToTopAtOnce()));
+
+    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
+    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
+}
+
+void FlyMessage::initSignalAndSlot()
+{
+    connect(titlebar->min_Btn, SIGNAL(clicked(bool)), SLOT(onMin(bool)));
+    connect(titlebar->max_Btn, SIGNAL(clicked(bool)), SLOT(onMax(bool)));
+    connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
+    connect(titlebar->settings_Btn, SIGNAL(clicked()), SLOT(moveToSettingForm()));
+    
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
+    connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
+}
+
+void FlyMessage::reinitMainSideBarItems()
+{
+    QString checked_caption;
+    bool find_checked = false;
+    
+    for (int i = 0; i < main_sidebar_items.size(); i++)
+    {
+        if(main_sidebar_items[i].checked == true)
+            checked_caption = main_sidebar_items[i].caption;
+    }
+    
+    for(int i = main_sidebar_items.size() - 1; i > 1; i--)
+        main_sidebar_items.pop_back();
+
+    QVector<QString> valid_webs;
+    settings->get_valid_web(valid_webs);
+    
+    foreach(QString s, valid_webs)
+    {
+        if(checked_caption == s) {
+            main_sidebar_items.append(FM_SideItemData(s, &FM_SideBar::customAction_column,true));
+            find_checked = true;
+        }
+        else {
+            main_sidebar_items.append(FM_SideItemData(s, &FM_SideBar::customAction_column,false));
         }
     }
+
+    sidebar->setSideBarList(main_sidebar_items);
+    
+    if(!find_checked)
+        sidebar->setBtnClicked(0);
+}
+
+void FlyMessage::onMin(bool)
+{
+    this->hide();
+    trayIcon->showMessage("飞讯","飞讯最小化在任务栏",QSystemTrayIcon::Information,1000);
+}
+
+void FlyMessage::onMax(bool)
+{
+    if( windowState() != Qt::WindowMaximized )// 最大化
+        setWindowState( Qt::WindowMaximized );
+    else// 还原成原窗口大小
+        setWindowState( Qt::WindowNoState );
+}
+
+void FlyMessage::onClose(bool)
+{
+    emit close();
+}
+
+void FlyMessage::resizeEvent(QResizeEvent* size){
+    Q_UNUSED(size);
+    floatwindow->setGeometry(width() - 200,height()-80,120,50);
 }
