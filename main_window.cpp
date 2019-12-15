@@ -28,11 +28,20 @@ MainWindow::MainWindow(FM_Setting *se, QWidget *parent) :
 {
     setAttribute(Qt::WA_StyledBackground,true);
     
-    website = "website1";//初始化
+    //website = "website1";//初始化
     news_amounts = 10;
 
     setThisLayout();
     setThisStyle();
+}
+
+MainWindow::~MainWindow()
+{
+//    clearNews();
+//    delete tipLabel;
+//    delete tip2Label;
+//    delete sbImage;
+//    delete newsSpacer;
 }
 
 void MainWindow::setThisLayout()
@@ -218,9 +227,28 @@ void MainWindow::getNews(QString web)
     pageState = PageState::OtherPage;
 }
 
+void MainWindow::onRefreshAllNews()
+{
+    clearNews();
+}
+
+void MainWindow::onRefreshNews(QString website)
+{
+    clearNews();
+    now_website = website;
+    getNews(website);
+}
+
 void MainWindow::onRefreshNews()
 {
-    getNews(website);
+    clearNews();
+    getNews(now_website);
+}
+
+void MainWindow::deleteNews(News *news)
+{
+    newsArray.removeOne(news);
+    delete news;
 }
 
 void MainWindow::onFavorNews(bool type)
@@ -234,8 +262,7 @@ void MainWindow::onFavorNews(bool type)
     writeJson("./test_favorite.json", array, type);
     //收藏夹状态删除条目
     if(type == false && pageState == PageState::FavorPage){
-        newsArray.removeOne(news);
-        delete news;
+        deleteNews(news);
     }
     nullPageJudge();
 }

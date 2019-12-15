@@ -46,7 +46,7 @@
       </size>
      </property>
      <property name="title">
-      <string>通知设置</string>
+      <string>全局设置</string>
      </property>
      <property name="flat">
       <bool>false</bool>
@@ -65,6 +65,13 @@
         </property>
         <property name="tristate">
          <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="autoStartCheckBox">
+        <property name="text">
+         <string>允许开机自启动</string>
         </property>
        </widget>
       </item>

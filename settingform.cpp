@@ -3,6 +3,7 @@
 #include <QFontDatabase>
 #include <QStyleOption>
 #include <QPainter>
+#include <QDebug>
 
 const uint32_t max_columns_a_row = 2;
 
@@ -36,6 +37,7 @@ void SettingForm::updateWebWidget() {
         WebSettingWidget *pWidget;
         pWidget = new WebSettingWidget(settings, webName, this);
         pWidget->putMeIntoLayout(ui->webSettingLayout);
+        websWidget.append(pWidget);
     }
 }
 
@@ -51,7 +53,7 @@ void SettingForm::updateGlobalSettings()
             settings->set_column_state(wsw->webName, qcb->text(), qcb->checkState());
         }
     }
-    settings->update_setting_to_json();
+    //settings->update_setting_to_json();
 }
 
 void SettingForm::updateUIWithSettings()
@@ -66,6 +68,8 @@ void SettingForm::updateUIWithSettings()
 
 SettingForm::~SettingForm()
 {
+//    foreach(WebSettingWidget * wsw, websWidget)
+//        delete wsw;
     delete ui;
 }
 
@@ -91,12 +95,30 @@ WebSettingWidget::WebSettingWidget(FM_Setting *s, QString w, QWidget *parent) :
         columnCheck->setChecked(columns_states[i]);
         
         columnLayout->addWidget(columnCheck, i / max_columns_a_row, i % max_columns_a_row);
+        this->columnCheckBoxes.append(columnCheck);
     }
     columnGroup->setLayout(columnLayout);
     columnGroup->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Maximum));
     animation = new QPropertyAnimation(columnGroup, "maximumHeight");  
     
     connect(webBtn, &QCommandLinkButton::clicked, this, &WebSettingWidget::toggleColumns);
+}
+
+/**
+    QCommandLinkButton *webBtn;
+    QGroupBox *columnGroup;
+    QGridLayout *columnLayout;
+    QPropertyAnimation *animation;
+*/
+
+WebSettingWidget::~WebSettingWidget()
+{
+//    foreach(QCheckBox *qcb, columnCheckBoxes)
+//        delete qcb;
+//    delete webBtn;
+//    delete columnGroup;
+//    delete animation;
+//    delete columnLayout;
 }
 
 

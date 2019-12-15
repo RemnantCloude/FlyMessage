@@ -25,7 +25,7 @@ class FlyMessage : public QWidget
 
 public:
     explicit FlyMessage(QWidget *parent = nullptr);
-    ~FlyMessage() {}
+    ~FlyMessage();
     // 窗体移动事件的点
     QPoint windowPos;
     QPoint mousePos;
@@ -60,6 +60,7 @@ public slots:
     void onMax(bool);
     void onClose(bool);
     void returnToTop();
+    void returnToTopAtOnce();
     void moveToSettingForm();
     void moveToMainWindow();
     void actSysTrayIcon(QSystemTrayIcon::ActivationReason reason);

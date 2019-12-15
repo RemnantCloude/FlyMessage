@@ -21,13 +21,13 @@ class WebSettingWidget : public QWidget
     Q_OBJECT
 public:
     explicit WebSettingWidget(FM_Setting *s, QString webName, QWidget *parent = nullptr);
-    ~WebSettingWidget() {}
+    ~WebSettingWidget();
     void putMeIntoLayout(QVBoxLayout *layout);
     void expandColumns();
     void contractColumns();
     
     const QString webName;
-    vector<QCheckBox *> columnCheckBoxes;
+    QVector<QCheckBox *> columnCheckBoxes;
 protected:
     void paintEvent(QPaintEvent *event);
 protected slots:
@@ -56,7 +56,7 @@ public slots:
 private:
     FM_Setting *settings;
     Ui::SettingForm *ui;
-    vector<WebSettingWidget *> websWidget;
+    QVector<WebSettingWidget *> websWidget;
     void updateUIWithSettings();
 };
 

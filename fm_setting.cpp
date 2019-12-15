@@ -46,6 +46,22 @@ void FM_Setting::get_web_list(QVector<QString> &ret)
     }
 }
 
+void FM_Setting::get_valid_web(QVector<QString> &ret)
+{
+    ret.clear();
+    foreach(FM_WebSetting* s, web_settings)
+    {
+        foreach(const FM_ColumnSetting* cs, s->web_columns)
+        {
+            if(cs->is_enabled)
+            {
+                ret.append(s->web_name);
+                break;
+            }
+        }
+    }
+}
+
 void FM_Setting::get_web_columns(QString web, QVector<QString> &ret, QVector<bool> &bret)
 {
     ret.clear();
@@ -133,6 +149,12 @@ FM_Setting::FM_Setting()
     read_setting_from_json();
 }
 
+FM_Setting::~FM_Setting()
+{
+//    foreach(FM_WebSetting * fws, web_settings)
+//        delete fws;
+}
+
 void FM_Setting::read_setting_from_json()
 {
     //读取设置文件内容
@@ -173,4 +195,10 @@ void FM_Setting::update_setting_to_json()
     settings.insert("use_software_first_time", QJsonValue(false));
 
     writeJson("./test_settings.json", settings);
+}
+
+FM_WebSetting::FM_WebSetting()
+{
+//    foreach(FM_ColumnSetting *fcs, web_columns)
+//        delete fcs;
 }

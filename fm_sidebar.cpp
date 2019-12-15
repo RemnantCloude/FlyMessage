@@ -1,11 +1,13 @@
 #include <QStyleOption>
 #include <QPainter>
 #include <main_window.h>
+#include <QDebug>
 
 #include "fm_sidebar.h"
 #include "main_window.h"
 
-FM_SideItemData::FM_SideItemData(QString s, void(FM_SideBar::*f)()) : caption(s), func(f)
+FM_SideItemData::FM_SideItemData(QString s, void(FM_SideBar::*f)(), bool cb) : 
+    caption(s), checked(cb), func(f)
 {
     
 }
@@ -22,6 +24,14 @@ FM_SideBar::FM_SideBar(QWidget *parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_StyledBackground,true);
     setupUI();
+}
+
+FM_SideBar::~FM_SideBar()
+{
+//    foreach(FM_SBButton* sbb, items)
+//        delete sbb;
+//    delete verticalLayout;
+//    delete vSpacer;
 }
 
 void FM_SideBar::setupUI()
@@ -48,17 +58,41 @@ void FM_SideBar::setupUI()
 
 void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)
 {
+    
+    
     clearItems();
+    int items_now = verticalLayout->count();
+    
     foreach(FM_SideItemData data, idata) {
         FM_SBButton *pButton;
         pButton = new FM_SBButton(this, data.caption, data.checked);
+        pButton->web_name = data.caption;
+        
         this->items.append(pButton);
-        verticalLayout->insertWidget(0, pButton);
+        verticalLayout->insertWidget(items_now-1, pButton);
+        items_now++;
         
         connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::defaultAction);
         connect(pButton, &FM_SBButton::clicked, this, data.func);
     }
     btn_data = &idata;
+}
+
+void FM_SideBar::addSideBarList(QVector<FM_SideItemData> &idata, FM_SideItemData &data)
+{
+    int items_now = verticalLayout->count();
+    FM_SBButton *pButton;
+    pButton = new FM_SBButton(this, data.caption, data.checked);
+    pButton->web_name = data.caption;
+    
+    this->items.append(pButton);
+    verticalLayout->insertWidget(items_now-1, pButton);
+    items_now++;
+    
+    connect(pButton, &FM_SBButton::clicked, this, &FM_SideBar::defaultAction);
+    connect(pButton, &FM_SBButton::clicked, this, data.func);
+    
+    idata.append(data);
 }
 
 void FM_SideBar::defaultAction()
@@ -85,9 +119,9 @@ void FM_SideBar::defaultAction()
 /**
   * @brief: 刷新
   * */
-void FM_SideBar::customAction_refresh()
+void FM_SideBar::customAction_refreshAll()
 {
-    emit signal_refresh("website1");
+    emit signal_refreshAll();
 }
 
 /**
@@ -97,12 +131,22 @@ void FM_SideBar::customAction_favor()
 {
     emit signal_favor();
 }
+
 /**
   * @brief: 返回主界面
   * */
 void FM_SideBar::customAction_back()
 {
     emit signal_back();
+}
+
+/**
+  * @brief: 获取指定栏目
+  * */
+void FM_SideBar::customAction_column()
+{
+    FM_SBButton *sender = qobject_cast<FM_SBButton *>(QObject::sender());
+    emit signal_refresh(sender->web_name);
 }
 
 void FM_SideBar::clearItems()

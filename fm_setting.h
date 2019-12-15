@@ -18,7 +18,7 @@ struct FM_ColumnSetting {
 
 struct FM_WebSetting{
     FM_WebSetting (QString w, QVector<FM_ColumnSetting *> wc) : web_name(w), web_columns(wc) {}
-    FM_WebSetting () {}
+    FM_WebSetting ();
     QString web_name;
     QVector<FM_ColumnSetting *> web_columns;
 };
@@ -27,6 +27,7 @@ class FM_Setting
 {
 public:
     FM_Setting();
+    ~FM_Setting();
     void read_setting_from_json();
     void update_setting_to_json();
     
@@ -43,6 +44,7 @@ public:
     void get_web_columns(QString web, QVector<QString> &, QVector<bool> &bret);
     bool get_column_state(QString web, QString column);
     void set_column_state(QString web, QString column, bool state);
+    void get_valid_web(QVector<QString> &ret);
 private:
     bool global_notice;
     QTime refresh_time;

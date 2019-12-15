@@ -24,7 +24,29 @@ FlyMessage::FlyMessage(QWidget *parent) :
     // 初始化信号与槽
     initSignalAndSlot();
     
-    traySetting();   
+    traySetting();
+    
+    //加载所有数据
+    //mainwindow->onRefreshAllNews();
+}
+
+FlyMessage::~FlyMessage()
+{
+//    delete titlebar;
+//    delete sidebar;
+//    delete mainwindow;
+//    delete floatwindow;
+//    delete settingform;
+
+//    delete GLay;
+//    delete scrollarea;
+    
+//    delete trayIcon;
+//    delete mMenu;
+//    delete mShowMainAction;
+//    delete mExitAppAction;
+    
+//    delete settings;
 }
 
 void FlyMessage::initWindowStyle()
@@ -70,20 +92,29 @@ void FlyMessage::initComponents()
 
 void FlyMessage::initSideBar()
 {
+
+    main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_refreshAll,true));
+    connect(sidebar, &FM_SideBar::signal_refreshAll, mainwindow, &MainWindow::onRefreshAllNews);
+    connect(sidebar, &FM_SideBar::signal_refreshAll, floatwindow, &FloatWindow::showRefreshBtn);
     
-    main_sidebar_items.append(FM_SideItemData("加载json", &FM_SideBar::customAction_refresh));
-    main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor));
-    
-    setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back));
-    
-    connect(sidebar, &FM_SideBar::signal_refresh, mainwindow, &MainWindow::onRefreshNews);
-    connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
-    
+    main_sidebar_items.append(FM_SideItemData("收藏夹", &FM_SideBar::customAction_favor,false));
     connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
     connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
     
+    QVector<QString> valid_webs;
+    settings->get_valid_web(valid_webs);
+    foreach(QString s, valid_webs)
+    {
+        main_sidebar_items.append(FM_SideItemData(s, &FM_SideBar::customAction_column,false));
+    }
+    connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
+    connect(sidebar, &FM_SideBar::signal_refreshAll, floatwindow, &FloatWindow::showRefreshBtn);
+    
+    setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back,false));
     connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
     connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
+    connect(sidebar, SIGNAL(signal_back()), mainwindow, SLOT(onRefreshNews()));
+    connect(sidebar, SIGNAL(signal_back()), this, SLOT(returnToTopAtOnce()));
     
     sidebar->setSideBarList(main_sidebar_items);
 }
@@ -97,6 +128,7 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->settings_Btn, SIGNAL(clicked()), SLOT(moveToSettingForm()));
     
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
 }
 
@@ -193,6 +225,11 @@ void FlyMessage::onClose(bool)
 void FlyMessage::resizeEvent(QResizeEvent* size){
     Q_UNUSED(size);
     floatwindow->setGeometry(width() - 200,height()-80,120,50);
+}
+
+void FlyMessage::returnToTopAtOnce()
+{
+    scrollarea->ensureVisible(0,0);
 }
 
 void FlyMessage::returnToTop()

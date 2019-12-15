@@ -17,13 +17,13 @@ class FM_SBButton : public QPushButton {
     Q_OBJECT
 public:
     explicit FM_SBButton(QWidget *parent, const QString &str, bool checked);
-    
+    QString web_name;
     ~FM_SBButton() {}
 };
 
 struct FM_SideItemData {
     FM_SideItemData() {}
-    FM_SideItemData(QString s, void(FM_SideBar::*f)());
+    FM_SideItemData(QString s, void(FM_SideBar::*f)(), bool cb);
     ~FM_SideItemData() {}
     QString caption;
     bool checked = false;
@@ -37,21 +37,23 @@ class FM_SideBar : public QWidget
     
 public:
     explicit FM_SideBar(QWidget *parent = nullptr);
-    ~FM_SideBar() {}
+    ~FM_SideBar();
     void setSideBarList(QVector<FM_SideItemData> &idata);
+    void addSideBarList(QVector<FM_SideItemData> &idata, FM_SideItemData &data);
     void clearItems();
     
 public slots:
     void defaultAction();
-    void customAction_refresh();
+    void customAction_refreshAll();
     void customAction_favor();
     void customAction_back();
+    void customAction_column();
     
 signals:
+    void signal_refreshAll();
     void signal_refresh(QString);
     void signal_favor(void);
     void signal_back();
-    
 private:
     Ui::FM_SideBar *ui;
     QVector<FM_SBButton*> items;

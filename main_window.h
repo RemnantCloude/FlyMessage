@@ -18,16 +18,19 @@ class MainWindow : public QWidget
     Q_OBJECT
 public:
     explicit MainWindow(FM_Setting *se, QWidget *parent = nullptr);
-    ~MainWindow() {}
+    ~MainWindow();
 
     void getNews(QString web);
     void clearNews();
     
 public slots:
-    void onRefreshNews();//刷新新闻
+    void onRefreshNews(QString website);//刷新新闻
     void onFavorNews(bool type);//删除或添加单条收藏夹新闻
     void getFavorNews();//获取收藏夹新闻
     
+    void onRefreshAllNews();
+    
+    void onRefreshNews();
 protected:
     void init();
     void initSignalAndSlot();
@@ -40,7 +43,7 @@ protected:
     
 private:
     QVBoxLayout *thislayout;
-    QString website;//当前网站
+    QString now_website;
     int news_amounts;//每个板块新闻显示数量
     QFile favor_json;//收藏夹文件
     QVector<News *> newsArray;
@@ -54,6 +57,7 @@ private:
 */
     PageState pageState;
     void nullPageJudge();
+    void deleteNews(News *news);
 };
 
 #endif // MAIN_WINDOW_H
