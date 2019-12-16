@@ -219,9 +219,14 @@ void FlyMessage::onClose(bool)
 void FlyMessage::resizeEvent(QResizeEvent* size){
     Q_UNUSED(size);
     floatwindow->setGeometry(width() - 200,height()-80,120,50);
-    //waitwidget->setGeometry(geometry());
-    waitwidget->setMinimumSize(QSize(width(),height()));
-    
+    waitwidget->setMaximumSize(size->size());
+    waitwidget->setMinimumSize(size->size());
+
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window,
+                 QBrush(background.scaled(size->size(), Qt::IgnoreAspectRatio,
+                                     Qt::SmoothTransformation)));
+    setPalette(pal);
 }
 
 void FlyMessage::returnToTopAtOnce()

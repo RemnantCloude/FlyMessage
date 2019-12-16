@@ -17,6 +17,7 @@ WaitWidget::WaitWidget(QWidget *parent) : QWidget(parent)
     image->setMinimumSize(gif->scaledSize());
     image->setStyleSheet("border:1px solid black");
     hLayout->addWidget(image,0,Qt::AlignHCenter);
+    image->setAlignment(Qt::AlignHCenter);
     this->setLayout(hLayout);
     
     image->setMovie(gif);
