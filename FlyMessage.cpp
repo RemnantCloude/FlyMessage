@@ -84,6 +84,7 @@ void FlyMessage::setAeroStyle()
     }
 }
 
+
 void FlyMessage::setBackgroundImage()
 {
     if(settings->is_picture_background() == true && background.load(settings->get_picture_address()))

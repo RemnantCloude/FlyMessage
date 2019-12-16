@@ -98,6 +98,8 @@ void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool ne
     thislayout->insertWidget(newsArray.size()*2,news);
     thislayout->insertWidget(newsArray.size()*2+1,news->line);
     
+    //update();
+
     connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
     
     nullPageJudge();
