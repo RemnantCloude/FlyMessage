@@ -7,6 +7,7 @@
 #include <QSystemTrayIcon>
 #include <QAction>
 #include <QMenu>
+#include <QJsonObject>
 
 class FM_Notice : public QObject
 {
@@ -28,6 +29,8 @@ private:
     void initSignalAndSlot();
     void traySetting(QWidget *parent);
     void createMenu(QWidget *parent);
+
+    QJsonArray readJson(QString filename);
 
     QTimer* timer;
     QSystemTrayIcon *trayIcon;
