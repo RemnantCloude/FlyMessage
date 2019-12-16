@@ -68,6 +68,7 @@ public slots:
     void moveToSettingForm();
     void moveToMainWindow();
     void actSysTrayIcon(QSystemTrayIcon::ActivationReason reason);
+    void setBackgroundImage();
 
 protected:
     void initComponents();
@@ -79,7 +80,6 @@ protected:
     
     void setComponentsLayout();
     void setComponentsStyle();
-    void setBackgroundImage();
 
     void resizeEvent(QResizeEvent* size);
     void setAeroStyle();

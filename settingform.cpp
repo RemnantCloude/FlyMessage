@@ -3,6 +3,7 @@
 #include <QFontDatabase>
 #include <QStyleOption>
 #include <QPainter>
+#include <QMessageBox>
 #include <QDebug>
 #include <QFileDialog>
 
@@ -19,7 +20,7 @@ SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
     
     ui->setupUi(this);
     
-    setStyleSheet("SettingForm{background:white;}"
+    setStyleSheet("SettingForm{background:rgba(255,255,255,50);}"
                   "*{font-size:14px;font-family:\"微软雅黑\";}");
     
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
@@ -50,8 +51,7 @@ void SettingForm::updateGlobalSettings()
     settings->set_global_notice(ui->noticeCheckBox->checkState());
     settings->set_refresh_time(QTime(ui->HourSpin->value(),ui->MinuteSpin->value(),0,0));
     settings->set_max_display_news(ui->maxNewsNum->value());
-    settings->set_picture_background(ui->pictureBackground->checkState());
-    settings->set_picture_address(ui->pictureAddress->text());
+//    settings->set_picture_background(ui->pictureBackground->checkState());
     foreach(WebSettingWidget *wsw,websWidget)
     {
         foreach(QCheckBox *qcb,wsw->columnCheckBoxes)
@@ -195,6 +195,14 @@ void SettingForm::on_browse_Btn_clicked()
     {
         fileNames = fileDialog->selectedFiles();
         ui->pictureAddress->setText(fileNames.front());
+        settings->set_picture_address(ui->pictureAddress->text());
+        emit fkchange();
     }
     delete fileDialog;
+}
+
+void SettingForm::on_pictureBackground_clicked()
+{
+    settings->set_picture_background(ui->pictureBackground->checkState());
+    emit fkchange();
 }

@@ -5,6 +5,7 @@
 #include "aero.h"
 
 #include <QPainter>
+#include <QDebug>
 
 FlyMessage::FlyMessage(QWidget *parent) : 
     QWidget(parent),
@@ -85,20 +86,22 @@ void FlyMessage::setAeroStyle()
 
 void FlyMessage::setBackgroundImage()
 {
-    if(settings->is_picture_background() == true)
+    if(settings->is_picture_background() == true && background.load(settings->get_picture_address()))
     {
-        background.load(settings->get_picture_address());
-        setAutoFillBackground(true);
-        QPalette pal(palette());
-        pal.setBrush(QPalette::Window,
-                     QBrush(background.scaled(size(), Qt::IgnoreAspectRatio,
-                                         Qt::SmoothTransformation)));
+        QImage alphaChannel(background.size(),QImage::Format_Alpha8);
+        alphaChannel.fill(180);
+        background.setAlphaChannel(alphaChannel);
+        QPalette pal;
+        pal.setBrush(QPalette::Window, QBrush(background.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
         setPalette(pal);
-        setAttribute(Qt::WA_TranslucentBackground, false);
     }
     else
     {
-        setAttribute(Qt::WA_TranslucentBackground, true);
+        QImage alphaChannel(size(),QImage::Format_Alpha8);
+        alphaChannel.fill(0);
+        QPalette pal;
+        pal.setBrush(QPalette::Window, QBrush(alphaChannel));
+        setPalette(pal);
     }
 }
 
@@ -146,16 +149,16 @@ void FlyMessage::initComponents()
     connect(myfkProxy, &MainWindowProxy::wait, waitwidget, &WaitWidget::showup);
     connect(myfkProxy, &MainWindowProxy::stopwait, waitwidget, &WaitWidget::fuckoff);
     connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
+
+    connect(settingform, &SettingForm::fkchange, this, &FlyMessage::setBackgroundImage);
 }
 
 void FlyMessage::setComponentsStyle()
 {
     
     scrollarea->setWidgetResizable(true);
-    scrollarea->setStyleSheet("QScrollArea {background:rgba(255,255,255,200)}");
+    scrollarea->setStyleSheet("QScrollArea {background:rgba(255,255,255,0)}");
     scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    
-    settingform->setStyleSheet("SettingForm{background:white;}");
     
     GLay->setContentsMargins(0,0,0,0);
     GLay->setSpacing(0);
@@ -222,7 +225,7 @@ void FlyMessage::resizeEvent(QResizeEvent* size){
     waitwidget->setMaximumSize(size->size());
     waitwidget->setMinimumSize(size->size());
 
-    QPalette pal(palette());
+    QPalette pal;
     pal.setBrush(QPalette::Window,
                  QBrush(background.scaled(size->size(), Qt::IgnoreAspectRatio,
                                      Qt::SmoothTransformation)));

@@ -1,26 +1,26 @@
 {
     "global_settings": {
-        "global_notice": true,
-        "max_display_news": 6,
-        "minimize_notice_first_time": true,
+        "global_notice": false,
+        "max_display_news": 10,
+        "minimize_notice_first_time": false,
         "refresh_time_hour": 0,
         "refresh_time_minute": 30,
         "refresh_time_msec": 0,
         "refresh_time_second": 0,
         "self_starting": false,
         "use_software_first_time": false,
-        "picture_background": true,
+        "picture_background": false,
         "picture_address": "./background.png"
     },
     "人民网": {
-        "军事": true,
-        "政治": true,
+        "军事": false,
+        "政治": false,
         "法制": false,
         "财经": false,
         "领导": false
     },
     "教务处": {
-        "国际教育": true,
+        "国际教育": false,
         "实践教学": false,
         "教务学籍": false,
         "是否使用": false
@@ -35,7 +35,7 @@
     "网易": {
         "体育": false,
         "娱乐": false,
-        "教育": true,
+        "教育": false,
         "旅游": false,
         "科技": false
     }

@@ -50,11 +50,16 @@ public:
     explicit SettingForm(FM_Setting *s, QWidget *parent = nullptr);
     ~SettingForm();
     void updateWebWidget();
+signals:
+    void fkchange();
+
 public slots:
     void updateGlobalSettings();
     
 private slots:
     void on_browse_Btn_clicked();
+
+    void on_pictureBackground_clicked();
 
 private:
     FM_Setting *settings;

@@ -1,6 +1,7 @@
 ﻿#ifndef JSON_H
 #define JSON_H
 
+#include <QObject>
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
@@ -9,10 +10,16 @@
 #include <QFile>
 
 #include <QDebug>
-namespace json{
-    QJsonDocument readJson(QString filename);
-    void writeJson(QString filename, QJsonObject object);
-    void writeJson(QString filename, QJsonArray news, bool type);
-}
+
+class FM_Json : public QObject
+{
+    Q_OBJECT
+public:
+    explicit FM_Json(QObject *parent);
+    ~FM_Json() {}
+    static QJsonDocument readJson(QString filename);
+    static void writeJson(QString filename, QJsonObject object);
+    static void writeJson(QString filename, QJsonArray news, bool type);
+};
 
 #endif // JSON_H

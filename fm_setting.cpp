@@ -66,6 +66,7 @@ bool FM_Setting::is_picture_background()
 void FM_Setting::set_picture_background(bool set)
 {
     this->picture_background = set;
+    this->update_setting_to_json();
 }
 
 QString FM_Setting::get_picture_address()
@@ -76,6 +77,7 @@ QString FM_Setting::get_picture_address()
 void FM_Setting::set_picture_address(QString address)
 {
     this->picture_address = address;
+    this->update_setting_to_json();
 }
 
 void FM_Setting::get_valid_web(QVector<QString> &ret)
@@ -158,7 +160,7 @@ FM_Setting::~FM_Setting()
 void FM_Setting::read_setting_from_json()
 {
     //读取设置文件内容
-    QJsonObject settings = json::readJson("./settings.json").object();
+    QJsonObject settings = FM_Json::readJson("./settings.json").object();
     //读取全局设置
     QJsonObject global_settings = settings.value("global_settings").toObject();
 
@@ -217,7 +219,7 @@ void FM_Setting::update_setting_to_json()
         settings.insert(website->web_name, jcolumn);
     }
 
-    json::writeJson("./settings.json", settings);
+    FM_Json::writeJson("./settings.json", settings);
 }
 
 FM_WebSetting::~FM_WebSetting()

@@ -2,8 +2,14 @@
 
 #define ADDNEWS     true
 #define DELETENEWS  false
+FM_Json::FM_Json(QObject *parent):
+    QObject (parent)
+{
 
-QJsonDocument json::readJson(QString filename)
+}
+
+
+QJsonDocument FM_Json::readJson(QString filename)
 {
     QFile file(filename);
     file.open(QIODevice::ReadOnly | QIODevice::Text); // 只读文件
@@ -21,7 +27,7 @@ QJsonDocument json::readJson(QString filename)
     return document;
 }
 
-void json::writeJson(QString filename, QJsonObject object)
+void FM_Json::writeJson(QString filename, QJsonObject object)
 {
     QFile file(filename);
     file.open(QIODevice::ReadWrite);
@@ -33,7 +39,7 @@ void json::writeJson(QString filename, QJsonObject object)
     file.close();
 }
 
-void json::writeJson(QString filename, QJsonArray news, bool type)
+void FM_Json::writeJson(QString filename, QJsonArray news, bool type)
 {
     QFile file(filename);
     file.open(QIODevice::ReadWrite);

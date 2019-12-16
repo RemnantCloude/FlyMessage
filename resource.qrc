@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/images">
-        <file alias="logop">images/logo.jpg</file>
-        <file alias="bg">images/background.jpg</file>
         <file alias="logo">images/s2.png</file>
         <file alias="sb">images/sb.jpg</file>
         <file alias="wait">images/wait.gif</file>

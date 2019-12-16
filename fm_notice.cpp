@@ -73,7 +73,7 @@ void FM_Notice::onMinimize_notice()
 
 void FM_Notice::onInform_notice()
 {
-    QJsonArray array = json::readJson("./notice.json").array();
+    QJsonArray array = FM_Json::readJson("./notice.json").array();
     int count = array.size();
     trayIcon->showMessage("飞讯","您有"+QString::number(count)+"条新的通知",
                           QSystemTrayIcon::Information,1000);

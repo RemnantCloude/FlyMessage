@@ -25,14 +25,6 @@ MainWindow::MainWindow(FM_Setting *se, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {    
-    foreach(News *news, newsArray)
-    {
-        delete news;
-    }
-    delete tipLabel;
-    delete tip2Label;
-    delete sbImage;
-    delete thislayout;
 }
 
 void MainWindow::setThisLayout()
@@ -47,11 +39,12 @@ void MainWindow::setThisLayout()
     sbImage->setPixmap(QPixmap(":/images/sb"));
     thislayout->addWidget(sbImage);
     
+
     tipLabel = new QLabel("这里空空如也~",this);
     tipLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
     tipLabel->setAlignment(Qt::AlignCenter);
-    tipLabel->setStyleSheet("font-family: \"微软雅黑\"; font-size: 48px; color:gray; text-align: center;");
-    thislayout->addWidget(tipLabel);
+    tipLabel->setStyleSheet("font-family: \"微软雅黑\"; font-size: 48px; color:black; text-align: center;");
+    thislayout->addWidget(tipLabel,0,Qt::AlignVCenter);
     
     tip2Label = new QLabel("已经到底了~",this);
     tip2Label->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
@@ -76,7 +69,7 @@ void MainWindow::setThisStyle()
 
     this->setStyleSheet("News {background: rgb(255,255,255)}"
                         "News:hover {border:1px solid blue; background: #d9fdff;}"
-                        "MainWindow {background : rgba(255,255,255,200);}"
+                        "MainWindow {background : rgba(255,255,255,50);}"
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
 
 }

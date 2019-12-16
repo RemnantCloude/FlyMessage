@@ -44,7 +44,7 @@ void MainWindowProxy::getNews(QString web)
     mainwindow->settings->get_web_columns(web,column_str,column_bool);
     int max_display_news = mainwindow->settings->get_max_display_news();
     //获取新闻内容
-    QJsonObject news = json::readJson("./news.json").object();
+    QJsonObject news = FM_Json::readJson("./news.json").object();
     QJsonObject news_type = news.value(web).toObject();
     QThread::msleep(300);
     for(int i = 0; i < column_str.size(); i++)
@@ -73,7 +73,7 @@ void MainWindowProxy::getFavorNews()
 {
     emit clearNewsinUI();
     
-    QJsonObject favor = json::readJson("./favorite.json").object();
+    QJsonObject favor = FM_Json::readJson("./favorite.json").object();
     QJsonArray array = favor.value("favorite").toArray();
     for(int i = 0; i < array.size(); i++)
     {
@@ -94,7 +94,7 @@ void MainWindowProxy::writeFavor(QString s1,QString s2,QString s3,QString s4,boo
     array.insert(1, s2);
     array.insert(2, s3);
     array.insert(3, s4);
-    json::writeJson("./favorite.json", array, type);
+    FM_Json::writeJson("./favorite.json", array, type);
 }
 
 
