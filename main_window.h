@@ -1,4 +1,4 @@
-#ifndef MAIN_WINDOW_H
+﻿#ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
 #include <QWidget>
@@ -42,8 +42,7 @@ protected:
     void initSignalAndSlot();
     void setThisLayout();
     void setThisStyle();
-    
-    QJsonObject readJson(QString filename);
+
     void refreshAllNews();
 
 private:

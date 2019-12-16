@@ -1,4 +1,4 @@
-#ifndef MAINWINDOWPROXY_H
+﻿#ifndef MAINWINDOWPROXY_H
 #define MAINWINDOWPROXY_H
 
 #include <QObject>
@@ -25,8 +25,6 @@ protected:
     virtual void run();
 private:
     MainWindow *mainwindow;
-    QJsonObject readJson(QString filename);
-    void writeJson(QString filename, QJsonArray news, bool type);
 };
 
 #endif // MAINWINDOWPROXY_H

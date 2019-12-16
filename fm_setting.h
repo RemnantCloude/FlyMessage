@@ -63,9 +63,6 @@ private:
     QTime refresh_time;
     int max_display_news;
     QVector<FM_WebSetting *> web_settings;
-    
-    QJsonObject readJson(QString filename);
-    void writeJson(QString filename, QJsonObject settings);
 };
 
 #endif // FM_SETTING_H

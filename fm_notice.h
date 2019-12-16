@@ -30,8 +30,6 @@ private:
     void traySetting(QWidget *parent);
     void createMenu(QWidget *parent);
 
-    QJsonArray readJson(QString filename);
-
     QTimer* timer;
     QSystemTrayIcon *trayIcon;
     QMenu *mMenu;

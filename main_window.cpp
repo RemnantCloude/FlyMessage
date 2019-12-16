@@ -1,19 +1,7 @@
 ﻿#include <QtWidgets/QVBoxLayout>
 #include <QFontDatabase>
-
 #include <QDebug>
 #include <QCoreApplication>
-#include <QDir>
-#include <QWidget>
-#include <QJsonDocument>
-#include <QJsonParseError>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonValue>
-#include <QFile>
-
-#include <QPushButton>
-
 #include <QStyleOption>
 #include <QPainter>
 

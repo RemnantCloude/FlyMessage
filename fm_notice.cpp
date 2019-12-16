@@ -1,4 +1,5 @@
 ﻿#include "fm_notice.h"
+#include "json.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -72,28 +73,8 @@ void FM_Notice::onMinimize_notice()
 
 void FM_Notice::onInform_notice()
 {
-    QJsonArray array = readJson("./notice.json");
+    QJsonArray array = json::readJson("./notice.json").array();
     int count = array.size();
     trayIcon->showMessage("飞讯","您有"+QString::number(count)+"条新的通知",
                           QSystemTrayIcon::Information,1000);
-
-}
-
-QJsonArray FM_Notice::readJson(QString filename)
-{
-    QFile file(filename);
-    file.open(QIODevice::ReadOnly | QIODevice::Text); // 只读文件
-    QString value = file.readAll();
-    file.close();
-
-    // 错误提示
-    QJsonParseError parseJsonErr;
-    QJsonDocument document = QJsonDocument::fromJson(value.toUtf8(),&parseJsonErr);
-    if(!(parseJsonErr.error == QJsonParseError::NoError))
-    {
-        qDebug()<<"解析json文件错误!";
-    }
-    QJsonArray jsonArray = document.array();
-
-    return jsonArray;
 }

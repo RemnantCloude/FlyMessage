@@ -37,7 +37,8 @@ SOURCES += \
     fm_python.cpp \
     fm_notice.cpp \
     mainwindowproxy.cpp \
-    waitwidget.cpp
+    waitwidget.cpp \
+    json.cpp
 
 
 HEADERS += \
@@ -54,7 +55,8 @@ HEADERS += \
     fm_python.h \
     fm_notice.h \
     mainwindowproxy.h \
-    waitwidget.h
+    waitwidget.h \
+    json.h
 
 RC_FILE += FlyMessage.rc
 
