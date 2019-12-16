@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QFileDialog>
 
-const uint32_t max_columns_a_row = 2;
+const uint32_t max_columns_a_row = 3;
 
 SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
     QWidget(parent),
@@ -18,6 +18,9 @@ SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
     int fontId = QFontDatabase::addApplicationFont(":/fonts/type59");
     
     ui->setupUi(this);
+    
+    setStyleSheet("SettingForm{background:white;}"
+                  "*{font-size:14px;font-family:\"微软雅黑\";}");
     
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
     QFont myFont;

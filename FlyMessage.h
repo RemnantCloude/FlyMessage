@@ -17,6 +17,7 @@
 #include "float_window.h"
 #include "settingform.h"
 #include "fm_notice.h"
+#include "waitwidget.h"
 
 class FlyMessage : public QWidget
 {
@@ -31,12 +32,17 @@ public:
     QPoint dPos;
     
 private:
-    TitleBar* titlebar;
+    WaitWidget* waitwidget;
     FM_SideBar* sidebar;
     MainWindow* mainwindow;
+    
     FloatWindow *floatwindow;
     SettingForm *settingform;
-
+    
+    QThread*    myfkThread;
+    MainWindowProxy* myfkProxy;
+    
+    
     QGridLayout *GLay;
     QScrollArea *scrollarea;
     QScroller *scroller;

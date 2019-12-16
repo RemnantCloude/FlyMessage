@@ -23,11 +23,10 @@ struct FM_WebSetting{
     QVector<FM_ColumnSetting *> web_columns;
 };
 
-class FM_Setting  : public QObject
+class FM_Setting
 {
-    Q_OBJECT
 public:
-    explicit FM_Setting(QObject *parent = nullptr);
+    explicit FM_Setting();
     ~FM_Setting();
     void read_setting_from_json();
     void update_setting_to_json();

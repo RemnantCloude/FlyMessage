@@ -35,7 +35,9 @@ SOURCES += \
     webwizardform.cpp \
     fm_setting.cpp \
     fm_python.cpp \
-    fm_notice.cpp
+    fm_notice.cpp \
+    mainwindowproxy.cpp \
+    waitwidget.cpp
 
 
 HEADERS += \
@@ -50,7 +52,9 @@ HEADERS += \
     fm_setting.h \
     aero.h \
     fm_python.h \
-    fm_notice.h
+    fm_notice.h \
+    mainwindowproxy.h \
+    waitwidget.h
 
 RC_FILE += FlyMessage.rc
 

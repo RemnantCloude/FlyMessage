@@ -1,7 +1,7 @@
 #include <QApplication>
 
 #include "FlyMessage.h"
-#include "webwizardform.h"
+#include "waitwidget.h"
 
 int main(int argc, char *argv[])
 {

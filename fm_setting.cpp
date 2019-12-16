@@ -174,8 +174,7 @@ void FM_Setting::writeJson(QString filename, QJsonObject settings)
     file.close();
 }
 
-FM_Setting::FM_Setting(QObject *parent) :
-    QObject (parent)
+FM_Setting::FM_Setting()
 {
     read_setting_from_json();
 }
