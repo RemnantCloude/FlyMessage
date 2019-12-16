@@ -19,6 +19,8 @@ public slots:
 signals:
     void addNewsItemToUI(QString a, QString b, QString c, QString d, bool needFavor);
     void clearNewsinUI();
+    void wait();
+    void stopwait();
 protected:
     virtual void run();
 private:

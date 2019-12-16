@@ -36,7 +36,8 @@ SOURCES += \
     fm_setting.cpp \
     fm_python.cpp \
     fm_notice.cpp \
-    mainwindowproxy.cpp
+    mainwindowproxy.cpp \
+    waitwidget.cpp
 
 
 HEADERS += \
@@ -52,7 +53,8 @@ HEADERS += \
     aero.h \
     fm_python.h \
     fm_notice.h \
-    mainwindowproxy.h
+    mainwindowproxy.h \
+    waitwidget.h
 
 RC_FILE += FlyMessage.rc
 

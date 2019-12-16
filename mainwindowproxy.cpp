@@ -5,6 +5,7 @@
 #include <QJsonValue>
 #include <QFile>
 #include <QDebug>
+#include <QThread>
 
 #include "mainwindowproxy.h"
 
@@ -36,15 +37,15 @@ void MainWindowProxy::getNews(QString web)
 {
     QVector<QString> column_str;
     QVector<bool>    column_bool;
-    
-    qDebug() << "thread_dealing";
+    //等待界面
+    emit wait();
     
     mainwindow->settings->get_web_columns(web,column_str,column_bool);
     int max_display_news = mainwindow->settings->get_max_display_news();
-
     //获取新闻内容
     QJsonObject news = readJson("./news.json");
     QJsonObject news_type = news.value(web).toObject();
+    QThread::msleep(300);
     for(int i = 0; i < column_str.size(); i++)
     {
         if(column_bool[i])
@@ -58,17 +59,18 @@ void MainWindowProxy::getNews(QString web)
                                      array1.at(1).toString(),
                                      array1.at(2).toString(),
                                      array1.at(3).toString(),
-                                     true);                
+                                     true);
+                QThread::msleep(10);
             }
         }
     }
     mainwindow->pageState = PageState::OtherPage;
+    //关闭等待界面
+    emit stopwait();
 }
 
 void MainWindowProxy::getFavorNews()
 {
-    qDebug() << "thread_dealing";
-
     emit clearNewsinUI();
     
     QJsonObject favor = readJson("./favorite.json");
@@ -81,7 +83,6 @@ void MainWindowProxy::getFavorNews()
                              array1.at(2).toString(),
                              array1.at(3).toString(),
                              false);
-
     }
     mainwindow->pageState = PageState::FavorPage;
 }

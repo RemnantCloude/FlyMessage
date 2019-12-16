@@ -22,7 +22,7 @@ FlyMessage::FlyMessage(QWidget *parent) :
     initSignalAndSlot();
     
     settingform->hide();
-
+    waitwidget->hide();
 }
 
 FlyMessage::~FlyMessage()
@@ -106,8 +106,8 @@ void FlyMessage::initComponents()
     GLay = new QGridLayout(this);
     scroller = QScroller::scroller(scrollarea);
     notice = new FM_Notice(this, settings->get_refresh_time());
-    
-    
+    waitwidget = new WaitWidget(this);
+
     myfkProxy = new MainWindowProxy(mainwindow);
     myfkThread  = new QThread(this);
     myfkThread->start();
@@ -134,7 +134,10 @@ void FlyMessage::initComponents()
     connect(mainwindow, &MainWindow::getNews, myfkProxy, &MainWindowProxy::getNews);
     connect(mainwindow, &MainWindow::getFavorNews, myfkProxy, &MainWindowProxy::getFavorNews);
     connect(mainwindow, &MainWindow::writeFavor, myfkProxy, &MainWindowProxy::writeFavor);
-    connect(myfkProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem);
+    connect(myfkProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem,Qt::QueuedConnection);
+    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
+    connect(myfkProxy, &MainWindowProxy::wait, waitwidget, &WaitWidget::showup);
+    connect(myfkProxy, &MainWindowProxy::stopwait, waitwidget, &WaitWidget::fuckoff);
     connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
 }
 
@@ -201,6 +204,9 @@ void FlyMessage::onClose(bool)
 void FlyMessage::resizeEvent(QResizeEvent* size){
     Q_UNUSED(size);
     floatwindow->setGeometry(width() - 200,height()-80,120,50);
+    //waitwidget->setGeometry(geometry());
+    waitwidget->setMinimumSize(QSize(width(),height()));
+    
 }
 
 void FlyMessage::returnToTopAtOnce()

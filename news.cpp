@@ -102,8 +102,7 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
                              "QPushButton[favored=false]{color: black;}"
                              "QPushButton[favored=true]{color: #00A2FF;}"
                              "QPushButton:hover{color: rgb(255,201,14);}");
-    
-    
+
     line->setFrameShadow(QFrame::Raised);
     line->setFrameShape(QFrame::HLine);
 

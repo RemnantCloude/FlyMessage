@@ -17,6 +17,7 @@
 #include "float_window.h"
 #include "settingform.h"
 #include "fm_notice.h"
+#include "waitwidget.h"
 
 class FlyMessage : public QWidget
 {
@@ -33,6 +34,7 @@ public:
 private:
     bool hasBackgroundImage;
 
+    WaitWidget* waitwidget;
     TitleBar* titlebar;
     FM_SideBar* sidebar;
     MainWindow* mainwindow;
