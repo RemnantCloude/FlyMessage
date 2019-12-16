@@ -35,6 +35,7 @@ private:
     WaitWidget* waitwidget;
     FM_SideBar* sidebar;
     MainWindow* mainwindow;
+    TitleBar* titlebar;
     
     FloatWindow *floatwindow;
     SettingForm *settingform;
@@ -78,7 +79,7 @@ protected:
     
     void setComponentsLayout();
     void setComponentsStyle();
-    void setBackgroundImage(); // 设置背景图片
+    void setBackgroundImage();
 
     void resizeEvent(QResizeEvent* size);
     void setAeroStyle();

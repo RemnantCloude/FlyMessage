@@ -48,7 +48,7 @@ FlyMessage::~FlyMessage()
 
 void FlyMessage::initWindowStyle()
 {
-    this->resize (1024, 720); // TODO:默认大小需可记忆
+    this->resize (1024, 720);
     this->setContentsMargins(0,0,0,0);
     setBackgroundImage();
     this->setStyleSheet("TitleBar{background-color:rgba(255,255,255,60);}"
@@ -200,9 +200,15 @@ void FlyMessage::onMin(bool)
 void FlyMessage::onMax(bool)
 {
     if( windowState() != Qt::WindowMaximized )// 最大化
+    {
         setWindowState( Qt::WindowMaximized );
+        titlebar->max_Btn->setText(QChar(0xf2d2));
+    }
     else// 还原成原窗口大小
+    {
         setWindowState( Qt::WindowNoState );
+        titlebar->max_Btn->setText(QChar(0xf2d0));
+    }
 }
 
 void FlyMessage::onClose(bool)
