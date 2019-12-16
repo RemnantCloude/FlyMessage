@@ -93,7 +93,8 @@ void FlyMessage::setBackgroundImage()
         alphaChannel.fill(180);
         background.setAlphaChannel(alphaChannel);
         QPalette pal;
-        pal.setBrush(QPalette::Window, QBrush(background.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+        pal.setBrush(QPalette::Window,
+                     QBrush(background.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
         setPalette(pal);
     }
     else

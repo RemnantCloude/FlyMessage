@@ -6,8 +6,6 @@
     </qresource>
     <qresource prefix="/fonts">
         <file alias="fontawesome_solid">fonts/Font Awesome 5 Free-Solid-900.otf</file>
-        <file alias="fontawesome_brand">fonts/Font Awesome 5 Brands-Regular-400.otf</file>
-        <file alias="fontawesome_regular">fonts/Font Awesome 5 Free-Regular-400.otf</file>
         <file alias="type59">fonts/Type59.ttf</file>
     </qresource>
     <qresource prefix="/icons">
@@ -17,9 +15,5 @@
         <file alias="refresh.ico">images/refresh.ico</file>
         <file alias="top.ico">images/top.ico</file>
         <file alias="custom">images/custom.png</file>
-    </qresource>
-    <qresource prefix="/qss">
-        <file alias="FlyMessage">qss/FlyMessage.qss</file>
-        <file alias="main_window">qss/main_window.qss</file>
     </qresource>
 </RCC>
