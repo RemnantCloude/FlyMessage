@@ -91,11 +91,11 @@ void TitleBar::setThisStyle()
                         "stop:0 rgba(255, 255, 255, 160), stop:1 rgba(255, 255, 255, 60));}"
                         "QPushButton{font-size: 12pt; border-style: none; color: black;}"
                         "QPushButton:hover{background-color:lightgray;}"
-                        "QPushButton:pressed{background-color:gray; color: blue;}");
+                        "QPushButton:pressed{background-color:gray; color: lightblue;}");
 
     close_Btn->setStyleSheet("QPushButton{border-style: none}"
                             "QPushButton:hover{background-color:red; color: black;}"
-                            "QPushButton:pressed{background-color:rgba(85, 170, 255,200); border-style: inset; }");
+                            "QPushButton:pressed{background-color:lightred; border-style: inset; }");
     //title_Lab->setStyleSheet("QLabel{font-size: 12pt; color: black;}");
 
     // 添加字体文件

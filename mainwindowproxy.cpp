@@ -1,4 +1,4 @@
-#include <QJsonDocument>
+﻿#include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -60,7 +60,6 @@ void MainWindowProxy::getNews(QString web)
                                      array1.at(2).toString(),
                                      array1.at(3).toString(),
                                      true);
-                QThread::msleep(10);
             }
         }
     }
