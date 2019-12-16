@@ -20,7 +20,7 @@ FlyMessage::FlyMessage(QWidget *parent) :
     // 初始化信号与槽
     initSignalAndSlot();
     
-    //加载所有数据
+    settingform->hide();
 
 }
 
@@ -289,28 +289,4 @@ void FlyMessage::reinitMainSideBarItems()
     
     if(!find_checked)
         sidebar->setBtnClicked(0);
-}
-
-void FlyMessage::onMin(bool)
-{
-    this->hide();
-    trayIcon->showMessage("飞讯","飞讯最小化在任务栏",QSystemTrayIcon::Information,1000);
-}
-
-void FlyMessage::onMax(bool)
-{
-    if( windowState() != Qt::WindowMaximized )// 最大化
-        setWindowState( Qt::WindowMaximized );
-    else// 还原成原窗口大小
-        setWindowState( Qt::WindowNoState );
-}
-
-void FlyMessage::onClose(bool)
-{
-    emit close();
-}
-
-void FlyMessage::resizeEvent(QResizeEvent* size){
-    Q_UNUSED(size);
-    floatwindow->setGeometry(width() - 200,height()-80,120,50);
 }

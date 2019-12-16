@@ -5,7 +5,7 @@
 #include <QString>
 #include <QVector>
 #include <QJsonObject>
-
+#include <QObject>
 
 using namespace std;
 
@@ -23,11 +23,11 @@ struct FM_WebSetting{
     QVector<FM_ColumnSetting *> web_columns;
 };
 
-class FM_Setting
+class FM_Setting  : public QObject
 {
-    
+    Q_OBJECT
 public:
-    FM_Setting();
+    explicit FM_Setting(QObject *parent = nullptr);
     ~FM_Setting();
     void read_setting_from_json();
     void update_setting_to_json();

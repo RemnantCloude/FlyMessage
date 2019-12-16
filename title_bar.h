@@ -6,6 +6,7 @@
 #include <QPaintEvent>
 #include <QString>
 #include <QPushButton>
+#include <QHBoxLayout>
 #include <QLabel>
 
 class FlyMessage;
@@ -21,11 +22,10 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
 
-    //TODO:删除后控件会错位
-    void resizeEvent(QResizeEvent* event);
-
     FlyMessage* thisparent;//父窗口
     
+    QHBoxLayout* titleLayout;
+    QSpacerItem* Spacer;
     QPushButton* min_Btn; // 显示最大或者最小的图标
     QPushButton* max_Btn; // 最大化按钮
     QPushButton* close_Btn;// 关闭按钮
