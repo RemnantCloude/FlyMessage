@@ -43,6 +43,12 @@ public:
 
     bool is_minimize_notice_first_time();
     void set_minimize_notice_first_time();
+
+    bool is_picture_background();
+    void set_picture_background(bool);
+
+    QString get_picture_address();
+    void set_picture_address(QString address);
     
     void get_web_list(QVector<QString> &ret);
     void get_web_columns(QString web, QVector<QString> &, QVector<bool> &bret);
@@ -53,6 +59,8 @@ private:
     bool global_notice;
     bool self_starting;
     bool minimize_notice_first_time;
+    bool picture_background;
+    QString picture_address;
     QTime refresh_time;
     int max_display_news;
     QVector<FM_WebSetting *> web_settings;

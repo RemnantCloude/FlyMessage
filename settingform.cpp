@@ -4,6 +4,7 @@
 #include <QStyleOption>
 #include <QPainter>
 #include <QDebug>
+#include <QFileDialog>
 
 const uint32_t max_columns_a_row = 2;
 
@@ -46,6 +47,8 @@ void SettingForm::updateGlobalSettings()
     settings->set_global_notice(ui->noticeCheckBox->checkState());
     settings->set_refresh_time(QTime(ui->HourSpin->value(),ui->MinuteSpin->value(),0,0));
     settings->set_max_display_news(ui->maxNewsNum->value());
+    settings->set_picture_background(ui->pictureBackground->checkState());
+    settings->set_picture_address(ui->pictureAddress->text());
     foreach(WebSettingWidget *wsw,websWidget)
     {
         foreach(QCheckBox *qcb,wsw->columnCheckBoxes)
@@ -63,7 +66,9 @@ void SettingForm::updateUIWithSettings()
     time = settings->get_refresh_time();
     ui->HourSpin->setValue(time.hour());
     ui->MinuteSpin->setValue(time.minute());
-    ui->maxNewsNum->setValue(settings->get_max_display_news());    
+    ui->maxNewsNum->setValue(settings->get_max_display_news());
+    ui->pictureBackground->setChecked(settings->is_picture_background());
+    ui->pictureAddress->setText(settings->get_picture_address());
 }
 
 SettingForm::~SettingForm()
@@ -171,4 +176,22 @@ void WebSettingWidget::paintEvent(QPaintEvent *event)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void SettingForm::on_browse_Btn_clicked()
+{
+    QFileDialog *fileDialog = new QFileDialog(this);
+    fileDialog->setWindowTitle(tr("打开图片"));
+    fileDialog->setDirectory(".");
+    fileDialog->setNameFilter(tr("Images(*.png *.jpg *.jpeg *.bmp)"));
+    fileDialog->setFileMode(QFileDialog::ExistingFile);
+    fileDialog->setViewMode(QFileDialog::Detail);
+
+    QStringList fileNames;
+    if(fileDialog->exec())
+    {
+        fileNames = fileDialog->selectedFiles();
+        ui->pictureAddress->setText(fileNames.front());
+    }
+    delete fileDialog;
 }

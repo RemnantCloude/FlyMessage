@@ -1,4 +1,4 @@
-#ifndef SETTINGFORM_H
+﻿#ifndef SETTINGFORM_H
 #define SETTINGFORM_H
 
 #include "fm_setting.h"
@@ -53,6 +53,9 @@ public:
 public slots:
     void updateGlobalSettings();
     
+private slots:
+    void on_browse_Btn_clicked();
+
 private:
     FM_Setting *settings;
     Ui::SettingForm *ui;

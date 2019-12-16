@@ -16,6 +16,7 @@ FlyMessage::FlyMessage(QWidget *parent) :
     setComponentsLayout();
     setComponentsStyle();
     initWindowStyle();
+    setBackgroundImage();
     
     // 初始化信号与槽
     initSignalAndSlot();
@@ -41,14 +42,15 @@ FlyMessage::~FlyMessage()
 void FlyMessage::initWindowStyle()
 {
     this->resize (1024, 720); // TODO:默认大小需可记忆
-    this->setStyleSheet("TitleBar{background-color:rgba(255,243,255,60);}"
-                        "FM_SideBar{background-color:rgba(255,255,255,60);}");    
-
+    this->setContentsMargins(0,0,0,0);
+    setBackgroundImage();
+    this->setStyleSheet("TitleBar{background-color:rgba(255,255,255,60);}"
+                        "FM_SideBar{background-color:rgba(255,255,255,60);}");
     setAttribute(Qt::WA_TransparentForMouseEvents, false);
     setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint); 
-    setAttribute(Qt::WA_TranslucentBackground, true);
 
     setAeroStyle();
+
 }
 
 void FlyMessage::setAeroStyle()
@@ -74,18 +76,23 @@ void FlyMessage::setAeroStyle()
     }
 }
 
-//TODO:
-void FlyMessage::setBackgroundImage(QString filename)
+void FlyMessage::setBackgroundImage()
 {
-    hasBackgroundImage = true;
-
-    background.load(filename);
-    setAutoFillBackground(true);
-    QPalette pal(palette());
-    pal.setBrush(QPalette::Window,
-                 QBrush(background.scaled(size(), Qt::IgnoreAspectRatio,
-                                     Qt::SmoothTransformation)));
-    setPalette(pal);
+    if(settings->is_picture_background() == true)
+    {
+        background.load(settings->get_picture_address());
+        setAutoFillBackground(true);
+        QPalette pal(palette());
+        pal.setBrush(QPalette::Window,
+                     QBrush(background.scaled(size(), Qt::IgnoreAspectRatio,
+                                         Qt::SmoothTransformation)));
+        setPalette(pal);
+        setAttribute(Qt::WA_TranslucentBackground, false);
+    }
+    else
+    {
+        setAttribute(Qt::WA_TranslucentBackground, true);
+    }
 }
 
 void FlyMessage::initComponents()
@@ -119,12 +126,12 @@ void FlyMessage::setComponentsStyle()
 {
     
     scrollarea->setWidgetResizable(true);
-    scrollarea->setStyleSheet("QScrollArea {background:white}");
+    scrollarea->setStyleSheet("QScrollArea {background:rgba(255,255,255,200)}");
     scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     
     settingform->setStyleSheet("SettingForm{background:white;}");
     
-    GLay->setContentsMargins(6,6,6,6);
+    GLay->setContentsMargins(0,0,0,0);
     GLay->setSpacing(0);
 }
 

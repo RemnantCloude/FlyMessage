@@ -31,8 +31,6 @@ public:
     QPoint dPos;
     
 private:
-    bool hasBackgroundImage;
-
     TitleBar* titlebar;
     FM_SideBar* sidebar;
     MainWindow* mainwindow;
@@ -74,7 +72,7 @@ protected:
     
     void setComponentsLayout();
     void setComponentsStyle();
-    void setBackgroundImage(QString filename); // 设置背景图片
+    void setBackgroundImage(); // 设置背景图片
 
     void resizeEvent(QResizeEvent* size);
     void setAeroStyle();

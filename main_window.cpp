@@ -88,7 +88,7 @@ void MainWindow::setThisStyle()
 
     this->setStyleSheet("News {background: rgb(255,255,255)}"
                         "News:hover {border:1px solid blue; background: #d9fdff;}"
-                        "MainWindow {background : rgb(255,255,255);}"
+                        "MainWindow {background : rgba(255,255,255,200);}"
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
 
 }

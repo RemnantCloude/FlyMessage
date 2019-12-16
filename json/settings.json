@@ -8,7 +8,9 @@
         "refresh_time_msec": 0,
         "refresh_time_second": 0,
         "self_starting": false,
-        "use_software_first_time": false
+        "use_software_first_time": false,
+        "picture_background": true,
+        "picture_address": "./background.png"
     },
     "人民网": {
         "军事": true,

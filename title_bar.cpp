@@ -1,4 +1,4 @@
-#include "title_bar.h"
+﻿#include "title_bar.h"
 #include "FlyMessage.h"
 
 #include <QPushButton>
@@ -32,7 +32,6 @@ TitleBar::~TitleBar()
     delete max_Btn; // 最大化按钮
     delete close_Btn;// 关闭按钮
     delete settings_Btn;// 设置按钮
-    delete skin_Btn;// 皮肤设置按钮
     delete icon_Lab; // 图标
     delete title_Lab; // 标题
 }
@@ -42,7 +41,6 @@ void TitleBar::initComponents()
     icon_Lab     = new QLabel(this);
     title_Lab    = new QLabel(this);
     Spacer       = new QSpacerItem(100,100,QSizePolicy::Expanding,QSizePolicy::Minimum);
-    skin_Btn     = new QPushButton(this);
     min_Btn      = new QPushButton(this);
     max_Btn      = new QPushButton(this);
     close_Btn    = new QPushButton(this);
@@ -52,7 +50,6 @@ void TitleBar::initComponents()
 
 void TitleBar::initSignalAndSlot()
 {
-    connect(skin_Btn, SIGNAL(clicked(bool)), SLOT(onSkin(bool)));
     connect(settings_Btn, SIGNAL(clicked(bool)), SLOT(onSettings(bool)));
 }
 // TODO:重新设置布局
@@ -67,10 +64,8 @@ void TitleBar::setThisLayout()
     
     titleLayout->addWidget(icon_Lab);
     titleLayout->addWidget(title_Lab);
-    //Spacer->
     titleLayout->addItem(Spacer);
     
-    titleLayout->addWidget(skin_Btn);
     titleLayout->addWidget(settings_Btn);
     titleLayout->addWidget(min_Btn);
     titleLayout->addWidget(max_Btn);
@@ -78,8 +73,6 @@ void TitleBar::setThisLayout()
     
     icon_Lab->setMinimumSize(QSize(50,50));
     
-    skin_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
-    //skin_Btn->set
     settings_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
     min_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
     max_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
@@ -92,9 +85,8 @@ void TitleBar::setThisStyle()
     close_Btn->setFlat(true);
     min_Btn->setFlat(true);
     max_Btn->setFlat(true);
-    skin_Btn->setFlat(true);
     settings_Btn->setFlat(true);
-    
+
     this->setStyleSheet("TitleBar{background-color: qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,"
                         "stop:0 rgba(255, 255, 255, 160), stop:1 rgba(255, 255, 255, 60));}"
                         "QPushButton{font-size: 12pt; border-style: none; color: black;}"
@@ -129,10 +121,6 @@ void TitleBar::setThisStyle()
     settings_Btn->setFont(font);
     settings_Btn->setText(QChar(0xf0ad));
 
-    skin_Btn->setToolTip("皮肤");
-    skin_Btn->setFont(font);
-    skin_Btn->setText(QChar(0xf553));
-
     icon_Lab->setStyleSheet("border-image: url(:/images/logo)");
 
     title_Lab->setText("飞讯 FlyMessage");
@@ -163,11 +151,6 @@ void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     emit mouseDoubleClick(1);
-}
-
-void TitleBar::onSkin(bool)
-{
-
 }
 
 void TitleBar::onSettings(bool)

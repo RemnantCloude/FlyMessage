@@ -38,7 +38,6 @@ void FM_Notice::initSignalAndSlot()
     connect(timer,SIGNAL(timeout()),this,SLOT(onInform_notice()));
 }
 
-
 void FM_Notice::traySetting(QWidget *parent)
 {
     trayIcon = new QSystemTrayIcon(parent);

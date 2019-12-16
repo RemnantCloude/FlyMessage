@@ -56,6 +56,26 @@ void FM_Setting::get_web_list(QVector<QString> &ret)
     }
 }
 
+bool FM_Setting::is_picture_background()
+{
+    return this->picture_background;
+}
+
+void FM_Setting::set_picture_background(bool set)
+{
+    this->picture_background = set;
+}
+
+QString FM_Setting::get_picture_address()
+{
+    return this->picture_address;
+}
+
+void FM_Setting::set_picture_address(QString address)
+{
+    this->picture_address = address;
+}
+
 void FM_Setting::get_valid_web(QVector<QString> &ret)
 {
     ret.clear();
@@ -181,6 +201,8 @@ void FM_Setting::read_setting_from_json()
                         global_settings.value("refresh_time_second").toInt(),
                         global_settings.value("refresh_time_msec").toInt());
     max_display_news = global_settings.value("max_display_news").toInt();
+    picture_background = global_settings.value("picture_background").toBool();
+    picture_address = global_settings.value("picture_address").toString();
     //读取网站设置
     foreach(const QString &website, settings.keys())
     {
@@ -210,6 +232,8 @@ void FM_Setting::update_setting_to_json()
     global_settings.insert("max_display_news", QJsonValue(max_display_news));
     global_settings.insert("minimize_notice_first_time", QJsonValue(minimize_notice_first_time));
     global_settings.insert("use_software_first_time", QJsonValue(false));//TODO
+    global_settings.insert("picture_background", QJsonValue(picture_background));
+    global_settings.insert("picture_address", QJsonValue(picture_address));
 
     settings.insert("global_settings", global_settings);
 

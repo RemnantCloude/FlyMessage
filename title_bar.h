@@ -1,4 +1,4 @@
-#ifndef TITLE_BAR_H
+﻿#ifndef TITLE_BAR_H
 #define TITLE_BAR_H
 
 #include <QWidget>
@@ -30,7 +30,6 @@ public:
     QPushButton* max_Btn; // 最大化按钮
     QPushButton* close_Btn;// 关闭按钮
     QPushButton* settings_Btn;// 设置按钮
-    QPushButton* skin_Btn;// 皮肤设置按钮
     QLabel* icon_Lab; // 图标
     QLabel* title_Lab; // 标题
 
@@ -39,7 +38,6 @@ signals:
     void openSettings(bool);
 
 private slots:
-    void onSkin(bool);//TODO:
     void onSettings(bool);
 
 private:
