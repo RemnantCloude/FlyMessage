@@ -1,5 +1,7 @@
 ﻿#include "json.h"
 
+#include <QMessageBox>
+
 #define ADDNEWS     true
 #define DELETENEWS  false
 FM_Json::FM_Json(QObject *parent):
@@ -7,7 +9,6 @@ FM_Json::FM_Json(QObject *parent):
 {
 
 }
-
 
 QJsonDocument FM_Json::readJson(QString filename)
 {

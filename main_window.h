@@ -30,7 +30,6 @@ public:
 signals:
     void getNews(QString web);
     void getFavorNews();
-    void writeJson(QString filename, QJsonArray *news, bool type);
     void writeFavor(QString s1, QString s2, QString s3, QString s4, bool type);
 public slots:
     void onRefreshNews();
@@ -48,8 +47,6 @@ protected:
 private:
     QVBoxLayout *thislayout;
     QString now_website;
-    int news_amounts;//每个板块新闻显示数量
-    QFile favor_json;//收藏夹文件
     QVector<News *> newsArray;
     FM_Setting *settings;
     QLabel *tipLabel, *tip2Label;

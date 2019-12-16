@@ -17,7 +17,6 @@ MainWindow::MainWindow(FM_Setting *se, QWidget *parent) :
     setAttribute(Qt::WA_StyledBackground,true);
     
     now_website = "全部新闻";
-    news_amounts = 10;
 
     setThisLayout();
     setThisStyle();
@@ -38,7 +37,6 @@ void MainWindow::setThisLayout()
     sbImage->setAlignment(Qt::AlignCenter);
     sbImage->setPixmap(QPixmap(":/images/sb"));
     thislayout->addWidget(sbImage);
-    
 
     tipLabel = new QLabel("这里空空如也~",this);
     tipLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred));
@@ -59,19 +57,10 @@ void MainWindow::setThisLayout()
 
 void MainWindow::setThisStyle()
 {
-//可以用
-//    QFile file(":/qss/main_window");
-//    file.open(QFile::ReadOnly);
-//    QTextStream filetext(&file);
-//    QString stylesheet = filetext.readAll();
-//    this->setStyleSheet(stylesheet);
-//    file.close();
-
     this->setStyleSheet("News {background: rgb(255,255,255)}"
                         "News:hover {border:1px solid blue; background: #d9fdff;}"
                         "MainWindow {background : rgba(255,255,255,50);}"
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
-
 }
 
 void MainWindow::nullPageJudge()
@@ -82,7 +71,8 @@ void MainWindow::nullPageJudge()
         sbImage->show();
         tip2Label->hide();
     }
-    else {
+    else
+    {
         tipLabel->hide();
         sbImage->hide();
         tip2Label->show();
@@ -97,8 +87,6 @@ void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool ne
     news->setCursor(Qt::PointingHandCursor);
     thislayout->insertWidget(newsArray.size()*2,news);
     thislayout->insertWidget(newsArray.size()*2+1,news->line);
-    
-    //update();
 
     connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
     
