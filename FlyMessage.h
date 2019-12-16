@@ -36,9 +36,14 @@ private:
     TitleBar* titlebar;
     FM_SideBar* sidebar;
     MainWindow* mainwindow;
+    
     FloatWindow *floatwindow;
     SettingForm *settingform;
-
+    
+    QThread*    myfkThread;
+    MainWindowProxy* myfkProxy;
+    
+    
     QGridLayout *GLay;
     QScrollArea *scrollarea;
     QScroller *scroller;

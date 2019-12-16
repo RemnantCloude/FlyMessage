@@ -1,6 +1,7 @@
 ﻿#include "FlyMessage.h"
 #include "float_window.h"
 #include "main_window.h"
+#include "mainwindowproxy.h"
 #include "aero.h"
 
 #include <QPainter>
@@ -36,6 +37,12 @@ FlyMessage::~FlyMessage()
     delete GLay;
     
     delete settings;
+    
+    if(myfkThread->isRunning())
+    {
+        myfkThread->exit();                // 结束该线程。
+        myfkThread->wait();
+    }
 }
 
 void FlyMessage::initWindowStyle()
@@ -100,6 +107,13 @@ void FlyMessage::initComponents()
     scroller = QScroller::scroller(scrollarea);
     notice = new FM_Notice(this, settings->get_refresh_time());
     
+    
+    myfkProxy = new MainWindowProxy(mainwindow);
+    myfkThread  = new QThread(this);
+    myfkThread->start();
+    myfkProxy->moveToThread(myfkThread);
+    
+    
     initSideBarSAS();
     initMainSideBarItems();
     initSettingSideBarItems();
@@ -113,6 +127,15 @@ void FlyMessage::initComponents()
     connect(notice->mShowMainAction,SIGNAL(triggered()),this,SLOT(show()));
     connect(notice->mExitAppAction,SIGNAL(triggered()),this,SLOT(close()));
     connect(this, SIGNAL(minimize_notice()), notice, SLOT(onMinimize_notice()));
+    //后台线程与QThread的Start与finish关联
+    connect(myfkThread, &QThread::started, myfkProxy, &MainWindowProxy::threadStarted);
+    connect(myfkThread, &QThread::finished, myfkProxy, &MainWindowProxy::threadFinished);
+    //UI线程的更新信号与后台进程的getNews关联
+    connect(mainwindow, &MainWindow::getNews, myfkProxy, &MainWindowProxy::getNews);
+    connect(mainwindow, &MainWindow::getFavorNews, myfkProxy, &MainWindowProxy::getFavorNews);
+    connect(mainwindow, &MainWindow::writeFavor, myfkProxy, &MainWindowProxy::writeFavor);
+    connect(myfkProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem);
+    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
 }
 
 void FlyMessage::setComponentsStyle()
@@ -121,8 +144,6 @@ void FlyMessage::setComponentsStyle()
     scrollarea->setWidgetResizable(true);
     scrollarea->setStyleSheet("QScrollArea {background:white}");
     scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    
-    settingform->setStyleSheet("SettingForm{background:white;}");
     
     GLay->setContentsMargins(6,6,6,6);
     GLay->setSpacing(0);
