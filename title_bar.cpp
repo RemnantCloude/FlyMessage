@@ -124,7 +124,7 @@ void TitleBar::setThisStyle()
     icon_Lab->setStyleSheet("border-image: url(:/images/logo)");
 
     title_Lab->setText("飞讯 FlyMessage");
-    title_Lab->setStyleSheet("font-size:28px;font-family:\"幼圆\"");
+    title_Lab->setStyleSheet("font-size:28px;font-family:\"微软雅黑\"");
 }
 
 void TitleBar::mousePressEvent(QMouseEvent *event)
