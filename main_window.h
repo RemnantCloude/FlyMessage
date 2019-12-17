@@ -37,6 +37,8 @@ public slots:
     void onRefreshNews(QString website);//刷新新闻
     void onFavorNews(bool type);//删除或添加单条收藏夹新闻
     void addNewsItem(QString a, QString b, QString c, QString d, bool needFavor);
+    void stopPaint();
+    void startPaint();
 protected:
     void init();
     void initSignalAndSlot();
@@ -44,7 +46,8 @@ protected:
     void setThisStyle();
 
     void refreshAllNews();
-
+    
+    void paintEvent(QPaintEvent *event);
 private:
     QVBoxLayout *thislayout;
     QString now_website;

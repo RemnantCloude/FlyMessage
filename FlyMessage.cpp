@@ -40,10 +40,10 @@ FlyMessage::~FlyMessage()
     
     delete settings;
     
-    if(myfkThread->isRunning())
+    if(backstageThread->isRunning())
     {
-        myfkThread->exit();                // 结束该线程。
-        myfkThread->wait();
+        backstageThread->exit();                // 结束该线程。
+        backstageThread->wait();
     }
 }
 
@@ -119,10 +119,10 @@ void FlyMessage::initComponents()
     notice = new FM_Notice(this, settings->get_refresh_time());
     waitwidget = new WaitWidget(this);
 
-    myfkProxy = new MainWindowProxy(mainwindow);
-    myfkThread  = new QThread(this);
-    myfkThread->start();
-    myfkProxy->moveToThread(myfkThread);
+    mainwindowProxy = new MainWindowProxy(mainwindow);
+    backstageThread  = new QThread(this);
+    backstageThread->start();
+    mainwindowProxy->moveToThread(backstageThread);
     
     
     initSideBarSAS();
@@ -139,17 +139,22 @@ void FlyMessage::initComponents()
     connect(notice->mExitAppAction,SIGNAL(triggered()),this,SLOT(close()));
     connect(this, SIGNAL(minimize_notice()), notice, SLOT(onMinimize_notice()));
     //后台线程与QThread的Start与finish关联
-    connect(myfkThread, &QThread::started, myfkProxy, &MainWindowProxy::threadStarted);
-    connect(myfkThread, &QThread::finished, myfkProxy, &MainWindowProxy::threadFinished);
+    connect(backstageThread, &QThread::started, mainwindowProxy, &MainWindowProxy::threadStarted);
+    connect(backstageThread, &QThread::finished, mainwindowProxy, &MainWindowProxy::threadFinished);
     //UI线程的更新信号与后台进程的getNews关联
-    connect(mainwindow, &MainWindow::getNews, myfkProxy, &MainWindowProxy::getNews);
-    connect(mainwindow, &MainWindow::getFavorNews, myfkProxy, &MainWindowProxy::getFavorNews);
-    connect(mainwindow, &MainWindow::writeFavor, myfkProxy, &MainWindowProxy::writeFavor);
-    connect(myfkProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem,Qt::QueuedConnection);
-    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
-    connect(myfkProxy, &MainWindowProxy::wait, waitwidget, &WaitWidget::showup);
-    connect(myfkProxy, &MainWindowProxy::stopwait, waitwidget, &WaitWidget::fuckoff);
-    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
+    connect(mainwindow, &MainWindow::getNews, mainwindowProxy, &MainWindowProxy::getNews);
+    connect(mainwindow, &MainWindow::getFavorNews, mainwindowProxy, &MainWindowProxy::getFavorNews);
+    connect(mainwindow, &MainWindow::writeFavor, mainwindowProxy, &MainWindowProxy::writeFavor);
+    //
+    connect(mainwindowProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem,Qt::QueuedConnection);
+    connect(mainwindowProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
+    
+    //显示等待gif
+    connect(mainwindowProxy, &MainWindowProxy::wait, waitwidget, &WaitWidget::showup);
+    connect(mainwindowProxy, &MainWindowProxy::stopwait, waitwidget, &WaitWidget::fuckoff);
+    //控制MainWindow的绘制
+    connect(mainwindowProxy, &MainWindowProxy::wait, mainwindow, &MainWindow::stopPaint);
+    connect(mainwindowProxy, &MainWindowProxy::stopwait, mainwindow, &MainWindow::startPaint);
 
     connect(settingform, &SettingForm::fkchange, this, &FlyMessage::setBackgroundImage);
 }

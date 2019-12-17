@@ -40,8 +40,8 @@ private:
     FloatWindow *floatwindow;
     SettingForm *settingform;
     
-    QThread*    myfkThread;
-    MainWindowProxy* myfkProxy;
+    QThread*    backstageThread;
+    MainWindowProxy* mainwindowProxy;
     
     
     QGridLayout *GLay;

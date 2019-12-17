@@ -89,6 +89,16 @@ void MainWindow::nullPageJudge()
     }
 }
 
+void MainWindow::stopPaint()
+{
+    this->hide();
+}
+
+void MainWindow::startPaint()
+{
+    this->show();
+}
+
 void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool needFavor)
 {
     News *news = new News(this,a,b,c,d,needFavor);
@@ -97,8 +107,6 @@ void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool ne
     news->setCursor(Qt::PointingHandCursor);
     thislayout->insertWidget(newsArray.size()*2,news);
     thislayout->insertWidget(newsArray.size()*2+1,news->line);
-    
-    //update();
 
     connect(news, SIGNAL(FavorNews(bool)), this, SLOT(onFavorNews(bool)));
     
@@ -155,4 +163,9 @@ void MainWindow::onFavorNews(bool type)
         deleteNews(news);
     }
     nullPageJudge();
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    return;
 }
