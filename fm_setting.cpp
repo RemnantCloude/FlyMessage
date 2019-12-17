@@ -8,6 +8,9 @@
 #include <QJsonValue>
 #include <QFile>
 #include <QDebug>
+#include <QSettings>
+#include <QDir>
+#include <QCoreApplication>
 
 bool FM_Setting::get_global_notice()
 {
@@ -17,6 +20,16 @@ bool FM_Setting::get_global_notice()
 void FM_Setting::set_global_notice(bool b)
 {
     this->global_notice = b;
+}
+
+bool FM_Setting::get_auto_start()
+{
+    return this->auto_start;
+}
+
+void FM_Setting::set_auto_start(bool b)
+{
+    this->auto_start = b;
 }
 
 QTime FM_Setting::get_refresh_time()
@@ -165,13 +178,14 @@ void FM_Setting::read_setting_from_json()
     QJsonObject global_settings = settings.value("global_settings").toObject();
 
     global_notice = global_settings.value("global_notice").toBool();
-    self_starting = global_settings.value("self_starting").toBool();
+    auto_start = global_settings.value("self_starting").toBool();
     minimize_notice_first_time = global_settings.value("minimize_notice_first_time").toBool();
     refresh_time.setHMS(global_settings.value("refresh_time_hour").toInt(),
                         global_settings.value("refresh_time_minute").toInt(),
                         global_settings.value("refresh_time_second").toInt(),
                         global_settings.value("refresh_time_msec").toInt());
     max_display_news = global_settings.value("max_display_news").toInt();
+    auto_start = global_settings.value("self_starting").toBool();
     picture_background = global_settings.value("picture_background").toBool();
     picture_address = global_settings.value("picture_address").toString();
     //读取网站设置
@@ -195,7 +209,7 @@ void FM_Setting::update_setting_to_json()
 
     QJsonObject global_settings;
     global_settings.insert("global_notice", QJsonValue(global_notice));
-    global_settings.insert("self_starting", QJsonValue(self_starting));
+    global_settings.insert("self_starting", QJsonValue(auto_start));
     global_settings.insert("refresh_time_hour", QJsonValue(refresh_time.hour()));
     global_settings.insert("refresh_time_minute", QJsonValue(refresh_time.minute()));
     global_settings.insert("refresh_time_second", QJsonValue(refresh_time.second()));
@@ -203,6 +217,7 @@ void FM_Setting::update_setting_to_json()
     global_settings.insert("max_display_news", QJsonValue(max_display_news));
     global_settings.insert("minimize_notice_first_time", QJsonValue(minimize_notice_first_time));
     global_settings.insert("use_software_first_time", QJsonValue(false));//TODO
+    global_settings.insert("self_starting", QJsonValue(auto_start));
     global_settings.insert("picture_background", QJsonValue(picture_background));
     global_settings.insert("picture_address", QJsonValue(picture_address));
 
@@ -220,6 +235,20 @@ void FM_Setting::update_setting_to_json()
     }
 
     FM_Json::writeJson("./settings.json", settings);
+}
+
+void FM_Setting::onRefreshAutoStart()
+{
+    QSettings reg("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",QSettings::NativeFormat);
+    if(auto_start == true)
+    {
+        QString AppPath=QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
+        reg.setValue("FlyMessage", AppPath);
+    }
+    else
+    {
+        reg.remove("FlyMessage");
+    }
 }
 
 FM_WebSetting::~FM_WebSetting()

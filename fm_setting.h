@@ -23,8 +23,10 @@ struct FM_WebSetting{
     QVector<FM_ColumnSetting *> web_columns;
 };
 
-class FM_Setting
+class FM_Setting : public QObject
 {
+    Q_OBJECT
+
 public:
     explicit FM_Setting();
     ~FM_Setting();
@@ -33,6 +35,9 @@ public:
     
     bool get_global_notice();
     void set_global_notice(bool b);
+
+    bool get_auto_start();
+    void set_auto_start(bool b);
     
     QTime get_refresh_time();
     void set_refresh_time(QTime q);
@@ -54,9 +59,12 @@ public:
     bool get_column_state(QString web, QString column);
     void set_column_state(QString web, QString column, bool state);
     void get_valid_web(QVector<QString> &ret);
+public slots:
+    void onRefreshAutoStart();
+
 private:
     bool global_notice;
-    bool self_starting;
+    bool auto_start;
     bool minimize_notice_first_time;
     bool picture_background;
     QString picture_address;

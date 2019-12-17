@@ -79,6 +79,16 @@ void MainWindow::nullPageJudge()
     }
 }
 
+void MainWindow::stopPaint()
+{
+    this->hide();
+}
+
+void MainWindow::startPaint()
+{
+    this->show();
+}
+
 void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool needFavor)
 {
     News *news = new News(this,a,b,c,d,needFavor);
@@ -143,4 +153,9 @@ void MainWindow::onFavorNews(bool type)
         deleteNews(news);
     }
     nullPageJudge();
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    return;
 }

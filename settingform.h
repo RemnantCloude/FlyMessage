@@ -51,15 +51,15 @@ public:
     ~SettingForm();
     void updateWebWidget();
 signals:
-    void fkchange();
-
+    void changeBackground();
+    void refreshAutoStart();
 public slots:
     void updateGlobalSettings();
     
 private slots:
     void on_browse_Btn_clicked();
-
     void on_pictureBackground_clicked();
+    void on_autoStartCheckBox_clicked();
 
 private:
     FM_Setting *settings;

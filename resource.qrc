@@ -3,6 +3,7 @@
         <file alias="logo">images/s2.png</file>
         <file alias="sb">images/sb.jpg</file>
         <file alias="wait">images/wait.gif</file>
+        <file alias="splash">images/SplashImage.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file alias="fontawesome_solid">fonts/Font Awesome 5 Free-Solid-900.otf</file>

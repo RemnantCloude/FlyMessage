@@ -40,13 +40,13 @@ void MainWindowProxy::getNews(QString web)
     QVector<bool>    column_bool;
     //等待界面
     emit wait();
-    
+    QThread::msleep(300);
     mainwindow->settings->get_web_columns(web,column_str,column_bool);
     int max_display_news = mainwindow->settings->get_max_display_news();
     //获取新闻内容
-    QJsonObject news = FM_Json::readJson("./news.json").object();
+    QJsonObject news = FM_Json::readJson("./新浪.json").object();
     QJsonObject news_type = news.value(web).toObject();
-    QThread::msleep(300);
+    
     for(int i = 0; i < column_str.size(); i++)
     {
         if(column_bool[i])

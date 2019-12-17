@@ -16,13 +16,11 @@ SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
 {
     setAttribute(Qt::WA_StyledBackground,true);
     
-    int fontId = QFontDatabase::addApplicationFont(":/fonts/type59");
-    
     ui->setupUi(this);
     
     setStyleSheet("SettingForm{background:rgba(255,255,255,50);}"
                   "*{font-size:14px;font-family:\"微软雅黑\";}");
-    
+    int fontId = QFontDatabase::addApplicationFont(":/fonts/type59");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
     QFont myFont;
     myFont.setFamily(fontFamilies.at(0));
@@ -51,7 +49,6 @@ void SettingForm::updateGlobalSettings()
     settings->set_global_notice(ui->noticeCheckBox->checkState());
     settings->set_refresh_time(QTime(ui->HourSpin->value(),ui->MinuteSpin->value(),0,0));
     settings->set_max_display_news(ui->maxNewsNum->value());
-//    settings->set_picture_background(ui->pictureBackground->checkState());
     foreach(WebSettingWidget *wsw,websWidget)
     {
         foreach(QCheckBox *qcb,wsw->columnCheckBoxes)
@@ -72,6 +69,7 @@ void SettingForm::updateUIWithSettings()
     ui->maxNewsNum->setValue(settings->get_max_display_news());
     ui->pictureBackground->setChecked(settings->is_picture_background());
     ui->pictureAddress->setText(settings->get_picture_address());
+    ui->autoStartCheckBox->setChecked(settings->get_auto_start());
 }
 
 SettingForm::~SettingForm()
@@ -196,7 +194,7 @@ void SettingForm::on_browse_Btn_clicked()
         fileNames = fileDialog->selectedFiles();
         ui->pictureAddress->setText(fileNames.front());
         settings->set_picture_address(ui->pictureAddress->text());
-        emit fkchange();
+        emit changeBackground();
     }
     delete fileDialog;
 }
@@ -204,5 +202,11 @@ void SettingForm::on_browse_Btn_clicked()
 void SettingForm::on_pictureBackground_clicked()
 {
     settings->set_picture_background(ui->pictureBackground->checkState());
-    emit fkchange();
+    emit changeBackground();
+}
+
+void SettingForm::on_autoStartCheckBox_clicked()
+{
+    settings->set_auto_start(ui->autoStartCheckBox->checkState());
+    emit refreshAutoStart();
 }
