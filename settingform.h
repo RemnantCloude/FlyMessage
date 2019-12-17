@@ -66,6 +66,7 @@ private:
     Ui::SettingForm *ui;
     QVector<WebSettingWidget *> websWidget;
     void updateUIWithSettings();
+    void checkRefreshTime();
 };
 
 #endif // SETTINGFORM_H

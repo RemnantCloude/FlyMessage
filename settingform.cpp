@@ -46,6 +46,7 @@ void SettingForm::updateWebWidget() {
 
 void SettingForm::updateGlobalSettings()
 {
+    checkRefreshTime();
     settings->set_global_notice(ui->noticeCheckBox->checkState());
     settings->set_refresh_time(QTime(ui->HourSpin->value(),ui->MinuteSpin->value(),0,0));
     settings->set_max_display_news(ui->maxNewsNum->value());
@@ -57,6 +58,14 @@ void SettingForm::updateGlobalSettings()
         }
     }
     settings->update_setting_to_json();
+}
+
+void SettingForm::checkRefreshTime()
+{
+    if(ui->HourSpin->value() == 0 && ui->MinuteSpin->value() == 0)
+    {
+        ui->MinuteSpin->setValue(1);
+    }
 }
 
 void SettingForm::updateUIWithSettings()
