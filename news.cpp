@@ -1,4 +1,4 @@
-#include "news.h"
+﻿#include "news.h"
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
@@ -95,9 +95,9 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
     favor_Btn->setStyleSheet("QPushButton{font-size:20px;}");
     if(isFavor)
         favor_Btn->setProperty("favored",true);
-    else {
+    else
         favor_Btn->setProperty("favored",false);
-    }
+
     favor_Btn->setStyleSheet("QPushButton{font-size: 20px; border: 0px; background:rgba(255,255,255,0);}"
                              "QPushButton[favored=false]{color: black;}"
                              "QPushButton[favored=true]{color: #00A2FF;}"

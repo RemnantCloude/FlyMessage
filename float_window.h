@@ -26,9 +26,8 @@ public slots:
 
 protected:
     void initComponents();
-    void initSignalAndSlot();
-    void setThisLayout();
-    void setThisStyle();
+    void setComponentsLayout();
+    void setComponentsStyle();
     void paintEvent(QPaintEvent *event);
 };
 

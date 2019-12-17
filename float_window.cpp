@@ -9,9 +9,8 @@
 FloatWindow::FloatWindow(QWidget *parent) : QWidget(parent)
 {
     initComponents();// 初始化组件
-    initSignalAndSlot();// 初始化信号与槽
-    setThisLayout();// 布局设置
-    setThisStyle();// 样式设置
+    setComponentsLayout();// 布局设置
+    setComponentsStyle();// 样式设置
 }
 
 FloatWindow::~FloatWindow()
@@ -27,12 +26,7 @@ void FloatWindow::initComponents()
     returnToTop_Btn = new QPushButton(this);
 }
 
-void FloatWindow::initSignalAndSlot()
-{
-
-}
-
-void FloatWindow::setThisLayout()
+void FloatWindow::setComponentsLayout()
 {
     refresh_Btn->setFixedSize(QSize(36,36));
     returnToTop_Btn->setFixedSize(QSize(36,36));
@@ -45,13 +39,13 @@ void FloatWindow::setThisLayout()
     setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 }
 
-void FloatWindow::setThisStyle()
+void FloatWindow::setComponentsStyle()
 {
     refresh_Btn->setObjectName("refresh_Btn");
     returnToTop_Btn->setObjectName("returnToTop_Btn");
 
-    setStyleSheet("QPushButton {border: 1px solid blue;border-radius:5px; background: rgba(255,255,255,100);}"
-                  "QPushButton:hover{background: rgb(220,220,220);}"
+    setStyleSheet("QPushButton {border-style: none;background: rgba(220,220,220,100);}"
+                  "QPushButton:hover{background: rgba(65,105,225,100);}"
                   "#refresh_Btn {qproperty-icon: url(:/icons/refresh.ico)}"
                   "#returnToTop_Btn {qproperty-icon: url(:/icons/top.ico)}");
 

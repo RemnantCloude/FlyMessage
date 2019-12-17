@@ -1,6 +1,4 @@
 ﻿#include "FlyMessage.h"
-#include "float_window.h"
-#include "main_window.h"
 #include "mainwindowproxy.h"
 #include "aero.h"
 
@@ -11,17 +9,19 @@ FlyMessage::FlyMessage(QWidget *parent) :
     QWidget(parent),
     settings(new FM_Setting())
 {    
-    // 初始化窗体
-    initComponents(); 
+    // 初始化窗体和组件
+    initComponents();
+    initMainSideBarItems();
+    initSettingSideBarItems();
+
+    // 初始化信号与槽
+    initSignalAndSlot();
     
     // 设置控件位置和风格样式
     setComponentsLayout();
     setComponentsStyle();
     initWindowStyle();
     setBackgroundImage();
-    
-    // 初始化信号与槽
-    initSignalAndSlot();
     
     settingform->hide();
     waitwidget->hide();
@@ -58,12 +58,10 @@ void FlyMessage::initWindowStyle()
     setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint); 
 
     setAeroStyle();
-
 }
 
 void FlyMessage::setAeroStyle()
 {
-
     HWND hwnd = (HWND)this->winId();
     DWORD style = ::GetWindowLong(hwnd, GWL_STYLE);
     ::SetWindowLong(hwnd, GWL_STYLE, style | WS_EX_LAYERED);
@@ -107,88 +105,39 @@ void FlyMessage::setBackgroundImage()
     }
 }
 
-void FlyMessage::initComponents()
-{
-    titlebar = new TitleBar(this);
-    sidebar = new FM_SideBar(this);
-    mainwindow = new MainWindow(settings, this);
-    scrollarea = new QScrollArea(this);
-    floatwindow = new FloatWindow(this);
-    settingform = new SettingForm(settings, this);
-    GLay = new QGridLayout(this);
-    scroller = QScroller::scroller(scrollarea);
-    notice = new FM_Notice(this, settings->get_refresh_time());
-    waitwidget = new WaitWidget(this);
-
-    myfkProxy = new MainWindowProxy(mainwindow);
-    myfkThread  = new QThread(this);
-    myfkThread->start();
-    myfkProxy->moveToThread(myfkThread);
-    
-    
-    initSideBarSAS();
-    initMainSideBarItems();
-    initSettingSideBarItems();
-    
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
-    connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
-
-    connect(notice->trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-            this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));
-    connect(notice->mShowMainAction,SIGNAL(triggered()),this,SLOT(show()));
-    connect(notice->mExitAppAction,SIGNAL(triggered()),this,SLOT(close()));
-    connect(this, SIGNAL(minimize_notice()), notice, SLOT(onMinimize_notice()));
-    //后台线程与QThread的Start与finish关联
-    connect(myfkThread, &QThread::started, myfkProxy, &MainWindowProxy::threadStarted);
-    connect(myfkThread, &QThread::finished, myfkProxy, &MainWindowProxy::threadFinished);
-    //UI线程的更新信号与后台进程的getNews关联
-    connect(mainwindow, &MainWindow::getNews, myfkProxy, &MainWindowProxy::getNews);
-    connect(mainwindow, &MainWindow::getFavorNews, myfkProxy, &MainWindowProxy::getFavorNews);
-    connect(mainwindow, &MainWindow::writeFavor, myfkProxy, &MainWindowProxy::writeFavor);
-    connect(myfkProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem,Qt::QueuedConnection);
-    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
-    connect(myfkProxy, &MainWindowProxy::wait, waitwidget, &WaitWidget::showup);
-    connect(myfkProxy, &MainWindowProxy::stopwait, waitwidget, &WaitWidget::fuckoff);
-    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
-
-    connect(settingform, &SettingForm::fkchange, this, &FlyMessage::setBackgroundImage);
-}
-
-void FlyMessage::setComponentsStyle()
-{
-    
-    scrollarea->setWidgetResizable(true);
-    scrollarea->setStyleSheet("QScrollArea {background:rgba(255,255,255,0)}");
-    scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    
-    GLay->setContentsMargins(0,0,0,0);
-    GLay->setSpacing(0);
-}
-
 void FlyMessage::setComponentsLayout()
 {
-    // 设置布局器
+    // 设置布局
     scrollarea->setWidget(mainwindow);
     scrollarea->setAlignment(Qt::AlignHCenter);
 
     GLay->addWidget(titlebar, 0, 0, 1, 5);
     GLay->addWidget(sidebar, 1, 0, 1, 1);
     GLay->addWidget(scrollarea, 1, 1, 1, 4);
+    GLay->setContentsMargins(0,0,0,0);
+    GLay->setSpacing(0);
 
     this->setLayout(GLay);
 }
 
+void FlyMessage::setComponentsStyle()
+{
+    scrollarea->setWidgetResizable(true);
+    scrollarea->setStyleSheet("QScrollArea {background:rgba(255,255,255,0)}");
+    scrollarea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
+
 void FlyMessage::actSysTrayIcon(QSystemTrayIcon::ActivationReason reason)
 {
-    switch(reason){
-    case QSystemTrayIcon::Trigger:  //双击托盘图标
-        break;
-    case QSystemTrayIcon::DoubleClick:  //双击托盘图标
-        this->show();
-        break;
-    default:
-        break;
+    switch(reason)
+    {
+        case QSystemTrayIcon::Trigger:  //单击托盘图标
+            break;
+        case QSystemTrayIcon::DoubleClick:  //双击托盘图标
+            this->show();
+            break;
+        default:
+            break;
     }
 }
 
@@ -263,6 +212,25 @@ void FlyMessage::moveToMainWindow()
     reinitMainSideBarItems();
 }
 
+void FlyMessage::initComponents()
+{
+    titlebar = new TitleBar(this);
+    sidebar = new FM_SideBar(this);
+    mainwindow = new MainWindow(settings, this);
+    scrollarea = new QScrollArea(this);
+    floatwindow = new FloatWindow(this);
+    settingform = new SettingForm(settings, this);
+    GLay = new QGridLayout(this);
+    scroller = QScroller::scroller(scrollarea);
+    notice = new FM_Notice(this, settings->get_refresh_time());
+    waitwidget = new WaitWidget(this);
+
+    myfkProxy = new MainWindowProxy(mainwindow);
+    myfkThread  = new QThread(this);
+    myfkThread->start();
+    myfkProxy->moveToThread(myfkThread);
+}
+
 void FlyMessage::initMainSideBarItems()
 {
     main_sidebar_items.append(FM_SideItemData("全部新闻", &FM_SideBar::customAction_column,true));
@@ -284,19 +252,6 @@ void FlyMessage::initSettingSideBarItems()
     setting_sidebar_items.append(FM_SideItemData("返回主界面", &FM_SideBar::customAction_back,false));
 }
 
-void FlyMessage::initSideBarSAS()
-{
-    connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
-    connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
-
-    connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
-    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
-    connect(sidebar, SIGNAL(signal_back()), this, SLOT(returnToTopAtOnce()));
-
-    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
-    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
-}
-
 void FlyMessage::initSignalAndSlot()
 {
     connect(titlebar->min_Btn, SIGNAL(clicked(bool)), SLOT(onMin(bool)));
@@ -307,6 +262,40 @@ void FlyMessage::initSignalAndSlot()
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
+
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
+    connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
+
+    connect(notice->trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));
+    connect(notice->mShowMainAction,SIGNAL(triggered()),this,SLOT(show()));
+    connect(notice->mExitAppAction,SIGNAL(triggered()),this,SLOT(close()));
+    connect(this, SIGNAL(minimize_notice()), notice, SLOT(onMinimize_notice()));
+
+    //后台线程与QThread的Start与finish关联
+    connect(myfkThread, &QThread::started, myfkProxy, &MainWindowProxy::threadStarted);
+    connect(myfkThread, &QThread::finished, myfkProxy, &MainWindowProxy::threadFinished);
+    //UI线程的更新信号与后台进程的getNews关联
+    connect(mainwindow, &MainWindow::getNews, myfkProxy, &MainWindowProxy::getNews);
+    connect(mainwindow, &MainWindow::getFavorNews, myfkProxy, &MainWindowProxy::getFavorNews);
+    connect(mainwindow, &MainWindow::writeFavor, myfkProxy, &MainWindowProxy::writeFavor);
+
+    connect(myfkProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem,Qt::QueuedConnection);
+    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
+    connect(myfkProxy, &MainWindowProxy::wait, waitwidget, &WaitWidget::showup);
+    connect(myfkProxy, &MainWindowProxy::stopwait, waitwidget, &WaitWidget::fuckoff);
+    connect(myfkProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
+
+    connect(settingform, &SettingForm::fkchange, this, &FlyMessage::setBackgroundImage);
+
+    connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
+    connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
+    connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
+    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
+    connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::returnToTopAtOnce);
+    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
+    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
 }
 
 void FlyMessage::reinitMainSideBarItems()

@@ -76,7 +76,6 @@ protected:
     void initMainSideBarItems();
     void reinitMainSideBarItems();
     void initSettingSideBarItems();
-    void initSideBarSAS();
     
     void setComponentsLayout();
     void setComponentsStyle();
