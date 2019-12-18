@@ -61,7 +61,6 @@ void FM_SideBar::setBtnClicked(int cpi)
     {
         emit items[cpi]->clicked();
     }
-    
 }
 
 void FM_SideBar::setSideBarList(QVector<FM_SideItemData> &idata)

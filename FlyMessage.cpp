@@ -267,7 +267,7 @@ void FlyMessage::initSignalAndSlot()
 
     //爬虫调用
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindowProxy, SLOT(startCrawler()));
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), waitwidget, SLOT(showup()));
+    //connect(floatwindow->refresh_Btn, SIGNAL(clicked()), waitwidget, SLOT(showup()));
     connect(mainwindowProxy, &MainWindowProxy::startPython, python, &FM_Python::execPython);
     connect(python, SIGNAL(pythonEnd()), mainwindow, SLOT(onRefreshNews()));
 
@@ -337,6 +337,6 @@ void FlyMessage::reinitMainSideBarItems()
 
     sidebar->setSideBarList(main_sidebar_items);
     
-    if(!find_checked)
+    if(!find_checked && main_sidebar_items[1].checked==false)
         sidebar->setBtnClicked(0);
 }
