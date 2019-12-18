@@ -173,10 +173,10 @@ void FlyMessage::onClose(bool)
 void FlyMessage::resizeEvent(QResizeEvent* size){
     Q_UNUSED(size);
     floatwindow->setGeometry(width() - 200,height()-80,120,50);
-    waitwidget->setMaximumSize(size->size());
-    waitwidget->setMinimumSize(size->size());
+    waitwidget->setGeometry(0,0,this->width(),this->height());
+
     waitwidget->image->setAlignment(Qt::AlignHCenter);
-    qDebug() << "sr";
+
     QPalette pal;
     pal.setBrush(QPalette::Window,
                  QBrush(background.scaled(size->size(), Qt::KeepAspectRatioByExpanding,
