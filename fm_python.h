@@ -9,12 +9,13 @@ class FM_Python : public QObject
     Q_OBJECT
 public:
     explicit FM_Python(QObject *parent = nullptr);
+    ~FM_Python(){}
 
-    void execPython();
 signals:
-
+    void pythonEnd();
 public slots:
-    void Fctn_get_info();
+    void getClawlerOutput();
+    void execPython(QStringList websitelist);
 private:
     QProcess *process;
 

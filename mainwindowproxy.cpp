@@ -10,52 +10,50 @@
 #include "mainwindowproxy.h"
 #include "json.h"
 
-#define ADDNEWS     true
-#define DELETENEWS  false
+#define ADDNEWS true
+#define DELETENEWS false
 
-MainWindowProxy::MainWindowProxy(MainWindow *mw,QObject *parent)
-    :QObject (parent),
-     mainwindow(mw)
+MainWindowProxy::MainWindowProxy(MainWindow *mw, QObject *parent)
+    : QObject(parent),
+      mainwindow(mw)
 {
-    
 }
 
 void MainWindowProxy::threadStarted(void)
 {
-    qDebug()<< "Thread has started...ID is:" << QThread::currentThreadId();
+    qDebug() << "Thread has started...ID is:" << QThread::currentThreadId();
 }
 void MainWindowProxy::threadFinished(void)
 {
-    qDebug()<< "Thread has stopped Id is:" << QThread::currentThreadId();
+    qDebug() << "Thread has stopped Id is:" << QThread::currentThreadId();
 }
 
 void MainWindowProxy::run()
 {
-    
 }
 
 void MainWindowProxy::getNews(QString web)
 {
     QVector<QString> column_str;
-    QVector<bool>    column_bool;
+    QVector<bool> column_bool;
     //等待界面
     emit wait();
     QThread::msleep(300);
-    mainwindow->settings->get_web_columns(web,column_str,column_bool);
+    mainwindow->settings->get_web_columns(web, column_str, column_bool);
     int max_display_news = mainwindow->settings->get_max_display_news();
     //获取新闻内容
-    QJsonObject news = FM_Json::readJson("./新浪.json").object();
+    QJsonObject news = FM_Json::readJson("./" + web + ".json").object();
     QJsonObject news_type = news.value(web).toObject();
-    
-    for(int i = 0; i < column_str.size(); i++)
+
+    for (int i = 0; i < column_str.size(); i++)
     {
-        if(column_bool[i])
+        if (column_bool[i])
         {
-            QJsonArray array = news_type.value(column_str[i]).toArray();//网站新闻
-            for(int i = 0;i < array.size() && i < max_display_news; i++)
+            QJsonArray array = news_type.value(column_str[i]).toArray(); //网站新闻
+            for (int i = 0; i < array.size() && i < max_display_news; i++)
             {
-                QJsonArray array1 = array.at(i).toArray();//单条新闻
-                
+                QJsonArray array1 = array.at(i).toArray(); //单条新闻
+
                 emit addNewsItemToUI(array1.at(0).toString(),
                                      array1.at(1).toString(),
                                      array1.at(2).toString(),
@@ -72,12 +70,12 @@ void MainWindowProxy::getNews(QString web)
 void MainWindowProxy::getFavorNews()
 {
     emit clearNewsinUI();
-    
+
     QJsonObject favor = FM_Json::readJson("./favorite.json").object();
     QJsonArray array = favor.value("favorite").toArray();
-    for(int i = 0; i < array.size(); i++)
+    for (int i = 0; i < array.size(); i++)
     {
-        QJsonArray array1 = array.at(i).toArray();//单条新闻
+        QJsonArray array1 = array.at(i).toArray(); //单条新闻
         emit addNewsItemToUI(array1.at(0).toString(),
                              array1.at(1).toString(),
                              array1.at(2).toString(),
@@ -87,7 +85,7 @@ void MainWindowProxy::getFavorNews()
     mainwindow->pageState = PageState::FavorPage;
 }
 
-void MainWindowProxy::writeFavor(QString s1,QString s2,QString s3,QString s4,bool type)
+void MainWindowProxy::writeFavor(QString s1, QString s2, QString s3, QString s4, bool type)
 {
     QJsonArray array;
     array.insert(0, s1);
@@ -97,4 +95,19 @@ void MainWindowProxy::writeFavor(QString s1,QString s2,QString s3,QString s4,boo
     FM_Json::writeJson("./favorite.json", array, type);
 }
 
-
+void MainWindowProxy::startCrawler()
+{
+    QStringList websitelist;
+    if (mainwindow->now_website == "全部新闻")
+    {
+        websitelist.append("人民网"); //TODO 多线程
+        websitelist.append("新浪");
+        websitelist.append("网易");
+        websitelist.append("教务处");
+    }
+    else
+    {
+        websitelist.append(mainwindow->now_website);
+    }
+    emit startPython(websitelist);
+}

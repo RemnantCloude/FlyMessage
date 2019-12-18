@@ -216,7 +216,6 @@ void FlyMessage::initComponents()
 {
     titlebar = new TitleBar(this);
     sidebar = new FM_SideBar(this);
-    mainwindow = new MainWindow(settings, this);
     scrollarea = new QScrollArea(this);
     floatwindow = new FloatWindow(this);
     settingform = new SettingForm(settings, this);
@@ -224,11 +223,13 @@ void FlyMessage::initComponents()
     scroller = QScroller::scroller(scrollarea);
     notice = new FM_Notice(this, settings->get_refresh_time());
     waitwidget = new WaitWidget(this);
-
+    mainwindow = new MainWindow(settings, this);
     mainwindowProxy = new MainWindowProxy(mainwindow);
+    python = new FM_Python();
     backstageThread = new QThread(this);
     backstageThread->start();
     mainwindowProxy->moveToThread(backstageThread);
+    python->moveToThread(backstageThread);
 }
 
 void FlyMessage::initMainSideBarItems()
@@ -259,13 +260,15 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar->settings_Btn, SIGNAL(clicked()), SLOT(moveToSettingForm()));
     
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
+    //connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
 
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
-    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
-    connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
+    //爬虫调用
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindowProxy, SLOT(startCrawler()));
+    connect(floatwindow->refresh_Btn, SIGNAL(clicked()), waitwidget, SLOT(showup()));
+    connect(mainwindowProxy, &MainWindowProxy::startPython, python, &FM_Python::execPython);
+    connect(python, SIGNAL(pythonEnd()), mainwindow, SLOT(onRefreshNews()));
 
     connect(notice->trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));
@@ -280,7 +283,7 @@ void FlyMessage::initSignalAndSlot()
     connect(mainwindow, &MainWindow::getNews, mainwindowProxy, &MainWindowProxy::getNews);
     connect(mainwindow, &MainWindow::getFavorNews, mainwindowProxy, &MainWindowProxy::getFavorNews);
     connect(mainwindow, &MainWindow::writeFavor, mainwindowProxy, &MainWindowProxy::writeFavor);
-    //
+
     connect(mainwindowProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem, Qt::QueuedConnection);
     connect(mainwindowProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
 

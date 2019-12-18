@@ -1,34 +1,39 @@
 ﻿#include <QProcess>
 #include <iostream>
 #include <QDebug>
+#include <QTextCodec>
 #include "fm_python.h"
 
 FM_Python::FM_Python(QObject *parent) : QObject(parent)
 {
 
-
 }
 
-void FM_Python::execPython()
+void FM_Python::execPython(QStringList websitelist)
 {
-    QString my_process_2 = "./test.exe";
-    process = new QProcess();
-
-    qDebug()<<my_process_2;
-    QStringList argument;
-
-    process->start(my_process_2);
+    process = new QProcess;
+    process->start("./crawler.exe", websitelist);
     if (!process->waitForStarted())
     {
-        qDebug() << "启动失败";
-
+        qDebug() << "爬虫启动失败";
     }
-
-    connect(process,SIGNAL(readyRead()),this,SLOT(Fctn_get_info()));
+    connect(process,SIGNAL(readyRead()),this,SLOT(getClawlerOutput()));
 }
 
-void FM_Python::Fctn_get_info()
+void FM_Python::getClawlerOutput()
 {
-    qDebug() << "fuck me \n" << process->readAll();
+    QByteArray data = process->readAll();
+    QString string = QTextCodec::codecForMib(106)->toUnicode(data);//106:UTF-8
+    if( string == "done\r\n")
+    {
+        emit pythonEnd();
+    }
+    else
+    {
+        qDebug() << "爬虫爬取失败";
+    }
+    process->close();
+    disconnect(process,SIGNAL(readyRead()),this,SLOT(getClawlerOutput()));
+    delete process;
 }
 

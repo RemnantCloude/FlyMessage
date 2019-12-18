@@ -16,11 +16,13 @@ public slots:
     void threadStarted();
     void threadFinished();
     void writeFavor(QString s1, QString s2, QString s3, QString s4, bool type);
+    void startCrawler();
 signals:
     void addNewsItemToUI(QString a, QString b, QString c, QString d, bool needFavor);
     void clearNewsinUI();
     void wait();
     void stopwait();
+    void startPython(QStringList websitelist);
 protected:
     virtual void run();
 private:
