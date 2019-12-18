@@ -81,27 +81,16 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
     type_Lab->setWordWrap(true);//自动换行
     abstract_Lab->setText(abstract);
 
-    // 添加字体文件
-    int fontId = QFontDatabase::addApplicationFont(":/fonts/fontawesome_solid");
-    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-    // 创建字体
-    QFont font;
-    font.setFamily(fontFamilies.at(0));
-
     favor_Btn->setFlat(true);
-    favor_Btn->setToolTip("收藏");
-    favor_Btn->setFont(font);
-    favor_Btn->setText(QChar(0xf005));
-    favor_Btn->setStyleSheet("QPushButton{font-size:20px;}");
     if(isFavor)
         favor_Btn->setProperty("favored",true);
     else
         favor_Btn->setProperty("favored",false);
 
     favor_Btn->setStyleSheet("QPushButton{font-size: 20px; border: 0px; background:rgba(255,255,255,0);}"
-                             "QPushButton[favored=false]{color: black;}"
-                             "QPushButton[favored=true]{color: #00A2FF;}"
-                             "QPushButton:hover{color: rgb(255,201,14);}");
+                             "QPushButton[favored=false]{qproperty-icon: url(:/icons/star_gray)}"
+                             "QPushButton[favored=true]{qproperty-icon: url(:/icons/star_blue)}");
+    favor_Btn->setIconSize(QSize(28,28));
 
     line->setFrameShadow(QFrame::Raised);
     line->setFrameShape(QFrame::HLine);
@@ -123,15 +112,17 @@ void News::changeFavor(bool)
     if(isFavor == true)//删除收藏
     {
         isFavor = false;
-        emit FavorNews(DELETENEWS);
         favor_Btn->setProperty("favored",false);
+        favor_Btn->style()->unpolish(favor_Btn);
+        favor_Btn->style()->polish(favor_Btn);
+        emit FavorNews(DELETENEWS);
     }
     else//添加收藏
     {
         isFavor = true;
-        emit FavorNews(ADDNEWS);
         favor_Btn->setProperty("favored",true);
+        favor_Btn->style()->unpolish(favor_Btn);
+        favor_Btn->style()->polish(favor_Btn);
+        emit FavorNews(ADDNEWS);
     }
-    favor_Btn->style()->unpolish(favor_Btn);
-    favor_Btn->style()->polish(favor_Btn);
 }

@@ -1,4 +1,4 @@
-#include <QMovie>
+﻿#include <QMovie>
 #include "waitwidget.h"
 
 WaitWidget::WaitWidget(QWidget *parent) : QWidget(parent)
@@ -6,7 +6,7 @@ WaitWidget::WaitWidget(QWidget *parent) : QWidget(parent)
     setAttribute(Qt::WA_StyledBackground);
     hLayout = new QHBoxLayout(this);
     image = new QLabel(this);
-    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+    this->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     this->setStyleSheet("background:rgba(243,243,243,180);");
     
     gif = new QMovie(":/images/wait");
@@ -17,7 +17,7 @@ WaitWidget::WaitWidget(QWidget *parent) : QWidget(parent)
     image->setMinimumSize(gif->scaledSize());
     //image->setStyleSheet("border:1px solid black");
     hLayout->addWidget(image,0,Qt::AlignHCenter);
-    image->setAlignment(Qt::AlignHCenter);
+
     this->setLayout(hLayout);
     
     image->setMovie(gif);

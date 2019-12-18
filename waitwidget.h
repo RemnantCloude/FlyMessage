@@ -1,4 +1,4 @@
-#ifndef WAITWIDGET_H
+﻿#ifndef WAITWIDGET_H
 #define WAITWIDGET_H
 
 #include <QWidget>
@@ -10,14 +10,14 @@ class WaitWidget : public QWidget
     Q_OBJECT
 public:
     explicit WaitWidget(QWidget *parent = nullptr);
-
+    QLabel *image;
+    QHBoxLayout *hLayout;
+    QMovie *gif;
 public slots:
     void showup();
     void fuckoff();
 private:
-    QLabel *image;
-    QHBoxLayout *hLayout;
-    QMovie *gif;
+
 };
 
 #endif // WAITWIDGET_H
