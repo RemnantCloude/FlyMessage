@@ -219,3 +219,9 @@ void SettingForm::on_autoStartCheckBox_clicked()
     settings->set_auto_start(ui->autoStartCheckBox->checkState());
     emit refreshAutoStart();
 }
+
+void SettingForm::on_noticeCheckBox_clicked()
+{
+    settings->set_global_notice(ui->noticeCheckBox->checkState());
+    emit changeNoticeTimer();
+}

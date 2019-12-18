@@ -8,35 +8,62 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QFile>
+#include <QTimerEvent>
 
-FM_Notice::FM_Notice(QWidget *parent, QTime time)
+FM_Notice::FM_Notice(FM_Setting *s, QWidget *parent):
+    settings(s)
 {
     timer = new QTimer();
     traySetting(parent);
-    set_notice_timer(time);
-
+    set_notice_timer();
     initSignalAndSlot();
 }
 
 FM_Notice::~FM_Notice()
 {
     delete timer;
-
     delete trayIcon;
     delete mShowMainAction;
     delete mExitAppAction;
     delete mMenu;
 }
 
-void FM_Notice::set_notice_timer(QTime time)
-{
-    timer->start(3600000 * time.hour() + 60000 * time.minute()
-                       + 1000 * time.second() + time.msec());
-}
-
 void FM_Notice::initSignalAndSlot()
 {
     connect(timer,SIGNAL(timeout()),this,SLOT(onInform_notice()));
+}
+
+void FM_Notice::set_notice_timer()
+{
+    if(settings->get_global_notice() == true)
+    {
+        notice_timer = true;
+        QTime time = settings->get_refresh_time();
+        timer->start(3600000 * time.hour() + 60000 * time.minute()
+                     + 1000 * time.second() + time.msec());
+    }
+    else
+    {
+        notice_timer = false;
+    }
+}
+
+void FM_Notice::onInform_notice()
+{
+    if(notice_timer == false)
+    {
+        timer->stop();
+    }
+    else
+    {
+        QJsonArray array = FM_Json::readJson("./notice.json").array();
+        int count = array.size();
+        if(count != 0)
+        {
+            trayIcon->showMessage("飞讯","您有"+QString::number(count)+"条新的通知",
+                                  QSystemTrayIcon::Information,1000);
+        }
+    }
 }
 
 void FM_Notice::traySetting(QWidget *parent)
@@ -68,13 +95,5 @@ void FM_Notice::createMenu(QWidget *parent)
 void FM_Notice::onMinimize_notice()
 {
     trayIcon->showMessage("飞讯","飞讯最小化在任务栏",
-                          QSystemTrayIcon::Information,1000);
-}
-
-void FM_Notice::onInform_notice()
-{
-    QJsonArray array = FM_Json::readJson("./notice.json").array();
-    int count = array.size();
-    trayIcon->showMessage("飞讯","您有"+QString::number(count)+"条新的通知",
                           QSystemTrayIcon::Information,1000);
 }

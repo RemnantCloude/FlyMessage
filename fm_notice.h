@@ -2,39 +2,42 @@
 #define FM_NOTICE_H
 
 #include <QObject>
-#include <QTimer>
 #include <QTime>
 #include <QSystemTrayIcon>
 #include <QAction>
 #include <QMenu>
 #include <QJsonObject>
+#include <QTimer>
+#include "fm_setting.h"
 
 class FM_Notice : public QObject
 {
     Q_OBJECT
 
 public:
-    FM_Notice(QWidget *parent,QTime time);
+    FM_Notice(FM_Setting *s, QWidget *parent = nullptr);
     ~FM_Notice();
 
     friend class FlyMessage;
-
-    void set_notice_timer(QTime time);
+signals:
+    void timeout();
 
 public slots:
     void onMinimize_notice();
     void onInform_notice();
-
+    void set_notice_timer();
 private:
     void initSignalAndSlot();
     void traySetting(QWidget *parent);
     void createMenu(QWidget *parent);
 
-    QTimer* timer;
+    QTimer *timer;
+    bool notice_timer;
     QSystemTrayIcon *trayIcon;
     QMenu *mMenu;
     QAction *mShowMainAction;
     QAction *mExitAppAction;
+    FM_Setting *settings;
 };
 
 #endif // FM_NOTICE_H

@@ -221,7 +221,7 @@ void FlyMessage::initComponents()
     settingform = new SettingForm(settings, this);
     GLay = new QGridLayout(this);
     scroller = QScroller::scroller(scrollarea);
-    notice = new FM_Notice(this, settings->get_refresh_time());
+    notice = new FM_Notice(settings, this);
     waitwidget = new WaitWidget(this);
     mainwindow = new MainWindow(settings, this);
     mainwindowProxy = new MainWindowProxy(mainwindow);
@@ -296,7 +296,7 @@ void FlyMessage::initSignalAndSlot()
 
     connect(settingform, &SettingForm::changeBackground, this, &FlyMessage::setBackgroundImage);
     connect(settingform, &SettingForm::refreshAutoStart, settings, &FM_Setting::onRefreshAutoStart);
-
+    connect(settingform, &SettingForm::changeNoticeTimer, notice, &FM_Notice::set_notice_timer);
     connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
     connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
     connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
