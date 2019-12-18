@@ -16,5 +16,8 @@
         <file alias="refresh.ico">images/refresh.ico</file>
         <file alias="top.ico">images/top.ico</file>
         <file alias="custom">images/custom.png</file>
+        <file alias="star_blue">icos/star_blue.ico</file>
+        <file alias="star_gray">icos/star_gray.ico</file>
+        <file alias="star_yellow">icos/star_yellow.ico</file>
     </qresource>
 </RCC>

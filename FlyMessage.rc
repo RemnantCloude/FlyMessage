@@ -7,8 +7,8 @@ IDI_ICON1 ICON "./icos/s2.ico"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
-    FILEVERSION 2,0,0,10
-    PRODUCTVERSION 2,0,0,10
+    FILEVERSION 2,0,0,0
+    PRODUCTVERSION 2,0,0,0
     FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
     FILEFLAGS VS_FF_DEBUG
@@ -25,8 +25,8 @@ VS_VERSION_INFO VERSIONINFO
             BEGIN
                 VALUE "CompanyName", "乌拉乌拉嘿嘿嘿\0"
                 VALUE "FileDescription", "飞讯个性化网络信息搜集器\0"
-                VALUE "FileVersion", "2.0.0.10\0"
-                VALUE "ProductVersion", "2.0.0.10\0"
+                VALUE "FileVersion", "2.0.0.0\0"
+                VALUE "ProductVersion", "2.0.0.0\0"
                 VALUE "LegalCopyright", "不知道第几组\0"
                 VALUE "LegalTrademarks", "不知道第几组\0"
                 VALUE "OriginalFilename", "FlyMessage.exe\0"

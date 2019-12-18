@@ -61,7 +61,6 @@ public:
     void get_valid_web(QVector<QString> &ret);
 public slots:
     void onRefreshAutoStart();
-    void startCrawler();
 private:
     bool global_notice;
     bool auto_start;
