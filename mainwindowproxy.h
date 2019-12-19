@@ -17,9 +17,7 @@ public slots:
     void threadStarted();
     void threadFinished();
     void writeFavor(QString title, QString data, QString abstract, QString address, bool type);
-    void updateWeblist();
-    void onStartCrawler();
-    void getClawlerOutput();
+    void startCrawler();
 signals:
     void addNewsItemToUI(QString title, QString data, QString abstract, QString address, bool needFavor);
     void clearNewsinUI();
@@ -33,8 +31,6 @@ private:
     MainWindow *mainwindow;
     QProcess *process;
     QVector<QString> crawler_Weblist;
-
-    void startCrawler();
 };
 
 #endif // MAINWINDOWPROXY_H

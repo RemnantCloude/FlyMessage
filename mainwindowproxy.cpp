@@ -97,7 +97,7 @@ void MainWindowProxy::writeFavor(QString title, QString data, QString abstract, 
     FM_Json::writeJson("./favorite.json", array, type);
 }
 
-void MainWindowProxy::updateWeblist()
+void MainWindowProxy::startCrawler()
 {
     // 获取要刷新的新闻网站
     if (mainwindow->now_website == "全部新闻")
