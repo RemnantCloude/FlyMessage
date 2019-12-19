@@ -26,7 +26,7 @@ void FM_Python::getClawlerOutput()
     QString string = QTextCodec::codecForMib(106)->toUnicode(data);//106:UTF-8
     if( string == "done\r\n")
     {
-        emit pythonEnd();
+        emit pythonEnd("全部新闻");
     }
     else
     {

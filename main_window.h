@@ -46,7 +46,7 @@ protected:
 
     void refreshAllNews();
     
-    void paintEvent(QPaintEvent *event);
+//    void paintEvent(QPaintEvent *event);
 private:
     QVBoxLayout *thislayout;
     QString now_website;

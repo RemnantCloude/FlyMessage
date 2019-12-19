@@ -162,7 +162,7 @@ void MainWindow::onFavorNews(bool type)
     nullPageJudge();
 }
 
-void MainWindow::paintEvent(QPaintEvent *event)
-{
-    return;
-}
+//void MainWindow::paintEvent(QPaintEvent *event)
+//{
+//    return;
+//}

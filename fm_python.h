@@ -12,7 +12,7 @@ public:
     ~FM_Python(){}
 
 signals:
-    void pythonEnd();
+    void pythonEnd(QString website);
 public slots:
     void getClawlerOutput();
     void execPython(QStringList websitelist);
