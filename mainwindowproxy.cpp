@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QThread>
+#include <QTextCodec>
 
 #include "mainwindowproxy.h"
 #include "json.h"
@@ -109,5 +110,29 @@ void MainWindowProxy::startCrawler()
     {
         websitelist.append(mainwindow->now_website);
     }
-    emit startPython(websitelist);
+
+    process = new QProcess;
+    process->start("./crawler.exe", websitelist);
+    if (!process->waitForStarted())
+    {
+        qDebug() << "爬虫启动失败";
+    }
+    connect(process,SIGNAL(readyRead()),this,SLOT(getClawlerOutput()));
+}
+
+void MainWindowProxy::getClawlerOutput()
+{
+    QByteArray data = process->readAll();
+    QString string = QTextCodec::codecForMib(106)->toUnicode(data);//106:UTF-8
+    if( string == "done\r\n")
+    {
+        emit pythonEnd("全部新闻");
+    }
+    else
+    {
+        qDebug() << "爬虫爬取失败";
+    }
+    process->close();
+    disconnect(process,SIGNAL(readyRead()),this,SLOT(getClawlerOutput()));
+    delete process;
 }

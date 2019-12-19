@@ -34,7 +34,6 @@ SOURCES += \
     float_window.cpp \
     webwizardform.cpp \
     fm_setting.cpp \
-    fm_python.cpp \
     fm_notice.cpp \
     mainwindowproxy.cpp \
     waitwidget.cpp \
@@ -52,7 +51,6 @@ HEADERS += \
     webwizardform.h \
     fm_setting.h \
     aero.h \
-    fm_python.h \
     fm_notice.h \
     mainwindowproxy.h \
     waitwidget.h \
