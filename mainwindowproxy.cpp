@@ -18,6 +18,7 @@ MainWindowProxy::MainWindowProxy(MainWindow *mw, QObject *parent)
     : QObject(parent),
       mainwindow(mw)
 {
+
 }
 
 void MainWindowProxy::threadStarted(void)
@@ -96,43 +97,37 @@ void MainWindowProxy::writeFavor(QString title, QString data, QString abstract, 
     FM_Json::writeJson("./favorite.json", array, type);
 }
 
-void MainWindowProxy::startCrawler()
+void MainWindowProxy::updateWeblist()
 {
-    QStringList websitelist;
+    // 获取要刷新的新闻网站
     if (mainwindow->now_website == "全部新闻")
-    {
-        websitelist.append("人民网");
-        websitelist.append("新浪");
-        websitelist.append("网易");
-        websitelist.append("教务处");
-    }
+        mainwindow->settings->get_web_list(crawler_Weblist);
     else
-    {
-        websitelist.append(mainwindow->now_website);
-    }
+        crawler_Weblist.append(mainwindow->now_website);
 
-    process = new QProcess;
-    process->start("./crawler.exe", websitelist);
-    if (!process->waitForStarted())
+    // 分别爬取每个网站
+    while (crawler_Weblist.size() != 0)
     {
-        qDebug() << "爬虫启动失败";
-    }
-    connect(process,SIGNAL(readyRead()),this,SLOT(getClawlerOutput()));
-}
+        QStringList web;
+        web.append(crawler_Weblist.takeAt(0));
 
-void MainWindowProxy::getClawlerOutput()
-{
-    QByteArray data = process->readAll();
-    QString string = QTextCodec::codecForMib(106)->toUnicode(data);//106:UTF-8
-    if( string == "done\r\n")
-    {
-        emit pythonEnd();
+        process = new QProcess;
+        process->start("./crawler.exe", web);
+        if (!process->waitForStarted())
+        {
+            qDebug() << "爬虫启动失败";
+        }
+        if(process->waitForFinished(-1))
+        {
+            QByteArray data = process->readAll();
+            QString string = QTextCodec::codecForMib(106)->toUnicode(data);//106:UTF-8
+            if( string != "done\r\n")
+            {
+                qDebug() << "爬虫爬取失败";
+            }
+            process->close();
+            delete process;
+        }
     }
-    else
-    {
-        qDebug() << "爬虫爬取失败";
-    }
-    process->close();
-    disconnect(process,SIGNAL(readyRead()),this,SLOT(getClawlerOutput()));
-    delete process;
+    emit pythonEnd();
 }
