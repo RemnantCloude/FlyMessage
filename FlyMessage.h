@@ -18,7 +18,6 @@
 #include "settingform.h"
 #include "fm_notice.h"
 #include "waitwidget.h"
-#include "fm_python.h"
 
 class FlyMessage : public QWidget
 {
@@ -43,8 +42,6 @@ private:
     
     QThread* backstageThread;
     MainWindowProxy* mainwindowProxy;
-    FM_Python *python;
-    
     
     QGridLayout *GLay;
     QScrollArea *scrollarea;

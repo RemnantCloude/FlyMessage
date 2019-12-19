@@ -225,11 +225,9 @@ void FlyMessage::initComponents()
     waitwidget = new WaitWidget(this);
     mainwindow = new MainWindow(settings, this);
     mainwindowProxy = new MainWindowProxy(mainwindow);
-    python = new FM_Python();
     backstageThread = new QThread(this);
     backstageThread->start();
     mainwindowProxy->moveToThread(backstageThread);
-    python->moveToThread(backstageThread);
 }
 
 void FlyMessage::initMainSideBarItems()
@@ -266,8 +264,6 @@ void FlyMessage::initSignalAndSlot()
 
     //爬虫调用
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindowProxy, SLOT(startCrawler()));
-    //connect(floatwindow->refresh_Btn, SIGNAL(clicked()), waitwidget, SLOT(showup()));
-//    connect(mainwindowProxy, &MainWindowProxy::startPython, mainwindowProxy, &MainWindowProxy::execPython);
     connect(mainwindowProxy, SIGNAL(pythonEnd(QString)), mainwindow, SLOT(onRefreshNews(QString)));
 
     connect(notice->trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
