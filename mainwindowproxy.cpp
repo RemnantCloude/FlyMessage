@@ -85,13 +85,13 @@ void MainWindowProxy::getFavorNews()
     mainwindow->pageState = PageState::FavorPage;
 }
 
-void MainWindowProxy::writeFavor(QString s1, QString s2, QString s3, QString s4, bool type)
+void MainWindowProxy::writeFavor(QString title, QString data, QString abstract, QString address, bool type)
 {
     QJsonArray array;
-    array.insert(0, s1);
-    array.insert(1, s2);
-    array.insert(2, s3);
-    array.insert(3, s4);
+    array.insert(0, title);
+    array.insert(1, data);
+    array.insert(2, abstract);
+    array.insert(3, address);
     FM_Json::writeJson("./favorite.json", array, type);
 }
 

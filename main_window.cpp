@@ -89,9 +89,9 @@ void MainWindow::startPaint()
     this->show();
 }
 
-void MainWindow::addNewsItem(QString a, QString b, QString c, QString d, bool needFavor)
+void MainWindow::addNewsItem(QString title, QString data, QString abstract, QString address, bool needFavor)
 {
-    News *news = new News(this,a,b,c,d,needFavor);
+    News *news = new News(this, title, data, abstract, address, needFavor);
     newsArray.append(news);
     
     news->setCursor(Qt::PointingHandCursor);
@@ -151,9 +151,9 @@ void MainWindow::onFavorNews(bool type)
 {
     News *news = dynamic_cast<News*>(sender());//获取信号发送者的指针
     writeFavor(news->title_Lab->text(),
-               news->time_Lab->text(),
-               news->type_Lab->text(),
+               news->data_lab->text(),
                news->abstract_Lab->text(),
+               news->address,
                type);
     //收藏夹状态删除条目
     if(type == false && pageState == PageState::FavorPage){

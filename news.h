@@ -1,4 +1,4 @@
-#ifndef NEWS_H
+﻿#ifndef NEWS_H
 #define NEWS_H
 
 #include <QWidget>
@@ -12,18 +12,18 @@ class News : public QWidget
 {
     Q_OBJECT
 public:
-    explicit News(QWidget *parent, QString title, QString time, QString tpye, QString abstract, bool needfavor);
+    explicit News(QWidget *parent, QString title, QString data, QString abstract, QString address, bool needfavor);
     ~News();
 
     QLabel *title_Lab;
-    QLabel *time_Lab;
-    QLabel *type_Lab;
+    QLabel *data_lab;
     QLabel *abstract_Lab;
     QPushButton *favor_Btn;
     QGridLayout *thislayout;
     QFrame *line;
 
     bool isFavor;
+    QString address;
 
 signals:
     void FavorNews(bool);
@@ -35,7 +35,7 @@ protected:
     void initComponents();
     void initSignalAndSlot();
     void setThisLayout();
-    void setThisStyle(QString title, QString time, QString tpye, QString abstract);
+    void setThisStyle(QString title, QString data, QString abstract);
     void mousePressEvent ( QMouseEvent * event );
 };
 

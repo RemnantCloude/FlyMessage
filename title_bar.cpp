@@ -50,9 +50,9 @@ void TitleBar::initComponents()
 
 void TitleBar::initSignalAndSlot()
 {
-    connect(settings_Btn, SIGNAL(clicked(bool)), SLOT(onSettings(bool)));
+//    connect(settings_Btn, SIGNAL(clicked(bool)), SLOT(onSettings(bool)));
 }
-// TODO:重新设置布局
+
 void TitleBar::setThisLayout()
 {
     setFixedHeight(50);
@@ -96,7 +96,6 @@ void TitleBar::setThisStyle()
     close_Btn->setStyleSheet("QPushButton{border-style: none}"
                             "QPushButton:hover{background-color:red; color: black;}"
                             "QPushButton:pressed{background-color:lightred; border-style: inset; }");
-    //title_Lab->setStyleSheet("QLabel{font-size: 12pt; color: black;}");
 
     // 添加字体文件
     int fontId = QFontDatabase::addApplicationFont(":/fonts/fontawesome_solid");
@@ -133,27 +132,8 @@ void TitleBar::mousePressEvent(QMouseEvent *event)
     this->thisparent->mousePos = event->globalPos(); // 获得鼠标位置
     this->thisparent->dPos = thisparent->mousePos - thisparent->windowPos; // 移动后部件所在的位置
 }
-// 暂时先不管这个函数
+
 void TitleBar::mouseMoveEvent(QMouseEvent *event)
 {
     this->thisparent->move(event->globalPos() - this->thisparent->dPos);
-
-    // TODO:最大化移动标题栏时会变回正常大小
-    // if(this->thisparent->windowState() == Qt::WindowMaximized)
-    // {
-    //     setWindowState( Qt::WindowNoState );
-    // }
-
-    //TODO:实现靠边时会最大化
-}
-
-void TitleBar::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    emit mouseDoubleClick(1);
-}
-
-void TitleBar::onSettings(bool)
-{
-    emit openSettings(1);
 }

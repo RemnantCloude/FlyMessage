@@ -20,10 +20,9 @@ public:
 
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *event);
 
     FlyMessage* thisparent;//父窗口
-    
+
     QHBoxLayout* titleLayout;
     QSpacerItem* Spacer;
     QPushButton* min_Btn; // 显示最大或者最小的图标
@@ -32,15 +31,6 @@ public:
     QPushButton* settings_Btn;// 设置按钮
     QLabel* icon_Lab; // 图标
     QLabel* title_Lab; // 标题
-
-signals:
-    void mouseDoubleClick(bool);
-    void openSettings(bool);
-
-private slots:
-    void onSettings(bool);
-
-private:
 
 protected:
     void initComponents();

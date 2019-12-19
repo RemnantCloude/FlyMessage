@@ -30,12 +30,12 @@ public:
 signals:
     void getNews(QString web);
     void getFavorNews();
-    void writeFavor(QString s1, QString s2, QString s3, QString s4, bool type);
+    void writeFavor(QString title, QString data, QString abstract, QString address, bool type);
 public slots:
     void onRefreshNews();
     void onRefreshNews(QString website);//刷新新闻
     void onFavorNews(bool type);//删除或添加单条收藏夹新闻
-    void addNewsItem(QString a, QString b, QString c, QString d, bool needFavor);
+    void addNewsItem(QString title, QString data, QString abstract, QString address, bool needFavor);
     void stopPaint();
     void startPaint();
 protected:

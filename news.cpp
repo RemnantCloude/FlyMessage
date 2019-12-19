@@ -16,8 +16,9 @@
 #define ADDNEWS     true
 #define DELETENEWS  false
 
-News::News(QWidget *parent, QString title, QString time, QString type, QString abstract, bool needfavor) :
-    QWidget(parent)
+News::News(QWidget *parent, QString title, QString data, QString abstract, QString address, bool needfavor) :
+    QWidget(parent),
+    address(address)
 {
     setAttribute(Qt::WA_StyledBackground,true);
     
@@ -27,14 +28,13 @@ News::News(QWidget *parent, QString title, QString time, QString type, QString a
     initSignalAndSlot();// 初始化信号与槽
 
     setThisLayout();
-    setThisStyle(title, time, type, abstract);
+    setThisStyle(title, data, abstract);
 }
 
 News::~News()
 {
     delete title_Lab;
-    delete time_Lab;
-    delete type_Lab;
+    delete data_lab;
     delete abstract_Lab;
     delete favor_Btn;
     delete thislayout;
@@ -44,8 +44,7 @@ News::~News()
 void News::initComponents()
 {
     title_Lab = new QLabel(this);
-    time_Lab = new QLabel(this);
-    type_Lab = new QLabel(this);
+    data_lab = new QLabel(this);
     abstract_Lab = new QLabel(this);
     favor_Btn = new QPushButton(this);
     line = new QFrame(this);
@@ -63,22 +62,20 @@ void News::setThisLayout()
     thislayout = new QGridLayout(this);
     thislayout->addWidget(title_Lab, 0, 0, 1, 7);
     thislayout->addWidget(favor_Btn, 0, 8, 1, 1);
-    thislayout->addWidget(time_Lab, 1, 0, 1, 8);
-    thislayout->addWidget(type_Lab, 2, 0, 1, 8);
-    thislayout->addWidget(abstract_Lab, 3, 0, 1, 8);
+    thislayout->addWidget(data_lab, 1, 0, 1, 8);
+    thislayout->addWidget(abstract_Lab, 2, 0, 1, 8);
 
     this->setSizePolicy(QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred));
     this->setLayout(thislayout);
     this->setMinimumSize(400, 0);
 }
 
-void News::setThisStyle(QString title, QString time, QString type, QString abstract)
+void News::setThisStyle(QString title, QString data, QString abstract)
 {
     title_Lab->setStyleSheet("QLabel{font-size:22px; font-family:\"黑体\"} color: black;");
     title_Lab->setText(title);
-    time_Lab->setText(time);
-    type_Lab->setText(type);
-    type_Lab->setWordWrap(true);//自动换行
+    data_lab->setText(data);
+    abstract_Lab->setWordWrap(true);//自动换行
     abstract_Lab->setText(abstract);
 
     favor_Btn->setFlat(true);
@@ -103,7 +100,7 @@ void News::setThisStyle(QString title, QString time, QString type, QString abstr
 void News::mousePressEvent ( QMouseEvent * event ) {
     if(event->button() != Qt::MidButton)
     QDesktopServices::openUrl(
-                QUrl(this->abstract_Lab->text()));
+                QUrl(this->address));
     QWidget::mousePressEvent(event);
 }
 
