@@ -25,7 +25,7 @@ signals:
     void wait();
     void stopwait();
     void startPython(QStringList websitelist);
-    void pythonEnd(QString website);
+    void pythonEnd();
 protected:
     virtual void run();
 private:

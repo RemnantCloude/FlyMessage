@@ -258,13 +258,12 @@ void FlyMessage::initSignalAndSlot()
     connect(titlebar->close_Btn, SIGNAL(clicked(bool)), SLOT(onClose(bool)));
     connect(titlebar->settings_Btn, SIGNAL(clicked()), SLOT(moveToSettingForm()));
     
-    //connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindow, SLOT(onRefreshNews()));
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), this, SLOT(returnToTopAtOnce()));
     connect(floatwindow->returnToTop_Btn, SIGNAL(clicked()), this, SLOT(returnToTop()));
 
     //爬虫调用
     connect(floatwindow->refresh_Btn, SIGNAL(clicked()), mainwindowProxy, SLOT(startCrawler()));
-    connect(mainwindowProxy, SIGNAL(pythonEnd(QString)), mainwindow, SLOT(onRefreshNews(QString)));
+    connect(mainwindowProxy, SIGNAL(pythonEnd()), mainwindow, SLOT(onRefreshNews()));
 
     connect(notice->trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));

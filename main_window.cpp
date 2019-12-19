@@ -122,13 +122,13 @@ void MainWindow::onRefreshNews(QString website)
 {
     clearNews();
     now_website = website;
-    if(website!="全部新闻")//某一网站
+    if (website != "全部新闻") //某一网站
         emit getNews(now_website);
     else
     {
         QVector<QString> weblist;
         settings->get_web_list(weblist);
-        foreach(QString webname, weblist)
+        foreach (QString webname, weblist)
         {
             emit getNews(webname);
         }
@@ -138,7 +138,17 @@ void MainWindow::onRefreshNews(QString website)
 void MainWindow::onRefreshNews()
 {
     clearNews();
-    emit getNews(now_website);
+    if (now_website != "全部新闻") //某一网站
+        emit getNews(now_website);
+    else
+    {
+        QVector<QString> weblist;
+        settings->get_web_list(weblist);
+        foreach (QString webname, weblist)
+        {
+            emit getNews(webname);
+        }
+    }
 }
 
 void MainWindow::deleteNews(News *news)
