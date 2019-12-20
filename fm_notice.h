@@ -27,7 +27,6 @@ public slots:
     void onInform_notice();
     void set_notice_timer();
 private:
-    void initSignalAndSlot();
     void traySetting(QWidget *parent);
     void createMenu(QWidget *parent);
 

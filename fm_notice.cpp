@@ -1,5 +1,5 @@
 ﻿#include "fm_notice.h"
-#include "json.h"
+#include "fm_json.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -16,7 +16,6 @@ FM_Notice::FM_Notice(FM_Setting *s, QWidget *parent):
     timer = new QTimer();
     traySetting(parent);
     set_notice_timer();
-    initSignalAndSlot();
 }
 
 FM_Notice::~FM_Notice()
@@ -26,11 +25,6 @@ FM_Notice::~FM_Notice()
     delete mShowMainAction;
     delete mExitAppAction;
     delete mMenu;
-}
-
-void FM_Notice::initSignalAndSlot()
-{
-    connect(timer,SIGNAL(timeout()),this,SLOT(onInform_notice()));
 }
 
 void FM_Notice::set_notice_timer()

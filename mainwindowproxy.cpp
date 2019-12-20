@@ -9,7 +9,7 @@
 #include <QTextCodec>
 
 #include "mainwindowproxy.h"
-#include "json.h"
+#include "fm_json.h"
 
 #define ADDNEWS true
 #define DELETENEWS false
@@ -97,7 +97,7 @@ void MainWindowProxy::writeFavor(QString title, QString data, QString abstract, 
     FM_Json::writeJson("./favorite.json", array, type);
 }
 
-void MainWindowProxy::startCrawler()
+void MainWindowProxy::startNewsCrawler()
 {
     // 获取要刷新的新闻网站
     if (mainwindow->now_website == "全部新闻")
@@ -110,24 +110,37 @@ void MainWindowProxy::startCrawler()
     {
         QStringList web;
         web.append(crawler_Weblist.takeAt(0));
-
-        process = new QProcess;
-        process->start("./crawler.exe", web);
-        if (!process->waitForStarted())
-        {
-            qDebug() << "爬虫启动失败";
-        }
-        if(process->waitForFinished(-1))
-        {
-            QByteArray data = process->readAll();
-            QString string = QTextCodec::codecForMib(106)->toUnicode(data);//106:UTF-8
-            if( string != "done\r\n")
-            {
-                qDebug() << "爬虫爬取失败";
-            }
-            process->close();
-            delete process;
-        }
+        crawler(web);
     }
     emit pythonEnd();
+}
+
+void MainWindowProxy::startNoticeCrawler()
+{
+    QStringList web;
+    web.append("教务处");
+    crawler(web);
+
+    emit inform_notice();
+}
+
+void MainWindowProxy::crawler(QStringList web)
+{
+    process = new QProcess;
+    process->start("./crawler.exe", web);
+    if (!process->waitForStarted())
+    {
+        qDebug() << "爬虫启动失败";
+    }
+    if(process->waitForFinished(-1))
+    {
+        QByteArray data = process->readAll();
+        QString string = QTextCodec::codecForMib(106)->toUnicode(data);//106:UTF-8
+        if( string != "done\r\n")
+        {
+            qDebug() << "爬虫爬取失败";
+        }
+        process->close();
+        delete process;
+    }
 }
