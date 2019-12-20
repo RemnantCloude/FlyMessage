@@ -1,10 +1,10 @@
 ﻿#include <QStyleOption>
 #include <QPainter>
-#include <main_window.h>
+#include <fm_mainwindow.h>
 #include <QDebug>
 
 #include "fm_sidebar.h"
-#include "main_window.h"
+#include "fm_mainwindow.h"
 
 FM_SideItemData::FM_SideItemData(QString s, void(FM_SideBar::*f)(), bool cb) : 
     caption(s), checked(cb), func(f)

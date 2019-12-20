@@ -1,4 +1,4 @@
-﻿#include "title_bar.h"
+﻿#include "fm_titlebar.h"
 #include "FlyMessage.h"
 
 #include <QPushButton>
@@ -8,11 +8,10 @@
 #include <QVBoxLayout>
 #include <QFontDatabase>
 
-
 #define BTN_WIDTH   (40)
 #define BTN_HEIGHT  (40)
 
-TitleBar::TitleBar(QWidget *parent) :
+FM_TitleBar::FM_TitleBar(QWidget *parent) :
     QWidget(parent)
 {
     setAttribute(Qt::WA_StyledBackground);
@@ -26,7 +25,7 @@ TitleBar::TitleBar(QWidget *parent) :
 
 }
 
-TitleBar::~TitleBar()
+FM_TitleBar::~FM_TitleBar()
 {
     delete min_Btn; // 显示最大或者最小的图标
     delete max_Btn; // 最大化按钮
@@ -36,7 +35,7 @@ TitleBar::~TitleBar()
     delete title_Lab; // 标题
 }
 
-void TitleBar::initComponents()
+void FM_TitleBar::initComponents()
 {
     icon_Lab     = new QLabel(this);
     title_Lab    = new QLabel(this);
@@ -48,12 +47,12 @@ void TitleBar::initComponents()
     titleLayout  = new QHBoxLayout(this);
 }
 
-void TitleBar::initSignalAndSlot()
+void FM_TitleBar::initSignalAndSlot()
 {
 //    connect(settings_Btn, SIGNAL(clicked(bool)), SLOT(onSettings(bool)));
 }
 
-void TitleBar::setThisLayout()
+void FM_TitleBar::setThisLayout()
 {
     setFixedHeight(50);
     // 设置控件布局
@@ -79,7 +78,7 @@ void TitleBar::setThisLayout()
     close_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
 }
 
-void TitleBar::setThisStyle()
+void FM_TitleBar::setThisStyle()
 {
     // 使按钮透明
     close_Btn->setFlat(true);
@@ -87,7 +86,7 @@ void TitleBar::setThisStyle()
     max_Btn->setFlat(true);
     settings_Btn->setFlat(true);
 
-    this->setStyleSheet("TitleBar{background-color: qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,"
+    this->setStyleSheet("FM_TitleBar{background-color: qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,"
                         "stop:0 rgba(255, 255, 255, 160), stop:1 rgba(255, 255, 255, 60));}"
                         "QPushButton{font-size: 12pt; border-style: none; color: black;}"
                         "QPushButton:hover{background-color:lightgray;}"
@@ -126,14 +125,14 @@ void TitleBar::setThisStyle()
     title_Lab->setStyleSheet("font-size:28px;font-family:\"微软雅黑\"");
 }
 
-void TitleBar::mousePressEvent(QMouseEvent *event)
+void FM_TitleBar::mousePressEvent(QMouseEvent *event)
 {
     this->thisparent->windowPos = this->thisparent->pos(); // 获得部件当前位置
     this->thisparent->mousePos = event->globalPos(); // 获得鼠标位置
     this->thisparent->dPos = thisparent->mousePos - thisparent->windowPos; // 移动后部件所在的位置
 }
 
-void TitleBar::mouseMoveEvent(QMouseEvent *event)
+void FM_TitleBar::mouseMoveEvent(QMouseEvent *event)
 {
     this->thisparent->move(event->globalPos() - this->thisparent->dPos);
 }

@@ -5,12 +5,12 @@
 #include <QStyleOption>
 #include <QPainter>
 
-#include "main_window.h"
+#include "fm_mainwindow.h"
 
 #define ADDNEWS     true
 #define DELETENEWS  false
 
-MainWindow::MainWindow(FM_Setting *se, QWidget *parent) : 
+FM_MainWindow::FM_MainWindow(FM_Setting *se, QWidget *parent) :
     QWidget(parent),
     settings(se)
 {
@@ -22,11 +22,11 @@ MainWindow::MainWindow(FM_Setting *se, QWidget *parent) :
     setThisStyle();
 }
 
-MainWindow::~MainWindow()
+FM_MainWindow::~FM_MainWindow()
 {    
 }
 
-void MainWindow::setThisLayout()
+void FM_MainWindow::setThisLayout()
 {
     thislayout = new QVBoxLayout(this);
     this->setLayout(thislayout);
@@ -55,7 +55,7 @@ void MainWindow::setThisLayout()
     thislayout->addItem(newsSpacer);
 }
 
-void MainWindow::setThisStyle()
+void FM_MainWindow::setThisStyle()
 {
     this->setStyleSheet("News {background: rgba(255,255,255,230)}"
                         "News:hover {background: rgba(224,245,245,230);}"
@@ -63,7 +63,7 @@ void MainWindow::setThisStyle()
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
 }
 
-void MainWindow::nullPageJudge()
+void FM_MainWindow::nullPageJudge()
 {
     if(newsArray.size() == 0)
     {
@@ -79,19 +79,19 @@ void MainWindow::nullPageJudge()
     }
 }
 
-void MainWindow::stopPaint()
+void FM_MainWindow::stopPaint()
 {
     this->hide();
 }
 
-void MainWindow::startPaint()
+void FM_MainWindow::startPaint()
 {
     this->show();
 }
 
-void MainWindow::addNewsItem(QString title, QString data, QString abstract, QString address, bool needFavor)
+void FM_MainWindow::addNewsItem(QString title, QString data, QString abstract, QString address, bool needFavor)
 {
-    News *news = new News(this, title, data, abstract, address, needFavor);
+    FM_News *news = new FM_News(this, title, data, abstract, address, needFavor);
     newsArray.append(news);
     
     news->setCursor(Qt::PointingHandCursor);
@@ -103,9 +103,9 @@ void MainWindow::addNewsItem(QString title, QString data, QString abstract, QStr
     nullPageJudge();
 }
 
-void MainWindow::clearNews()
+void FM_MainWindow::clearNews()
 {
-    foreach(News *news, newsArray)
+    foreach(FM_News *news, newsArray)
     {
         delete news;
         newsArray.pop_back();
@@ -113,12 +113,12 @@ void MainWindow::clearNews()
     nullPageJudge();
 }
 
-void MainWindow::refreshAllNews()
+void FM_MainWindow::refreshAllNews()
 {
     clearNews();
 }
 
-void MainWindow::onRefreshNews(QString website)
+void FM_MainWindow::onRefreshNews(QString website)
 {
     clearNews();
     now_website = website;
@@ -135,7 +135,7 @@ void MainWindow::onRefreshNews(QString website)
     }
 }
 
-void MainWindow::onRefreshNews()
+void FM_MainWindow::onRefreshNews()
 {
     clearNews();
     if (now_website != "全部新闻") //某一网站
@@ -151,15 +151,15 @@ void MainWindow::onRefreshNews()
     }
 }
 
-void MainWindow::deleteNews(News *news)
+void FM_MainWindow::deleteNews(FM_News *news)
 {
     newsArray.removeOne(news);
     delete news;
 }
 
-void MainWindow::onFavorNews(bool type)
+void FM_MainWindow::onFavorNews(bool type)
 {
-    News *news = dynamic_cast<News*>(sender());//获取信号发送者的指针
+    FM_News *news = dynamic_cast<FM_News*>(sender());//获取信号发送者的指针
     writeFavor(news->title_Lab->text(),
                news->data_lab->text(),
                news->abstract_Lab->text(),

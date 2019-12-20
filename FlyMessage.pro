@@ -26,35 +26,35 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         FlyMessage.cpp \
-        main_window.cpp \
-        title_bar.cpp \
-    news.cpp \
     fm_sidebar.cpp \
-    settingform.cpp \
-    float_window.cpp \
     webwizardform.cpp \
     fm_setting.cpp \
     fm_notice.cpp \
-    mainwindowproxy.cpp \
-    waitwidget.cpp \
-    fm_json.cpp
+    fm_json.cpp \
+    fm_floatwindow.cpp \
+    fm_mainwindow.cpp \
+    fm_mainwindowproxy.cpp \
+    fm_news.cpp \
+    fm_settingform.cpp \
+    fm_titlebar.cpp \
+    fm_waitwidget.cpp
 
 
 HEADERS += \
         FlyMessage.h \
-        main_window.h \
-        title_bar.h \
-    news.h \
     fm_sidebar.h \
-    settingform.h \
-    float_window.h \
     webwizardform.h \
     fm_setting.h \
     aero.h \
     fm_notice.h \
-    mainwindowproxy.h \
-    waitwidget.h \
-    fm_json.h
+    fm_json.h \
+    fm_floatwindow.h \
+    fm_mainwindow.h \
+    fm_mainwindowproxy.h \
+    fm_news.h \
+    fm_settingform.h \
+    fm_titlebar.h \
+    fm_waitwidget.h
 
 RC_FILE += FlyMessage.rc
 

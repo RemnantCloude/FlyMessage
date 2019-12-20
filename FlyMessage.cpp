@@ -1,5 +1,5 @@
 ﻿#include "FlyMessage.h"
-#include "mainwindowproxy.h"
+#include "fm_mainwindowproxy.h"
 #include "aero.h"
 
 #include <QPainter>
@@ -214,17 +214,17 @@ void FlyMessage::moveToMainWindow()
 
 void FlyMessage::initComponents()
 {
-    titlebar = new TitleBar(this);
+    titlebar = new FM_TitleBar(this);
     sidebar = new FM_SideBar(this);
     scrollarea = new QScrollArea(this);
-    floatwindow = new FloatWindow(this);
-    settingform = new SettingForm(settings, this);
+    floatwindow = new FM_FloatWindow(this);
+    settingform = new FM_SettingForm(settings, this);
     GLay = new QGridLayout(this);
     scroller = QScroller::scroller(scrollarea);
     notice = new FM_Notice(settings, this);
-    waitwidget = new WaitWidget(this);
-    mainwindow = new MainWindow(settings, this);
-    mainwindowProxy = new MainWindowProxy(mainwindow);
+    waitwidget = new FM_WaitWidget(this);
+    mainwindow = new FM_MainWindow(settings, this);
+    mainwindowProxy = new FM_MainWindowProxy(mainwindow);
     backstageThread = new QThread(this);
     backstageThread->start();
     mainwindowProxy->moveToThread(backstageThread);
@@ -266,7 +266,7 @@ void FlyMessage::initSignalAndSlot()
     connect(mainwindowProxy, SIGNAL(pythonEnd()), mainwindow, SLOT(onRefreshNews()));
     //通知爬虫调用
     connect(notice->timer, SIGNAL(timeout()), mainwindowProxy, SLOT(startNoticeCrawler()));
-    connect(mainwindowProxy, &MainWindowProxy::inform_notice, notice, &FM_Notice::onInform_notice);
+    connect(mainwindowProxy, &FM_MainWindowProxy::inform_notice, notice, &FM_Notice::onInform_notice);
 
     connect(notice->trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this,SLOT(actSysTrayIcon(QSystemTrayIcon::ActivationReason)));
@@ -275,33 +275,33 @@ void FlyMessage::initSignalAndSlot()
     connect(this, SIGNAL(minimize_notice()), notice, SLOT(onMinimize_notice()));
 
     //后台线程与QThread的Start与finish关联
-    connect(backstageThread, &QThread::started, mainwindowProxy, &MainWindowProxy::threadStarted);
-    connect(backstageThread, &QThread::finished, mainwindowProxy, &MainWindowProxy::threadFinished);
+    connect(backstageThread, &QThread::started, mainwindowProxy, &FM_MainWindowProxy::threadStarted);
+    connect(backstageThread, &QThread::finished, mainwindowProxy, &FM_MainWindowProxy::threadFinished);
     //UI线程的更新信号与后台进程的getNews关联
-    connect(mainwindow, &MainWindow::getNews, mainwindowProxy, &MainWindowProxy::getNews);
-    connect(mainwindow, &MainWindow::getFavorNews, mainwindowProxy, &MainWindowProxy::getFavorNews);
-    connect(mainwindow, &MainWindow::writeFavor, mainwindowProxy, &MainWindowProxy::writeFavor);
+    connect(mainwindow, &FM_MainWindow::getNews, mainwindowProxy, &FM_MainWindowProxy::getNews);
+    connect(mainwindow, &FM_MainWindow::getFavorNews, mainwindowProxy, &FM_MainWindowProxy::getFavorNews);
+    connect(mainwindow, &FM_MainWindow::writeFavor, mainwindowProxy, &FM_MainWindowProxy::writeFavor);
 
-    connect(mainwindowProxy, &MainWindowProxy::addNewsItemToUI, mainwindow, &MainWindow::addNewsItem, Qt::QueuedConnection);
-    connect(mainwindowProxy, &MainWindowProxy::clearNewsinUI, mainwindow, &MainWindow::clearNews);
+    connect(mainwindowProxy, &FM_MainWindowProxy::addNewsItemToUI, mainwindow, &FM_MainWindow::addNewsItem, Qt::QueuedConnection);
+    connect(mainwindowProxy, &FM_MainWindowProxy::clearNewsinUI, mainwindow, &FM_MainWindow::clearNews);
 
     //显示等待gif
-    connect(mainwindowProxy, &MainWindowProxy::wait, waitwidget, &WaitWidget::showup);
-    connect(mainwindowProxy, &MainWindowProxy::stopwait, waitwidget, &WaitWidget::fuckoff);
+    connect(mainwindowProxy, &FM_MainWindowProxy::wait, waitwidget, &FM_WaitWidget::showup);
+    connect(mainwindowProxy, &FM_MainWindowProxy::stopwait, waitwidget, &FM_WaitWidget::fuckoff);
     //控制MainWindow的绘制
-    connect(mainwindowProxy, &MainWindowProxy::wait, mainwindow, &MainWindow::stopPaint);
-    connect(mainwindowProxy, &MainWindowProxy::stopwait, mainwindow, &MainWindow::startPaint);
+    connect(mainwindowProxy, &FM_MainWindowProxy::wait, mainwindow, &FM_MainWindow::stopPaint);
+    connect(mainwindowProxy, &FM_MainWindowProxy::stopwait, mainwindow, &FM_MainWindow::startPaint);
 
-    connect(settingform, &SettingForm::changeBackground, this, &FlyMessage::setBackgroundImage);
-    connect(settingform, &SettingForm::refreshAutoStart, settings, &FM_Setting::onRefreshAutoStart);
-    connect(settingform, &SettingForm::changeNoticeTimer, notice, &FM_Notice::set_notice_timer);
+    connect(settingform, &FM_SettingForm::changeBackground, this, &FlyMessage::setBackgroundImage);
+    connect(settingform, &FM_SettingForm::refreshAutoStart, settings, &FM_Setting::onRefreshAutoStart);
+    connect(settingform, &FM_SettingForm::changeNoticeTimer, notice, &FM_Notice::set_notice_timer);
     connect(sidebar, SIGNAL(signal_refresh(QString)), mainwindow, SLOT(onRefreshNews(QString)));
-    connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FloatWindow::showRefreshBtn);
-    connect(sidebar, &FM_SideBar::signal_back, settingform, &SettingForm::updateGlobalSettings);
+    connect(sidebar, &FM_SideBar::signal_refresh, floatwindow, &FM_FloatWindow::showRefreshBtn);
+    connect(sidebar, &FM_SideBar::signal_back, settingform, &FM_SettingForm::updateGlobalSettings);
     connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::moveToMainWindow);
     connect(sidebar, &FM_SideBar::signal_back, this, &FlyMessage::returnToTopAtOnce);
-    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &MainWindow::getFavorNews);
-    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FloatWindow::hideRefreshBtn);
+    connect(sidebar, &FM_SideBar::signal_favor, mainwindow, &FM_MainWindow::getFavorNews);
+    connect(sidebar, &FM_SideBar::signal_favor, floatwindow, &FM_FloatWindow::hideRefreshBtn);
 }
 
 void FlyMessage::reinitMainSideBarItems()

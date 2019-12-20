@@ -1,4 +1,4 @@
-﻿#include "news.h"
+﻿#include "fm_news.h"
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
@@ -16,7 +16,7 @@
 #define ADDNEWS     true
 #define DELETENEWS  false
 
-News::News(QWidget *parent, QString title, QString data, QString abstract, QString address, bool needfavor) :
+FM_News::FM_News(QWidget *parent, QString title, QString data, QString abstract, QString address, bool needfavor) :
     QWidget(parent),
     address(address)
 {
@@ -31,7 +31,7 @@ News::News(QWidget *parent, QString title, QString data, QString abstract, QStri
     setThisStyle(title, data, abstract);
 }
 
-News::~News()
+FM_News::~FM_News()
 {
     delete title_Lab;
     delete data_lab;
@@ -41,7 +41,7 @@ News::~News()
     delete line;
 }
 
-void News::initComponents()
+void FM_News::initComponents()
 {
     title_Lab = new QLabel(this);
     data_lab = new QLabel(this);
@@ -50,12 +50,12 @@ void News::initComponents()
     line = new QFrame(this);
 }
 
-void News::initSignalAndSlot()
+void FM_News::initSignalAndSlot()
 {
     connect(favor_Btn, SIGNAL(clicked(bool)), this, SLOT(changeFavor(bool)));
 }
 
-void News::setThisLayout()
+void FM_News::setThisLayout()
 {
     favor_Btn->setFixedSize(QSize(50, 50));
 
@@ -70,7 +70,7 @@ void News::setThisLayout()
     this->setMinimumSize(400, 0);
 }
 
-void News::setThisStyle(QString title, QString data, QString abstract)
+void FM_News::setThisStyle(QString title, QString data, QString abstract)
 {
     title_Lab->setStyleSheet("QLabel{font-size:22px; font-family:\"黑体\"} color: black;");
     title_Lab->setText(title);
@@ -97,14 +97,14 @@ void News::setThisStyle(QString title, QString data, QString abstract)
     line->setMaximumSize(16777215, 3);
 }
 
-void News::mousePressEvent ( QMouseEvent * event ) {
+void FM_News::mousePressEvent ( QMouseEvent * event ) {
     if(event->button() != Qt::MidButton)
     QDesktopServices::openUrl(
                 QUrl(this->address));
     QWidget::mousePressEvent(event);
 }
 
-void News::changeFavor(bool)
+void FM_News::changeFavor(bool)
 {
     if(isFavor == true)//删除收藏
     {

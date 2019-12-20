@@ -8,12 +8,12 @@
 #include <QPalette>
 #include <QPushButton>
 
-class News : public QWidget
+class FM_News : public QWidget
 {
     Q_OBJECT
 public:
-    explicit News(QWidget *parent, QString title, QString data, QString abstract, QString address, bool needfavor);
-    ~News();
+    explicit FM_News(QWidget *parent, QString title, QString data, QString abstract, QString address, bool needfavor);
+    ~FM_News();
 
     QLabel *title_Lab;
     QLabel *data_lab;

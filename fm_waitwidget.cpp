@@ -1,7 +1,7 @@
 ﻿#include <QMovie>
-#include "waitwidget.h"
+#include "fm_waitwidget.h"
 
-WaitWidget::WaitWidget(QWidget *parent) : QWidget(parent)
+FM_WaitWidget::FM_WaitWidget(QWidget *parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_StyledBackground);
     hLayout = new QHBoxLayout(this);
@@ -23,14 +23,14 @@ WaitWidget::WaitWidget(QWidget *parent) : QWidget(parent)
     image->setMovie(gif);
 }
 
-void WaitWidget::showup()
+void FM_WaitWidget::showup()
 {
     gif->start();
     gif->setSpeed(200);
     this->show();
 }
 
-void WaitWidget::fuckoff()
+void FM_WaitWidget::fuckoff()
 {
     gif->stop();
     this->hide();

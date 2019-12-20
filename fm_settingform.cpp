@@ -1,4 +1,4 @@
-﻿#include "settingform.h"
+﻿#include "fm_settingform.h"
 #include "ui_settingform.h"
 #include <QFontDatabase>
 #include <QStyleOption>
@@ -9,7 +9,7 @@
 
 const uint32_t max_columns_a_row = 3;
 
-SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
+FM_SettingForm::FM_SettingForm(FM_Setting *s, QWidget *parent) :
     QWidget(parent),
     settings(s),
     ui(new Ui::SettingForm)
@@ -32,7 +32,7 @@ SettingForm::SettingForm(FM_Setting *s, QWidget *parent) :
     updateUIWithSettings();
 }
 
-void SettingForm::updateWebWidget() {
+void FM_SettingForm::updateWebWidget() {
     QVector<QString> webList;
     settings->get_web_list(webList);
     foreach(QString webName, webList)
@@ -44,7 +44,7 @@ void SettingForm::updateWebWidget() {
     }
 }
 
-void SettingForm::updateGlobalSettings()
+void FM_SettingForm::updateGlobalSettings()
 {
     checkRefreshTime();
     settings->set_global_notice(ui->noticeCheckBox->checkState());
@@ -60,7 +60,7 @@ void SettingForm::updateGlobalSettings()
     settings->update_setting_to_json();
 }
 
-void SettingForm::checkRefreshTime()
+void FM_SettingForm::checkRefreshTime()
 {
     if(ui->HourSpin->value() == 0 && ui->MinuteSpin->value() == 0)
     {
@@ -68,7 +68,7 @@ void SettingForm::checkRefreshTime()
     }
 }
 
-void SettingForm::updateUIWithSettings()
+void FM_SettingForm::updateUIWithSettings()
 {
     QTime time;
     ui->noticeCheckBox->setChecked(settings->get_global_notice());
@@ -81,7 +81,7 @@ void SettingForm::updateUIWithSettings()
     ui->autoStartCheckBox->setChecked(settings->get_auto_start());
 }
 
-SettingForm::~SettingForm()
+FM_SettingForm::~FM_SettingForm()
 {
 //    foreach(WebSettingWidget * wsw, websWidget)
 //        delete wsw;
@@ -188,7 +188,7 @@ void WebSettingWidget::paintEvent(QPaintEvent *event)
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void SettingForm::on_browse_Btn_clicked()
+void FM_SettingForm::on_browse_Btn_clicked()
 {
     QFileDialog *fileDialog = new QFileDialog(this);
     fileDialog->setWindowTitle(tr("打开图片"));
@@ -208,19 +208,19 @@ void SettingForm::on_browse_Btn_clicked()
     delete fileDialog;
 }
 
-void SettingForm::on_pictureBackground_clicked()
+void FM_SettingForm::on_pictureBackground_clicked()
 {
     settings->set_picture_background(ui->pictureBackground->checkState());
     emit changeBackground();
 }
 
-void SettingForm::on_autoStartCheckBox_clicked()
+void FM_SettingForm::on_autoStartCheckBox_clicked()
 {
     settings->set_auto_start(ui->autoStartCheckBox->checkState());
     emit refreshAutoStart();
 }
 
-void SettingForm::on_noticeCheckBox_clicked()
+void FM_SettingForm::on_noticeCheckBox_clicked()
 {
     settings->set_global_notice(ui->noticeCheckBox->checkState());
     emit changeNoticeTimer();

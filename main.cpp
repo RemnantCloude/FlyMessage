@@ -3,7 +3,7 @@
 #include <QtNetwork>
 #include <QMessageBox>
 #include "FlyMessage.h"
-#include "waitwidget.h"
+#include "fm_waitwidget.h"
 
 int main(int argc, char *argv[])
 {

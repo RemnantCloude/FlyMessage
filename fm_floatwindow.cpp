@@ -3,30 +3,30 @@
 #include <QStyleOption>
 #include <QPainter>
 
-#include "float_window.h"
+#include "fm_floatwindow.h"
 #include "FlyMessage.h"
 
-FloatWindow::FloatWindow(QWidget *parent) : QWidget(parent)
+FM_FloatWindow::FM_FloatWindow(QWidget *parent) : QWidget(parent)
 {
     initComponents();// 初始化组件
     setComponentsLayout();// 布局设置
     setComponentsStyle();// 样式设置
 }
 
-FloatWindow::~FloatWindow()
+FM_FloatWindow::~FM_FloatWindow()
 {
     delete refresh_Btn;
     delete returnToTop_Btn;
     delete thislayout;
 }
 
-void FloatWindow::initComponents()
+void FM_FloatWindow::initComponents()
 {
     refresh_Btn = new QPushButton(this);
     returnToTop_Btn = new QPushButton(this);
 }
 
-void FloatWindow::setComponentsLayout()
+void FM_FloatWindow::setComponentsLayout()
 {
     refresh_Btn->setFixedSize(QSize(36,36));
     returnToTop_Btn->setFixedSize(QSize(36,36));
@@ -39,7 +39,7 @@ void FloatWindow::setComponentsLayout()
     setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 }
 
-void FloatWindow::setComponentsStyle()
+void FM_FloatWindow::setComponentsStyle()
 {
     refresh_Btn->setObjectName("refresh_Btn");
     returnToTop_Btn->setObjectName("returnToTop_Btn");
@@ -57,17 +57,17 @@ void FloatWindow::setComponentsStyle()
 
 }
 
-void FloatWindow::hideRefreshBtn()
+void FM_FloatWindow::hideRefreshBtn()
 {
     this->refresh_Btn->hide();
 }
 
-void FloatWindow::showRefreshBtn()
+void FM_FloatWindow::showRefreshBtn()
 {
     this->refresh_Btn->show();
 }
 
-void FloatWindow::paintEvent(QPaintEvent *event)
+void FM_FloatWindow::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     QStyleOption styleOpt;

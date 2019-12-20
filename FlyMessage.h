@@ -11,13 +11,13 @@
 #include <QListWidget>
 #include <QResizeEvent>
 
-#include "title_bar.h"
+#include "fm_titlebar.h"
 #include "fm_sidebar.h"
-#include "main_window.h"
-#include "float_window.h"
-#include "settingform.h"
+#include "fm_mainwindow.h"
+#include "fm_floatwindow.h"
+#include "fm_settingform.h"
 #include "fm_notice.h"
-#include "waitwidget.h"
+#include "fm_waitwidget.h"
 
 class FlyMessage : public QWidget
 {
@@ -32,16 +32,16 @@ public:
     QPoint dPos;
     
 private:
-    WaitWidget* waitwidget;
+    FM_WaitWidget* waitwidget;
     FM_SideBar* sidebar;
-    MainWindow* mainwindow;
-    TitleBar* titlebar;
+    FM_MainWindow* mainwindow;
+    FM_TitleBar* titlebar;
     
-    FloatWindow *floatwindow;
-    SettingForm *settingform;
+    FM_FloatWindow *floatwindow;
+    FM_SettingForm *settingform;
     
     QThread* backstageThread;
-    MainWindowProxy* mainwindowProxy;
+    FM_MainWindowProxy* mainwindowProxy;
     
     QGridLayout *GLay;
     QScrollArea *scrollarea;

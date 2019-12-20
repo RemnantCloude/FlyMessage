@@ -11,12 +11,12 @@
 
 class FlyMessage;
 
-class TitleBar : public QWidget
+class FM_TitleBar : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TitleBar(QWidget *parent = nullptr);
-    ~TitleBar();
+    explicit FM_TitleBar(QWidget *parent = nullptr);
+    ~FM_TitleBar();
 
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

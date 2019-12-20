@@ -7,11 +7,11 @@
 
 class FlyMessage;
 
-class FloatWindow : public QWidget
+class FM_FloatWindow : public QWidget
 {
 public:
-    explicit FloatWindow(QWidget *parent = nullptr);
-    ~FloatWindow();
+    explicit FM_FloatWindow(QWidget *parent = nullptr);
+    ~FM_FloatWindow();
     
     QPushButton *refresh_Btn;
     QPushButton *returnToTop_Btn;

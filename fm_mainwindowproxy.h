@@ -4,13 +4,13 @@
 #include <QObject>
 #include <QThread>
 #include <QProcess>
-#include "main_window.h"
+#include "fm_mainwindow.h"
 
-class MainWindowProxy : public QObject
+class FM_MainWindowProxy : public QObject
 {
     Q_OBJECT
 public:
-    MainWindowProxy(MainWindow *mainwindow,QObject *parent = nullptr);
+    FM_MainWindowProxy(FM_MainWindow *mainwindow,QObject *parent = nullptr);
     void getNews(QString web);
     void getFavorNews();
 public slots:
@@ -30,7 +30,7 @@ signals:
 protected:
     virtual void run();
 private:
-    MainWindow *mainwindow;
+    FM_MainWindow *mainwindow;
     QProcess *process;
     QVector<QString> crawler_Weblist;
 

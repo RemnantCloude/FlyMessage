@@ -42,13 +42,13 @@ private:
     FM_Setting *settings;
 };
 
-class SettingForm : public QWidget
+class FM_SettingForm : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit SettingForm(FM_Setting *s, QWidget *parent = nullptr);
-    ~SettingForm();
+    explicit FM_SettingForm(FM_Setting *s, QWidget *parent = nullptr);
+    ~FM_SettingForm();
     void updateWebWidget();
 signals:
     void changeBackground();

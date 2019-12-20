@@ -7,7 +7,7 @@
 #include <QFile>
 
 
-#include "news.h"
+#include "fm_news.h"
 #include "fm_setting.h"
 
 enum PageState{
@@ -15,16 +15,16 @@ enum PageState{
     OtherPage
 };
 
-class MainWindowProxy;
+class FM_MainWindowProxy;
 
-class MainWindow : public QWidget
+class FM_MainWindow : public QWidget
 {
     Q_OBJECT
 public:
-    friend class MainWindowProxy;
+    friend class FM_MainWindowProxy;
 
-    explicit MainWindow(FM_Setting *se, QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit FM_MainWindow(FM_Setting *se, QWidget *parent = nullptr);
+    ~FM_MainWindow();
 
     void clearNews();
 signals:
@@ -50,7 +50,7 @@ protected:
 private:
     QVBoxLayout *thislayout;
     QString now_website;
-    QVector<News *> newsArray;
+    QVector<FM_News *> newsArray;
     FM_Setting *settings;
     QLabel *tipLabel, *tip2Label;
     QLabel *sbImage;
@@ -61,7 +61,7 @@ private:
 */
     PageState pageState;
     void nullPageJudge();
-    void deleteNews(News *news);
+    void deleteNews(FM_News *news);
 };
 
 #endif // MAIN_WINDOW_H

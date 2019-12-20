@@ -8,33 +8,33 @@
 #include <QThread>
 #include <QTextCodec>
 
-#include "mainwindowproxy.h"
+#include "fm_mainwindowproxy.h"
 #include "fm_json.h"
 
 #define ADDNEWS true
 #define DELETENEWS false
 
-MainWindowProxy::MainWindowProxy(MainWindow *mw, QObject *parent)
+FM_MainWindowProxy::FM_MainWindowProxy(FM_MainWindow *mw, QObject *parent)
     : QObject(parent),
       mainwindow(mw)
 {
 
 }
 
-void MainWindowProxy::threadStarted(void)
+void FM_MainWindowProxy::threadStarted(void)
 {
     qDebug() << "Thread has started...ID is:" << QThread::currentThreadId();
 }
-void MainWindowProxy::threadFinished(void)
+void FM_MainWindowProxy::threadFinished(void)
 {
     qDebug() << "Thread has stopped Id is:" << QThread::currentThreadId();
 }
 
-void MainWindowProxy::run()
+void FM_MainWindowProxy::run()
 {
 }
 
-void MainWindowProxy::getNews(QString web)
+void FM_MainWindowProxy::getNews(QString web)
 {
     QVector<QString> column_str;
     QVector<bool> column_bool;
@@ -69,7 +69,7 @@ void MainWindowProxy::getNews(QString web)
     emit stopwait();
 }
 
-void MainWindowProxy::getFavorNews()
+void FM_MainWindowProxy::getFavorNews()
 {
     emit clearNewsinUI();
 
@@ -87,7 +87,7 @@ void MainWindowProxy::getFavorNews()
     mainwindow->pageState = PageState::FavorPage;
 }
 
-void MainWindowProxy::writeFavor(QString title, QString data, QString abstract, QString address, bool type)
+void FM_MainWindowProxy::writeFavor(QString title, QString data, QString abstract, QString address, bool type)
 {
     QJsonArray array;
     array.insert(0, title);
@@ -97,7 +97,7 @@ void MainWindowProxy::writeFavor(QString title, QString data, QString abstract, 
     FM_Json::writeJson("./favorite.json", array, type);
 }
 
-void MainWindowProxy::startNewsCrawler()
+void FM_MainWindowProxy::startNewsCrawler()
 {
     // 获取要刷新的新闻网站
     if (mainwindow->now_website == "全部新闻")
@@ -115,7 +115,7 @@ void MainWindowProxy::startNewsCrawler()
     emit pythonEnd();
 }
 
-void MainWindowProxy::startNoticeCrawler()
+void FM_MainWindowProxy::startNoticeCrawler()
 {
     QStringList web;
     web.append("教务处");
@@ -124,7 +124,7 @@ void MainWindowProxy::startNoticeCrawler()
     emit inform_notice();
 }
 
-void MainWindowProxy::crawler(QStringList web)
+void FM_MainWindowProxy::crawler(QStringList web)
 {
     process = new QProcess;
     process->start("./crawler.exe", web);

@@ -5,11 +5,11 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-class WaitWidget : public QWidget
+class FM_WaitWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit WaitWidget(QWidget *parent = nullptr);
+    explicit FM_WaitWidget(QWidget *parent = nullptr);
     QLabel *image;
     QHBoxLayout *hLayout;
     QMovie *gif;
