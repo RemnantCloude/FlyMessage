@@ -57,9 +57,9 @@ void FM_MainWindow::setThisLayout()
 
 void FM_MainWindow::setThisStyle()
 {
-    this->setStyleSheet("News {background: rgba(255,255,255,230)}"
-                        "News:hover {background: rgba(224,245,245,230);}"
-                        "MainWindow {background : rgba(255,255,255,50);}"
+    this->setStyleSheet("FM_News {background: rgba(255,255,255,230)}"
+                        "FM_News:hover {background: rgba(224,245,245,230);}"
+                        "FM_MainWindow {background : rgba(255,255,255,50);}"
                         "QLabel{font-family:\"微软雅黑\";font:13pt}");
 }
 

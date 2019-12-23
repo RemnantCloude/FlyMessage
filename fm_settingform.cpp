@@ -18,7 +18,7 @@ FM_SettingForm::FM_SettingForm(FM_Setting *s, QWidget *parent) :
     
     ui->setupUi(this);
     
-    setStyleSheet("SettingForm{background:rgba(255,255,255,50);}"
+    setStyleSheet("FM_SettingForm{background:rgba(255,255,255,50);}"
                   "*{font-size:14px;font-family:\"微软雅黑\";}");
     int fontId = QFontDatabase::addApplicationFont(":/fonts/type59");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);

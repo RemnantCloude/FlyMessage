@@ -52,7 +52,7 @@ void FlyMessage::initWindowStyle()
     this->resize (1024, 720);
     this->setContentsMargins(0,0,0,0);
     setBackgroundImage();
-    this->setStyleSheet("TitleBar{background-color:rgba(255,255,255,60);}"
+    this->setStyleSheet("FM_TitleBar{background-color:rgba(255,255,255,60);}"
                         "FM_SideBar{background-color:rgba(255,255,255,60);}");
     setAttribute(Qt::WA_TransparentForMouseEvents, false);
     setWindowFlags(Qt::FramelessWindowHint |Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint); 
