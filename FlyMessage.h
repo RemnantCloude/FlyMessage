@@ -62,6 +62,7 @@ public slots:
     void onMin(bool);
     void onMax(bool);
     void onClose(bool);
+    void onConnect(bool);
     void returnToTop();
     void returnToTopAtOnce();
     void moveToSettingForm();

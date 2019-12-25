@@ -31,6 +31,7 @@ FM_TitleBar::~FM_TitleBar()
     delete max_Btn; // 最大化按钮
     delete close_Btn;// 关闭按钮
     delete settings_Btn;// 设置按钮
+    delete connect_Btn;
     delete icon_Lab; // 图标
     delete title_Lab; // 标题
 }
@@ -44,12 +45,13 @@ void FM_TitleBar::initComponents()
     max_Btn      = new QPushButton(this);
     close_Btn    = new QPushButton(this);
     settings_Btn = new QPushButton(this);
+    connect_Btn  = new QPushButton(this);
     titleLayout  = new QHBoxLayout(this);
 }
 
 void FM_TitleBar::initSignalAndSlot()
 {
-//    connect(settings_Btn, SIGNAL(clicked(bool)), SLOT(onSettings(bool)));
+
 }
 
 void FM_TitleBar::setThisLayout()
@@ -65,13 +67,15 @@ void FM_TitleBar::setThisLayout()
     titleLayout->addWidget(title_Lab);
     titleLayout->addItem(Spacer);
     
+    titleLayout->addWidget(connect_Btn);
     titleLayout->addWidget(settings_Btn);
     titleLayout->addWidget(min_Btn);
     titleLayout->addWidget(max_Btn);
     titleLayout->addWidget(close_Btn);
-    
+
     icon_Lab->setMinimumSize(QSize(50,50));
     
+    connect_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
     settings_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
     min_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
     max_Btn->setMinimumSize(QSize(BTN_WIDTH,BTN_HEIGHT));
@@ -85,6 +89,7 @@ void FM_TitleBar::setThisStyle()
     min_Btn->setFlat(true);
     max_Btn->setFlat(true);
     settings_Btn->setFlat(true);
+    connect_Btn->setFlat(true);
 
     this->setStyleSheet("FM_TitleBar{background-color: qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,"
                         "stop:0 rgba(255, 255, 255, 160), stop:1 rgba(255, 255, 255, 60));}"
@@ -118,6 +123,10 @@ void FM_TitleBar::setThisStyle()
     settings_Btn->setToolTip("设置");
     settings_Btn->setFont(font);
     settings_Btn->setText(QChar(0xf0ad));
+
+    connect_Btn->setToolTip("联系我们");
+    connect_Btn->setFont(font);
+    connect_Btn->setText(QChar(0xf129));
 
     icon_Lab->setStyleSheet("border-image: url(:/images/logo)");
 

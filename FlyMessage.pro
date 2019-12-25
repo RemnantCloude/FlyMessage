@@ -37,7 +37,8 @@ SOURCES += \
     fm_news.cpp \
     fm_settingform.cpp \
     fm_titlebar.cpp \
-    fm_waitwidget.cpp
+    fm_waitwidget.cpp \
+    fm_connectform.cpp
 
 
 HEADERS += \
@@ -54,7 +55,8 @@ HEADERS += \
     fm_news.h \
     fm_settingform.h \
     fm_titlebar.h \
-    fm_waitwidget.h
+    fm_waitwidget.h \
+    fm_connectform.h
 
 RC_FILE += FlyMessage.rc
 
@@ -68,5 +70,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 FORMS += \
     settingform.ui \
-    webwizardform.ui
+    webwizardform.ui \
+    connectform.ui
 

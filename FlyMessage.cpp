@@ -1,5 +1,7 @@
 ﻿#include "FlyMessage.h"
 #include "fm_mainwindowproxy.h"
+#include "fm_connectform.h"
+//#include "webwizardform.h"
 #include "aero.h"
 
 #include <QPainter>
@@ -183,6 +185,15 @@ void FlyMessage::resizeEvent(QResizeEvent* size){
     setPalette(pal);
 }
 
+void FlyMessage::onConnect(bool m)
+{
+    Q_UNUSED(m);
+    FM_ConnectForm *connectform = new FM_ConnectForm();
+//    WebWizardForm *connectform = new WebWizardForm(this);
+    connectform->setAttribute(Qt::WA_DeleteOnClose, true);
+    connectform->show();
+}
+
 void FlyMessage::returnToTopAtOnce()
 {
     scrollarea->ensureVisible(0,0);
@@ -292,6 +303,7 @@ void FlyMessage::initSignalAndSlot()
     connect(mainwindowProxy, &FM_MainWindowProxy::wait, mainwindow, &FM_MainWindow::stopPaint);
     connect(mainwindowProxy, &FM_MainWindowProxy::stopwait, mainwindow, &FM_MainWindow::startPaint);
 
+    connect(titlebar->connect_Btn, SIGNAL(clicked(bool)), this, SLOT(onConnect(bool)));
     connect(settingform, &FM_SettingForm::changeBackground, this, &FlyMessage::setBackgroundImage);
     connect(settingform, &FM_SettingForm::refreshAutoStart, settings, &FM_Setting::onRefreshAutoStart);
     connect(settingform, &FM_SettingForm::changeNoticeTimer, notice, &FM_Notice::set_notice_timer);

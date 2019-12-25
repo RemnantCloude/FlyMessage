@@ -29,6 +29,7 @@ public:
     QPushButton* max_Btn; // 最大化按钮
     QPushButton* close_Btn;// 关闭按钮
     QPushButton* settings_Btn;// 设置按钮
+    QPushButton* connect_Btn;// 联系我们
     QLabel* icon_Lab; // 图标
     QLabel* title_Lab; // 标题
 
