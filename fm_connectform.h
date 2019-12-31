@@ -12,8 +12,11 @@ class FM_ConnectForm : public QWidget
 public:
     explicit FM_ConnectForm(QWidget *parent = nullptr);
     ~FM_ConnectForm();
+
 private:
     Ui::ConnectForm *ui;
+    void setAeroStyle();
+    void initWindowStyle();
 };
 
 #endif // FM_CONNECTFORM_H
